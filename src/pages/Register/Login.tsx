@@ -160,7 +160,7 @@ function Login() {
           className="gap-4"
           disabled={isSubmitting}
         >
-          <img src="../../../public/imgs/google.svg" alt="" className="w-6" />
+          <img src="/imgs/google.svg" alt="google" className="w-6" />
           Continue with Google
         </Button>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
