@@ -126,7 +126,7 @@ function Login() {
             className="p-3 pe-[35px] mt-1"
           />
           <img
-            src="../../../public/icons/eye.svg"
+            src="/icons/eye.svg"
             alt="eye"
             className="absolute right-3 w-5 top-[50%] translate-y-[-45%] cursor-pointer"
             onClick={togglePasswordType}

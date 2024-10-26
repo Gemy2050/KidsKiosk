@@ -24,12 +24,12 @@ function RegisterLayout() {
         <Outlet />
       </main>
       <img
-        src={"/public/imgs/circle.svg"}
+        src={"/imgs/circle.svg"}
         className="hidden md:block w-[120px] fixed top-32 right-0 z-[-1]"
         alt="circle"
       />
       <img
-        src={"/public/imgs/square.svg"}
+        src={"/imgs/square.svg"}
         className="w-[150px] md:w-[200px] fixed bottom-0 right-0 z-[-1]"
         alt="square shape"
       />
