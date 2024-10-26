@@ -1,5 +1,3 @@
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
