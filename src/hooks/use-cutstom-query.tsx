@@ -5,7 +5,7 @@ import { AxiosRequestConfig } from "axios";
 export interface ICustomQueryProps<T> {
   url: string;
   key: string[];
-  options?: QueryOptions<T, Error>;
+  options?: QueryOptions<T, Error> & { enabled?: boolean };
   config?: AxiosRequestConfig;
 }
 

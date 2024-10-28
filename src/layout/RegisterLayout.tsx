@@ -1,11 +1,11 @@
 import Logo from "@/components/Logo";
-import { IUser } from "@/interfaces";
 import RegisterHeader from "@/pages/Register/Header";
+import { User } from "@/types";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { Navigate, Outlet } from "react-router-dom";
 
 function RegisterLayout() {
-  const authUser: IUser | null = useAuthUser();
+  const authUser: User = useAuthUser();
 
   if (authUser) {
     return <Navigate to="/" replace />;

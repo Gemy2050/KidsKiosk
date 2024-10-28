@@ -1,6 +1,10 @@
 import { IProduct } from "@/interfaces";
 import Product from "./Product";
 import useCustomQuery from "@/hooks/use-cutstom-query";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setProducts } from "@/app/slices/ProductsSlice";
+import ProductsSkeleton from "./ProductsSkeleton";
 
 function ProductsList() {
   const {
@@ -11,8 +15,15 @@ function ProductsList() {
     url: "https://fakestoreapi.com/products",
     key: ["products"],
   });
+  const dispatch = useDispatch();
 
-  console.log({ products, error, isLoading });
+  useEffect(() => {
+    if (products) {
+      dispatch(setProducts(products));
+    }
+  }, [products]);
+
+  console.log({ products, isLoading, error });
 
   return (
     <div className="container py-20">
@@ -20,9 +31,13 @@ function ProductsList() {
         Our Products
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
-        {products?.map((product) => (
-          <Product product={product} key={product.id} />
-        ))}
+        {!isLoading ? (
+          products?.map((product) => (
+            <Product product={product} key={product.id} />
+          ))
+        ) : (
+          <ProductsSkeleton />
+        )}
       </div>
     </div>
   );

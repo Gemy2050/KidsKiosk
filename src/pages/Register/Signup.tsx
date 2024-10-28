@@ -59,11 +59,13 @@ function Signup() {
       );
 
       if (status == 200) {
-        navigate("/login", { replace: true });
+        navigate("/verificationWithOtp", {
+          replace: true,
+          state: { email: bodyData.email, time: 2 * 60 * 1000 },
+        });
         toast({
-          title:
-            "Account created successfully, please verify your email and login",
-          description: "We have sent you an email",
+          title: "Account created successfully, please verify your email",
+          description: "We have sent you an email with otp code",
           variant: "success",
         });
       }

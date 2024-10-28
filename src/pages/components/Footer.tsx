@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <div className="bg-[#565656] text-white pt-20 text-center">
+    <footer className="bg-[#333333] text-white pt-20 text-center">
       <div className="container">
         <div className="flex flex-wrap justify-center items-center ">
           <div
@@ -45,6 +45,6 @@ export default function Footer() {
           @2024 Kids Kiosk. All rights reserved
         </p>
       </div>
-    </div>
+    </footer>
   );
 }

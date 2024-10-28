@@ -10,18 +10,18 @@ function RegisterHeader() {
           <Logo className="text-[20px] sm:text-2xl" />
         </Link>
         <div>
-          {location.pathname === "/signup" ? (
-            <>
-              Have an account?{" "}
-              <Link to="/login" className="text-primary font-bold">
-                Login
-              </Link>
-            </>
-          ) : (
+          {location.pathname === "/login" ? (
             <>
               No account?{" "}
               <Link to="/signup" className="text-primary font-bold">
                 Sign up
+              </Link>
+            </>
+          ) : (
+            <>
+              Have an account?{" "}
+              <Link to="/login" className="text-primary font-bold">
+                Login
               </Link>
             </>
           )}

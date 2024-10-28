@@ -22,7 +22,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-20 bg-background text-foreground border-b-2 border-border py-4 ">
       <div className="container flex items-center justify-between gap-8">
-        <Link to="/" className="min-w-[25%] lg:min-w-[33%]">
+        <Link to="/" className="min-w-[25%] lg:min-w-[33%] focus:outline-none">
           <Logo className="text-2xl cursor-pointer" />
         </Link>
         <button
@@ -67,7 +67,6 @@ export default function Header() {
             </NavLink>
           </div>
           <div className="flex items-center justify-center gap-5 mt-5 md:mt-0">
-            <ShoppingCart size={30} className="text-g-500 cursor-pointer" />
             <ModeToggle />
             <DropDown
               trigger={
@@ -75,13 +74,10 @@ export default function Header() {
                   <img
                     src={user.imageName}
                     alt="user"
-                    className="w-10 h-10 rounded-full text-gray-400 cursor-pointer"
+                    className="w-10 h-10 rounded-full cursor-pointer"
                   />
                 ) : (
-                  <UserCircle
-                    size={30}
-                    className="text-gray-400 cursor-pointer"
-                  />
+                  <UserCircle size={30} className=" cursor-pointer" />
                 )
               }
             >
@@ -93,6 +89,7 @@ export default function Header() {
                 Logout
               </DropdownMenuItem>
             </DropDown>
+            <ShoppingCart size={30} className="text-g-500 cursor-pointer" />
           </div>
         </div>
       </div>

@@ -8,10 +8,10 @@ import { LoginFormData, loginSchema } from "@/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { AxiosError } from "axios";
+import { EyeClosed, EyeIcon } from "lucide-react";
 import { useState } from "react";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
@@ -48,19 +48,24 @@ function Login() {
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
+      console.log(error);
       toast({
         title: error.response?.data?.message || "Something went wrong",
         variant: "destructive",
       });
+      if (error.status === 401) {
+        navigate("/verificationWithOtp", {
+          state: { email: formData.email },
+        });
+      }
     }
   };
 
   const handleGoogleLoginSuccess = async (credentialResponse: any) => {
     const tokenId = credentialResponse.credential;
-    console.log(credentialResponse);
 
     try {
-      // Send token to your backend API to verify and handle login
+      // Send token to backend API to verify and handle login
       const { status, data } = await axiosInstance.post(
         "/Account/google-signin",
         {
@@ -81,7 +86,11 @@ function Login() {
         navigate("/", { replace: true });
       }
     } catch (error) {
-      console.error("Login failed", error);
+      const axiosError = error as AxiosError<IAxiosError>;
+      toast({
+        title: axiosError.response?.data.message || "Something went wrong",
+        variant: "destructive",
+      });
     }
   };
 
@@ -125,12 +134,17 @@ function Login() {
             id="password"
             className="p-3 pe-[35px] mt-1"
           />
-          <img
-            src="/icons/eye.svg"
-            alt="eye"
-            className="absolute right-3 w-5 top-[50%] translate-y-[-45%] cursor-pointer"
-            onClick={togglePasswordType}
-          />
+          {passwordType === "password" ? (
+            <EyeIcon
+              onClick={togglePasswordType}
+              className="text-gray-500 absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer"
+            />
+          ) : (
+            <EyeClosed
+              onClick={togglePasswordType}
+              className="text-gray-500 absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer"
+            />
+          )}
         </div>
         <ErrorMessage message={errors.password?.message} />
       </div>

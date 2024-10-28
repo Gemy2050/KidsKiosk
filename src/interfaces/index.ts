@@ -44,7 +44,6 @@ export interface IProduct {
   price: number;
   priceBeforeDiscount: number;
   image: string;
+  images: string[];
   sizes: string[];
-  isFavourite: boolean;
-  isInRecentlyViewed: boolean;
 }
