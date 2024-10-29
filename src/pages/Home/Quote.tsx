@@ -1,6 +1,6 @@
 export default function Quote() {
   return (
-    <div className="bg-primary px-2 py-24 text-white bg-[url('/imgs/ellipses.png')] bg-no-repeat bg-contain bg-left">
+    <div className="overflow-hidden bg-primary px-2 py-24 text-white bg-[url('/imgs/ellipses.png')] bg-no-repeat bg-contain bg-left">
       <h3 className="flex justify-center items-center gap-3">
         <p data-aos="fade-right" className="text-2xl sm:text-3xl font-bold">
           Save Time Save Money

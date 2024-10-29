@@ -3,8 +3,8 @@ import Logo from "@/components/Logo";
 import { ModeToggle } from "@/components/ModeToggler";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Menu, ShoppingCart, UserCircle, X } from "lucide-react";
-import { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
@@ -17,6 +17,11 @@ export default function Header() {
   const user: User = useAuthUser();
   let { cart } = useSelector((state: RootState) => state.cart);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [pathname]);
 
   const handleSignOut = () => {
     signOut();
@@ -39,7 +44,7 @@ export default function Header() {
         <div
           className={`${
             openMenu ? "left-0" : "left-[-100%]"
-          } fixed w-[300px] py-8 md:py-0 h-full max-w-full bg-background top-[66px] z-10 flex-1 md:static flex flex-col md:flex-row gap-4 md:justify-between duration-300`}
+          } fixed w-[380px] py-8 md:py-0 h-full max-w-full bg-background top-[66px] z-10 flex-1 md:static flex flex-col md:flex-row gap-4 md:justify-between duration-300 shadow-lg md:shadow-none`}
         >
           <X
             className="absolute block md:hidden left-2 top-2 cursor-pointer"
