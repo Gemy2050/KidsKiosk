@@ -2,7 +2,7 @@ import Logo from "@/components/Logo";
 import RegisterHeader from "@/pages/Register/Header";
 import { User } from "@/types";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 function RegisterLayout() {
   const authUser: User = useAuthUser();

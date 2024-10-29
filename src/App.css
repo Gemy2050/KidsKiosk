@@ -1,3 +1,4 @@
+/** Custom Loader */
 .custom-loader {
   width: 50px;
   height: 50px;
@@ -26,5 +27,20 @@
 @keyframes s4 {
   100% {
     transform: rotate(1turn)
+  }
+}
+
+/** CartItem Remove Animation */
+
+.cart-item.removing {
+  animation: remove-animate .5s ease-out 1;
+}
+
+@keyframes remove-animate {
+
+  50%,
+  80% {
+    opacity: 0;
+    scale: 0;
   }
 }

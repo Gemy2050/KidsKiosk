@@ -1,6 +1,7 @@
 import ProtectedRoutes from "@/auth/ProtectedRoutes";
 import AppLayout from "@/layout/AppLayout";
 import RegisterLayout from "@/layout/RegisterLayout";
+import Cart from "@/pages/Cart";
 import Favorites from "@/pages/Favorites";
 import Home from "@/pages/Home";
 import ProductDetails from "@/pages/Products/ProductDetails";
@@ -16,7 +17,6 @@ function AppRoutes() {
       <Route element={<RegisterLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/verificationWithOtp" element={<OTPForm />} />
       </Route>
 
       <Route element={<ProtectedRoutes />}>
@@ -25,8 +25,10 @@ function AppRoutes() {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/products" element={<ProductsList />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
       </Route>
+      <Route path="/verificationWithOtp" element={<OTPForm />} />
       <Route path="*" element={<h1 className="text-4xl">Not Found</h1>} />
     </Routes>
   );

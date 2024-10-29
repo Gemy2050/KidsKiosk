@@ -46,4 +46,6 @@ export interface IProduct {
   image: string;
   images: string[];
   sizes: string[];
+  colors: string[];
+  quantity?: number;
 }

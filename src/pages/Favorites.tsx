@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Product from "./Products/Product";
 import { IProduct } from "@/interfaces";
 import useCustomQuery from "@/hooks/use-cutstom-query";
@@ -10,9 +9,9 @@ export default function Favorites() {
     key: ["products", "favorites"],
   });
   return (
-    <main className="relative pt-60 pb-20">
+    <main className="relative pt-32  pb-20">
       <img
-        className="absolute top-0 w-full h-[200px] z-[-1]"
+        className="fixed top-0 w-full h-[200px] z-[-1]"
         src="/imgs/pill-shape.png"
         alt="shape"
       />

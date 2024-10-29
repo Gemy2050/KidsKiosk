@@ -4,19 +4,24 @@ import { ModeToggle } from "@/components/ModeToggler";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Menu, ShoppingCart, UserCircle, X } from "lucide-react";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
   const signOut = useSignOut();
   const user: User = useAuthUser();
+  let { cart } = useSelector((state: RootState) => state.cart);
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
     signOut();
-    location.reload();
+    localStorage.removeItem("cart");
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -89,7 +94,12 @@ export default function Header() {
                 Logout
               </DropdownMenuItem>
             </DropDown>
-            <ShoppingCart size={30} className="text-g-500 cursor-pointer" />
+            <Link to={"/cart"} className="relative">
+              <ShoppingCart size={30} className="text-g-500 cursor-pointer" />
+              <span className="absolute text-xs w-5 h-5 rounded-full flex items-center justify-center bg-destructive text-white top-[-13px] left-[9px]">
+                {cart.length}
+              </span>
+            </Link>
           </div>
         </div>
       </div>

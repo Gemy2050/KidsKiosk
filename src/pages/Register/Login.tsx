@@ -48,14 +48,15 @@ function Login() {
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
-      console.log(error);
       toast({
         title: error.response?.data?.message || "Something went wrong",
         variant: "destructive",
       });
       if (error.status === 401) {
+        axiosInstance.get(`/Account/resend-otp?email=${formData.email}`);
+        sessionStorage.removeItem("time");
         navigate("/verificationWithOtp", {
-          state: { email: formData.email },
+          state: { email: formData.email, time: 2 * 60 * 1000 },
         });
       }
     }
@@ -105,6 +106,25 @@ function Login() {
     setPasswordType((prevType) =>
       prevType === "password" ? "text" : "password"
     );
+  };
+
+  //* Only For Demo.. Remove it Later
+  const BrowseDemo = () => {
+    signIn({
+      auth: {
+        token:
+          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJtbzI3MjAzNTJAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzAzMzIwODQsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.x6Ui0qiLOBl9MbAHcwhuJONVGdWzfSACopF9hETw2Mo",
+        type: "Bearer",
+      },
+      userState: {
+        id: "1",
+        email: "email@example.com",
+        name: "John Doe",
+        role: "user",
+        token: "token",
+      },
+    });
+    navigate("/", { replace: true });
   };
 
   return (
@@ -191,6 +211,9 @@ function Login() {
           )}
         </GoogleOAuthProvider>
       </div>
+      <Button type="button" onClick={BrowseDemo}>
+        Browse Demo
+      </Button>
     </form>
   );
 }

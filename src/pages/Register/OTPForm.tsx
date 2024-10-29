@@ -1,4 +1,5 @@
 import Input from "@/components/Input";
+import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
@@ -7,47 +8,49 @@ import { AxiosError } from "axios";
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
-const time = sessionStorage.getItem("time");
-const savedTime = time ? +time : null;
-
 function OTPForm() {
-  const TIME_EXPIRATION = ![null, undefined, NaN].includes(savedTime)
-    ? savedTime!
-    : 2 * 60 * 1000;
   const INPUTS_LENGTH = 6;
   const [otp, setOtp] = useState(
     Array.from({ length: INPUTS_LENGTH }, () => "")
   );
-  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const { state, pathname } = useLocation();
   const email = state?.email;
   const time = state?.time;
   const [timeLeft, setTimeLeft] = useState<number>(time || 0);
-  console.log({ state, timeLeft });
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log({ timeLeft });
+    window.addEventListener("load", () => {
+      setTimeLeft(0);
+    });
+  }, []);
+
+  useEffect(() => {
     if (email && timeLeft) {
+      let prev = timeLeft;
       const interval = setInterval(() => {
-        setTimeLeft((prev: number) => {
-          if (prev > 0) {
-            sessionStorage.setItem("time", String(prev - 1000));
-            return prev - 1000;
-          }
-          sessionStorage.setItem("time", "0");
-          clearInterval(interval);
-          navigate(pathname, {
-            state: { email, time: null },
-          });
-          return 0;
+        if (prev > 0) {
+          document.getElementById("timeLeft")!.textContent = formatDate(
+            prev - 1000
+          );
+          prev -= 1000;
+          return;
+        }
+
+        setTimeLeft(0);
+        clearInterval(interval);
+        navigate(pathname, {
+          state: { email, time: null },
         });
       }, 1000);
+
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [timeLeft]);
 
   const verifyOTP = async () => {
     try {
@@ -66,6 +69,32 @@ function OTPForm() {
         navigate("/login", {
           replace: true,
         });
+      }
+    } catch (err) {
+      const error = err as AxiosError<IAxiosError>;
+      toast({
+        title: error.response?.data?.message || "Something went wrong",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resendOTP = async () => {
+    try {
+      setIsLoading(true);
+      const { status } = await axiosInstance.get(
+        `/Account/resend-otp?email=${email}`
+      );
+      if (status === 200) {
+        toast({
+          title: "OTP has been sent to your email",
+          description: "check your email",
+          variant: "success",
+        });
+        setTimeLeft(2 * 60 * 1000);
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
@@ -125,7 +154,7 @@ function OTPForm() {
     <Input
       type="number"
       key={i}
-      className="[&::placeholder]:leading-10 !w-[40px] h-[40px] sm:!w-[50px] sm:h-[50px] text-center text-xl sm:text-2xl font-bold border-primary"
+      className="!w-[40px] h-[40px] sm:!w-[50px] sm:h-[50px] text-center text-xl sm:text-2xl font-bold border-primary"
       maxLength={1}
       min={0}
       max={9}
@@ -140,53 +169,72 @@ function OTPForm() {
   ));
 
   return (
-    <form
-      className="flex flex-col text-center gap-3 w-[470px] max-w-full mx-auto md:mx-0"
-      data-aos="fade-right"
-      onSubmit={(e) => {
-        e.preventDefault();
-        verifyOTP();
-      }}
-    >
-      <h3 className="text-lg">
-        please Enter 6 digits code that you have received on email before
-        expiration{" "}
-        {timeLeft > 0 && (
-          <>
-            You have{" "}
-            <span className="inline-block ">{formatDate(timeLeft)}</span>{" "}
-            minutes left to verify
-          </>
-        )}
-      </h3>
-      <div className="flex gap-2 sm:gap-4 mt-5 justify-center">
-        {renderInputs}
-      </div>
-
-      <div className="mb-4">
-        <p>
-          Don't receive code?{" "}
-          <Button
-            variant="link"
-            className="p-0"
-            size={"sm"}
-            type="button"
-            disabled={timeLeft > 0}
-            onClick={() => console.log("Click")}
-          >
-            Resend
-          </Button>
-        </p>
-      </div>
-
-      <Button
-        size="lg"
-        className="w-fit px-24 mx-auto border disabled:cursor-no-drop"
-        disabled={isLoading}
+    <div className="relative container py-5 min-h-screen w-full ">
+      <form
+        className="flex flex-col text-center gap-3 w-[470px] mx-auto max-w-full"
+        data-aos="fade-up"
+        onSubmit={(e) => {
+          e.preventDefault();
+          verifyOTP();
+        }}
       >
-        Verify
-      </Button>
-    </form>
+        <Logo className="text-2xl" />
+        <img
+          src="/imgs/verify.png"
+          className="w-[150px] mx-auto"
+          alt="verification code"
+        />
+        <h3 className="text-lg">
+          Enter 6 digits code that you have received on email before expiration{" "}
+          {timeLeft > 0 && (
+            <>
+              You have{" "}
+              <span id="timeLeft" className="inline-block ">
+                {formatDate(timeLeft)}
+              </span>{" "}
+              left to verify
+            </>
+          )}
+        </h3>
+        <div className="flex gap-2 sm:gap-4 mt-5 justify-center">
+          {renderInputs}
+        </div>
+
+        <div className="mb-4">
+          <p>
+            Don't receive code?{" "}
+            <Button
+              variant="link"
+              className="p-0"
+              size={"sm"}
+              type="button"
+              disabled={timeLeft > 0 || isLoading}
+              onClick={resendOTP}
+            >
+              Resend
+            </Button>
+          </p>
+        </div>
+
+        <Button
+          size="lg"
+          className="w-fit px-24 mx-auto border disabled:cursor-no-drop"
+          disabled={isLoading}
+        >
+          Verify
+        </Button>
+      </form>
+      <img
+        src={"/imgs/square.svg"}
+        className="w-[150px] md:w-[200px] fixed bottom-0 right-0 z-[-1]"
+        alt="square shape"
+      />
+      <img
+        src={"/imgs/square.svg"}
+        className="w-[150px] md:w-[200px] fixed top-0 left-0 z-[-1] rotate-180"
+        alt="square shape"
+      />
+    </div>
   );
 }
 

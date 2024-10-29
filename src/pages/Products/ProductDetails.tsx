@@ -4,19 +4,17 @@ import { Slider } from "@/components/Slider";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
 import useCustomQuery from "@/hooks/use-cutstom-query";
-import { useToast } from "@/hooks/use-toast";
 import { IProduct } from "@/interfaces";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 
 export default function ProductDetails() {
-  const { toast } = useToast();
   const [size, setSize] = useState(0);
   const { id } = useParams();
   const { products } = useSelector((state: RootState) => state.products);
 
-  const { data, error, isLoading, isFetched } = useCustomQuery<IProduct>({
+  const { data, isLoading, isFetched } = useCustomQuery<IProduct>({
     key: ["product", `${id}`],
     url: `https://fakestoreapi.com/products/${id}`,
     options: {
@@ -30,7 +28,7 @@ export default function ProductDetails() {
   if (!product && isFetched) {
     return <Navigate to="/products" replace />;
   }
-  if (!product) return <Loader />;
+  if (!product || isLoading) return <Loader />;
 
   return (
     <main className="relative pt-60 pb-20 overflow-x-hidden">
@@ -41,7 +39,7 @@ export default function ProductDetails() {
       />
       <div className="container">
         <img
-          className="-mt-[200px]  mb-5 w-[420px] h-[280px] max-w-full rounded-lg border border-border shadow-lg mx-auto"
+          className="-mt-[200px] mb-5 w-[350px] h-[280px] max-w-full rounded-lg border border-border shadow-lg mx-auto"
           src={product.image}
           alt={product.title}
           data-aos="fade-left"
@@ -56,7 +54,7 @@ export default function ProductDetails() {
               >
                 <img
                   src={product.image}
-                  className="select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
+                  className="object-contain select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
                   alt={product.title}
                 />
               </CarouselItem>
