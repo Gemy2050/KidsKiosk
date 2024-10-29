@@ -1,9 +1,9 @@
-import { addToCart, removeFromCart } from "@/app/slices/CartSlice";
-import { Button } from "@/components/ui/button";
+import { removeProduct } from "@/app/slices/CartSlice";
 import { IProduct } from "@/interfaces";
 import { X } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import CartGroupButtons from "./CartGroupButtons";
 
 interface IProps {
   product: IProduct;
@@ -15,8 +15,8 @@ function CartItem({ product }: IProps) {
   const handleRemove = () => {
     document.getElementById(`cart-${product.id}`)?.classList.add("removing");
     setTimeout(() => {
-      dispatch(removeFromCart(product));
-    }, 300);
+      dispatch(removeProduct(product));
+    }, 200);
   };
 
   return (
@@ -48,25 +48,10 @@ function CartItem({ product }: IProps) {
           {product.category}
         </p>
         <div className="flex justify-between items-center gap-3 text-md font-bold">
-          <div className="rounded-full w-[100px] bg-primary text-white  flex items-center gap-2">
-            <Button
-              onClick={() => dispatch(removeFromCart(product))}
-              className="w-full h-2 !py-3"
-              size="sm"
-            >
-              -
-            </Button>
-            <span className="w-full text-sm leading-tight">
-              {product.quantity}
-            </span>
-            <Button
-              onClick={() => dispatch(addToCart(product))}
-              className="w-full h-2 !py-3"
-              size="sm"
-            >
-              +
-            </Button>
-          </div>
+          <CartGroupButtons
+            className="!text-md w-[100%] h-6"
+            product={product}
+          />
           <span className="font-semibold text-gray-400">${product.price}</span>
         </div>
       </div>

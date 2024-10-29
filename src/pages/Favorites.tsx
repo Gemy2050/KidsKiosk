@@ -14,6 +14,8 @@ export default function Favorites() {
         className="fixed top-0 w-full h-[200px] z-[-1]"
         src="/imgs/pill-shape.png"
         alt="shape"
+        width={100}
+        height={200}
       />
       <div className="container py-10 sm:px-10 bg-secondary rounded-lg">
         <h2

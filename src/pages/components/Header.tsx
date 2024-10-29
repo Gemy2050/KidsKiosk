@@ -30,7 +30,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-20 bg-background text-foreground border-b-2 border-border py-4 ">
+    <header className="sticky top-0 z-20 bg-background text-foreground shadow-lg py-4 ">
       <div className="container flex items-center justify-between gap-8">
         <Link to="/" className="min-w-[25%] lg:min-w-[33%] focus:outline-none">
           <Logo className="text-2xl cursor-pointer" />

@@ -76,6 +76,8 @@ export default function Product({ product }: IProps) {
           src={product.image}
           alt={product.title}
           loading="lazy"
+          width={250}
+          height={200}
         />
       </Link>
       <h4 className="text-gray-400">{product.category}</h4>

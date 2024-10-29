@@ -211,7 +211,11 @@ function Login() {
           )}
         </GoogleOAuthProvider>
       </div>
-      <Button type="button" onClick={BrowseDemo}>
+      <Button
+        type="button"
+        className="border border-border"
+        onClick={BrowseDemo}
+      >
         Browse Demo
       </Button>
     </form>

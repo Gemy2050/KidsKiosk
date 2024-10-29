@@ -27,11 +27,15 @@ function RegisterLayout() {
         src={"/imgs/circle.svg"}
         className="hidden md:block w-[120px] fixed top-32 right-0 z-[-1]"
         alt="circle"
+        width={120}
+        height={185}
       />
       <img
         src={"/imgs/square.svg"}
         className="w-[150px] md:w-[200px] fixed bottom-0 right-0 z-[-1]"
         alt="square shape"
+        width={200}
+        height={215}
       />
     </section>
   );

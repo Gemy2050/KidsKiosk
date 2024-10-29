@@ -33,7 +33,7 @@
 /** CartItem Remove Animation */
 
 .cart-item.removing {
-  animation: remove-animate .5s ease-out 1;
+  animation: remove-animate .3s ease-out 1;
 }
 
 @keyframes remove-animate {

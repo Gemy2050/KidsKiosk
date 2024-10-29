@@ -1,6 +1,6 @@
 function Landing() {
   return (
-    <section className="relative h-[calc(100vh-66px)] bg-[url('/imgs/landing.png')] bg-cover bg-left-top bg-no-repeat">
+    <section className="relative h-[calc(100vh-60px)] bg-[url('/imgs/landing.png')] bg-cover bg-left-top bg-no-repeat">
       <div className="absolute inset-0 bg-black/75 z-[0]"></div>
       <div className="container relative h-full flex justify-center items-center mx-auto pt-8 md:pt-16">
         <div

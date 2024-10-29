@@ -5,10 +5,10 @@ import CartItem from "./CartItem";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { getTotalPrice } from "@/lib/functions";
 
 function Cart() {
   let { cart } = useSelector((state: RootState) => state.cart);
-  console.log({ cart });
 
   return (
     <main className="relative pt-20 pb-20">
@@ -16,6 +16,8 @@ function Cart() {
         className="fixed top-0 w-full h-[200px] z-[-1]"
         src="/imgs/pill-shape.png"
         alt="shape"
+        width={100}
+        height={200}
       />
       <div className=" container py-10 sm:px-10 rounded-lg">
         <h2
@@ -37,7 +39,7 @@ function Cart() {
         >
           {cart.length > 0 ? (
             <>
-              <h3 className="text-3xl">Total Price: $300</h3>
+              <h3 className="text-3xl">Total Price: ${getTotalPrice(cart)}</h3>
               <Button className=" rounded-lg mt-5" fullWidth>
                 Checkout
               </Button>

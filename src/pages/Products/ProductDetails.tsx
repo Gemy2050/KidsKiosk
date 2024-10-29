@@ -6,23 +6,26 @@ import { CarouselItem } from "@/components/ui/carousel";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { IProduct } from "@/interfaces";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
+import CartGroupButtons from "../Cart/CartGroupButtons";
+import { addToCart } from "@/app/slices/CartSlice";
 
 export default function ProductDetails() {
   const [size, setSize] = useState(0);
   const { id } = useParams();
-  const { products } = useSelector((state: RootState) => state.products);
+  const { cart } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+  const existProduct = cart.find((product) => product.id === +id!);
 
   const { data, isLoading, isFetched } = useCustomQuery<IProduct>({
     key: ["product", `${id}`],
     url: `https://fakestoreapi.com/products/${id}`,
     options: {
-      enabled: !products.length,
+      enabled: !existProduct,
     },
   });
 
-  const existProduct = products.find((product) => product.id === +id!);
   const product = existProduct || data;
 
   if (!product && isFetched) {
@@ -36,6 +39,8 @@ export default function ProductDetails() {
         className="absolute top-0 w-full h-[200px] z-[-1]"
         src="/imgs/pill-shape.png"
         alt="shape"
+        width={100}
+        height={200}
       />
       <div className="container">
         <img
@@ -90,7 +95,16 @@ export default function ProductDetails() {
                 </span>
               ))}
             </div>
-            <Button fullWidth>Add To Cart</Button>
+            {!product.quantity ? (
+              <Button onClick={() => dispatch(addToCart(product))} fullWidth>
+                Add To Cart
+              </Button>
+            ) : (
+              <CartGroupButtons
+                className="w-[300px] mx-auto"
+                product={product}
+              />
+            )}
           </div>
         </div>
       </div>

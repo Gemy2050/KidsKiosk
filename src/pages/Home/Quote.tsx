@@ -11,6 +11,8 @@ export default function Quote() {
           src="/imgs/smile.png"
           alt="smile"
           loading="lazy"
+          width={64}
+          height={64}
         />
       </h3>
     </div>
