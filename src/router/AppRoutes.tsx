@@ -1,4 +1,5 @@
 import Loader from "@/components/Loader";
+import ForgetPassword from "@/pages/ForgetPassword/ForgetPassword";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -34,6 +35,7 @@ const AppRoutes = () => (
       </Route>
 
       <Route path="/verificationWithOtp" element={<OTPForm />} />
+      <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Suspense>

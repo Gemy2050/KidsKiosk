@@ -48,11 +48,13 @@ function Login() {
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
+      console.log(error);
+
       toast({
         title: error.response?.data?.message || "Something went wrong",
         variant: "destructive",
       });
-      if (error.status === 401) {
+      if (error.response?.data.message === "Email is not confirmed.") {
         axiosInstance.get(`/Account/resend-otp?email=${formData.email}`);
         sessionStorage.removeItem("time");
         navigate("/verificationWithOtp", {
@@ -113,15 +115,16 @@ function Login() {
     signIn({
       auth: {
         token:
-          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJtbzI3MjAzNTJAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzAzMzIwODQsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.x6Ui0qiLOBl9MbAHcwhuJONVGdWzfSACopF9hETw2Mo",
+          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJnZW15NDYzNDlAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzA3MzY3NzcsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.RsIorvSMfKn2Expb2DcHvIM1SjG9C-5MzvLf809M86o",
         type: "Bearer",
       },
       userState: {
-        id: "1",
+        id: "0",
         email: "email@example.com",
         name: "John Doe",
         role: "user",
-        token: "token",
+        token:
+          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJnZW15NDYzNDlAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzA3MzY3NzcsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.RsIorvSMfKn2Expb2DcHvIM1SjG9C-5MzvLf809M86o",
       },
     });
     navigate("/", { replace: true });
@@ -168,7 +171,7 @@ function Login() {
         </div>
         <ErrorMessage message={errors.password?.message} />
       </div>
-      <Link to="#" className="ms-auto w-fit">
+      <Link to="/forgetPassword" className="ms-auto w-fit">
         Forget Password?
       </Link>
       <Button
