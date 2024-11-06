@@ -1,7 +1,22 @@
-import { TRegisterInputsNames } from "@/types";
+import { TRegisterInputsNames, TResetInputsNames } from "@/types";
 
 export interface IRegisterInput {
   name: TRegisterInputsNames;
+  placeholder: string;
+  type: string;
+  validation: {
+    required?: string;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: {
+      value: RegExp;
+      message: string;
+    };
+  };
+}
+
+export interface IResetInput {
+  name: TResetInputsNames;
   placeholder: string;
   type: string;
   validation: {

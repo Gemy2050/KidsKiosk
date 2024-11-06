@@ -1,7 +1,10 @@
+import Header from "./components/Header";
+
 function NotFound() {
   return (
     <>
-      <h1 className="text-2xl">Page Not Found</h1>
+      <Header />
+      <h1 className="text-2xl text-center p-5">Page Not Found</h1>
     </>
   );
 }

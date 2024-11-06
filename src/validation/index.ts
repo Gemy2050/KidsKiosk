@@ -54,3 +54,25 @@ export const loginSchema = yup.object({
 });
 
 export type LoginFormData = yup.InferType<typeof loginSchema>;
+
+//* resetPassword Schema
+export const resetPasswordSchema = yup.object({
+  otp: yup
+    .string()
+    .required("otp code is required")
+    .matches(/^[0-9]{6}$/, "otp code is not valid"),
+  newPassword: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .max(18, "Password must be at least 18 characters long"),
+  confirmedNewPassword: yup
+    .string()
+    .required("confirm password is required")
+    .oneOf(
+      [yup.ref("newPassword")],
+      "confirm password does not match password"
+    ),
+});
+
+export type ResetPasswordFormData = yup.InferType<typeof resetPasswordSchema>;

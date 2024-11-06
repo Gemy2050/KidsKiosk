@@ -1,4 +1,4 @@
-import { IRegisterInput } from "./../interfaces/index";
+import { IRegisterInput, IResetInput } from "./../interfaces/index";
 
 export const REGISTER_FORM: IRegisterInput[] = [
   {
@@ -73,6 +73,43 @@ export const REGISTER_FORM: IRegisterInput[] = [
     validation: {
       required: "address is required",
       minLength: 6,
+    },
+  },
+];
+
+export const RESET_FORM: IResetInput[] = [
+  {
+    name: "otp",
+    placeholder: "otp code",
+    type: "number",
+    validation: {
+      required: "otp code is required",
+      minLength: 6,
+      maxLength: 6,
+      pattern: {
+        value: /^[0-9]{1}$/,
+        message: "invalid otp code",
+      },
+    },
+  },
+  {
+    name: "newPassword",
+    placeholder: "Password",
+    type: "password",
+    validation: {
+      required: "password is required",
+      minLength: 8,
+      maxLength: 18,
+    },
+  },
+  {
+    name: "confirmedNewPassword",
+    placeholder: "Confirm Password",
+    type: "password",
+    validation: {
+      required: "confirm password is required",
+      minLength: 8,
+      maxLength: 18,
     },
   },
 ];

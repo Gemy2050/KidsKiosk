@@ -9,4 +9,6 @@ export type TRegisterInputsNames =
   | "confirmedPassword"
   | "address";
 
+export type TResetInputsNames = "otp" | "newPassword" | "confirmedNewPassword";
+
 export type User = IUser | null;

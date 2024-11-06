@@ -1,5 +1,5 @@
 import Loader from "@/components/Loader";
-import ForgetPassword from "@/pages/ForgetPassword/ForgetPassword";
+import ForgetPassword from "@/pages/ForgetPassword";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 

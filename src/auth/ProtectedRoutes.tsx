@@ -6,6 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 function ProtectedRoutes() {
   const isAuthenticated = useIsAuthenticated();
   const [loading, setLoading] = useState(true);
+  const isDemo = !!sessionStorage.getItem("isDemo");
 
   useEffect(() => {
     setLoading(false);
@@ -15,7 +16,7 @@ function ProtectedRoutes() {
     return <Loader />;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isDemo) {
     return <Navigate to={"/login"} replace />;
   }
 

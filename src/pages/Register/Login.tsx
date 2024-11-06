@@ -112,21 +112,7 @@ function Login() {
 
   //* Only For Demo.. Remove it Later
   const BrowseDemo = () => {
-    signIn({
-      auth: {
-        token:
-          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJnZW15NDYzNDlAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzA3MzY3NzcsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.RsIorvSMfKn2Expb2DcHvIM1SjG9C-5MzvLf809M86o",
-        type: "Bearer",
-      },
-      userState: {
-        id: "0",
-        email: "email@example.com",
-        name: "John Doe",
-        role: "user",
-        token:
-          "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJnZW15NDYzNDlAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik1vaGFtZWQiLCJleHAiOjE3MzA3MzY3NzcsImlzcyI6Imh0dHA6Ly9raWRza2lvc2sucnVuYXNwLm5ldCIsImF1ZCI6Ik15c2VjdXJpdHlLZXkifQ.RsIorvSMfKn2Expb2DcHvIM1SjG9C-5MzvLf809M86o",
-      },
-    });
+    sessionStorage.setItem("isDemo", "true");
     navigate("/", { replace: true });
   };
 
