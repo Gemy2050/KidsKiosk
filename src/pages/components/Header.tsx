@@ -26,6 +26,7 @@ export default function Header() {
   const handleSignOut = () => {
     signOut();
     localStorage.removeItem("cart");
+    localStorage.removeItem("isDemo");
     navigate("/login", { replace: true });
   };
 
