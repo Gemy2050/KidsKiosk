@@ -1,7 +1,7 @@
 import "./App.css";
 import { store } from "./auth/store";
 import { Toaster } from "./components/ui/toaster";
-import RestoreScroll from "./pages/components/RestoreScroll";
+import RestoreScroll from "./components/RestoreScroll";
 import AppRoutes from "./router/AppRoutes";
 import AuthProvider from "react-auth-kit";
 

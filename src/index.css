@@ -12,7 +12,7 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 42 99% 53%;
+    --primary: 42 88% 57%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
@@ -82,30 +82,50 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  input[type="file"]::-webkit-file-upload-button {
+    @apply hidden;
+  }
+  input[type="file"] {
+    @apply cursor-pointer text-blue-600;
+  }
 }
 
-
 @media (prefers-color-scheme: dark) {
-
   .dark {
     --background: 199 19% 17%;
     --background: 199 21.55% 9.84%;
   }
-
 }
 
+/* Custom Table */
 
+#customTable tbody tr {
+  @apply border-gray-200 even:bg-gray-100;
+}
+#customTable tbody tr td {
+  @apply p-5;
+}
+
+/* Tine Editor */
+.tox-edit-area::before {
+  @apply !border-primary duration-200;
+}
+
+.sidebar-hidden {
+  @apply left-[-100%];
+}
 
 /* ScrollBar */
 
 body {
-  --sb-track-color: #232E33;
+  --sb-track-color: #232e33;
   --sb-thumb-color: #feb710;
   --sb-size: 8px;
 }
 
 body::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 body::-webkit-scrollbar-track {

@@ -4,7 +4,7 @@
   height: 50px;
   border-radius: 50%;
   border: 8px solid #0000;
-  border-right-color: #FEB71097;
+  border-right-color: #feb71097;
   position: relative;
   animation: s4 1s infinite linear;
 }
@@ -26,18 +26,17 @@
 
 @keyframes s4 {
   100% {
-    transform: rotate(1turn)
+    transform: rotate(1turn);
   }
 }
 
 /** CartItem Remove Animation */
 
 .cart-item.removing {
-  animation: remove-animate .3s ease-out 1;
+  animation: remove-animate 0.3s ease-out 1;
 }
 
 @keyframes remove-animate {
-
   50%,
   80% {
     opacity: 0;

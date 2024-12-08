@@ -2,6 +2,11 @@ import Loader from "@/components/Loader";
 import ForgetPassword from "@/pages/ForgetPassword";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import DashboardLayout from "@/layout/DashboardLayout";
+import Dashboard from "@/pages/Dashboard";
+import Products from "@/pages/Dashboard/Products";
+import AddProduct from "@/pages/Dashboard/Products/AddProduct";
+import EditProduct from "@/pages/Dashboard/Products/EditProduct";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -31,6 +36,15 @@ const AppRoutes = () => (
           <Route path="/products" element={<ProductsList />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+        </Route>
+      </Route>
+
+      <Route element={<DashboardLayout />} path="/admin">
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="products">
+          <Route index element={<Products />} />
+          <Route path="add" element={<AddProduct />} />
+          <Route path="edit/:productId" element={<EditProduct />} />
         </Route>
       </Route>
 
