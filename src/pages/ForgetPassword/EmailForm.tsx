@@ -18,7 +18,7 @@ export default function EmailForm() {
       setIsLoading(true);
       const email = e.currentTarget.email.value;
       const { data } = await axiosInstance.post(
-        `/Account/forgotPassword?email=${email}`
+        `/account/forgotPassword?email=${email}`
       );
       setSearchParams({ form: "resetPassword", email });
       toast({

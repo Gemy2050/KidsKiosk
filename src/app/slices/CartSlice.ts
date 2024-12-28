@@ -1,4 +1,4 @@
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IInitialState {
@@ -21,11 +21,8 @@ const cartSlice = createSlice({
       const product = action.payload;
       const quantity = product.quantity || 0;
       const productFound = state.cart.find((el) => el.id === product.id);
-      console.log(productFound);
 
       if (productFound) {
-        console.log("increase");
-
         state.cart = state.cart.map((el) =>
           el.id === product.id ? { ...el, quantity: quantity + 1 } : el
         );

@@ -1,7 +1,7 @@
 import { addToCart, removeFromCart } from "@/app/slices/CartSlice";
 import { RootState } from "@/app/store";
 import { useToast } from "@/hooks/use-toast";
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import { Heart, ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,9 +72,9 @@ export default function Product({ product }: IProps) {
 
       <Link to={`/product/${product.id}`} className="w-full cursor-pointer">
         <img
-          className="w-[250px] h-[200px] max-w-full object-contain rounded-lg mx-auto my-3 duration-500"
-          src={product.image}
-          alt={product.title}
+          className="w-[250px] h-[200px] max-w-full rounded-lg mx-auto my-3 duration-500"
+          src={product.imageUrl}
+          alt={product.name}
           loading="lazy"
           width={250}
           height={200}
@@ -85,9 +85,12 @@ export default function Product({ product }: IProps) {
         to={`/product/${product.id}`}
         className="line-clamp-2 font-semibold  min-h-[50px] text-center hover:text-primary duration-500 cursor-pointer"
       >
-        {product.title}
+        {product.name}
       </Link>
-      <p className="line-clamp-3 min-h-[75px] w-full">{product.description}</p>
+      <p
+        className="line-clamp-3 min-h-[75px] w-full"
+        dangerouslySetInnerHTML={{ __html: product.description }}
+      ></p>
       <h3 className="font-bold text-gray-500">${product.price}</h3>
     </div>
   );

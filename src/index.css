@@ -87,7 +87,7 @@
     @apply hidden;
   }
   input[type="file"] {
-    @apply cursor-pointer text-blue-600;
+    @apply cursor-pointer relative;
   }
 }
 
@@ -98,22 +98,43 @@
   }
 }
 
-/* Custom Table */
+.hidden {
+  display: none;
+}
 
+/* Popup */
+#Popup.open {
+  @apply !scale-100;
+}
+
+/* Sidebar */
+.sidebar-hidden {
+  @apply left-[-100%];
+}
+
+/* Input Group */
+#input-group label {
+  @apply absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-white;
+}
+#input-group input {
+  @apply text-[15px];
+}
+
+/* Custom Table */
 #customTable tbody tr {
   @apply border-gray-200 even:bg-gray-100;
 }
+
 #customTable tbody tr td {
-  @apply p-5;
+  @apply p-3 md:p-4 text-center;
+}
+#customTable::-webkit-scrollbar {
+  @apply w-0;
 }
 
 /* Tine Editor */
 .tox-edit-area::before {
   @apply !border-primary duration-200;
-}
-
-.sidebar-hidden {
-  @apply left-[-100%];
 }
 
 /* ScrollBar */

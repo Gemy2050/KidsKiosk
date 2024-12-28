@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ThemeProvider defaultTheme="system" enableSystem attribute="class">
+    <ThemeProvider defaultTheme="light" enableSystem attribute="class">
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>

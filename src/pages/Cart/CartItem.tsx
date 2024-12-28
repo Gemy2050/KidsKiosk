@@ -1,5 +1,5 @@
 import { removeProduct } from "@/app/slices/CartSlice";
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import { X } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -32,7 +32,7 @@ function CartItem({ product }: IProps) {
       />
       <Link to={`/product/${product.id}`}>
         <img
-          src={product.image}
+          src={product.imageUrl}
           alt="product"
           className="rounded-lg w-full h-[150px] object-contain"
         />
@@ -42,7 +42,7 @@ function CartItem({ product }: IProps) {
           to={`/product/${product.id}`}
           className="text-md font-semibold line-clamp-1 hover:text-primary duration-300"
         >
-          {product.title}
+          {product.name}
         </Link>
         <p className="text-sm text-muted-foreground mt-0 mb-6">
           {product.category}

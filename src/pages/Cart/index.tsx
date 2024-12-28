@@ -5,7 +5,7 @@ import CartItem from "./CartItem";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { getTotalPrice } from "@/lib/functions";
+import { getTotalPrice } from "@/utils/functions";
 
 function Cart() {
   let { cart } = useSelector((state: RootState) => state.cart);

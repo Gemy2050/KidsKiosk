@@ -1,60 +1,135 @@
+import Alert from "@/components/Alert";
+import ErrorMessage from "@/components/ErrorMessage";
+import IconButton from "@/components/IconButton";
 import Input from "@/components/Input";
+import LinkButton from "@/components/LinkButton";
 import PageTitle from "@/components/PageTitle";
-import Table from "@/components/Table";
-import { Button, buttonVariants } from "@/components/ui/button";
+import Pagination from "@/components/Pagination";
+import Spinner from "@/components/Spinner";
+import { buttonVariants } from "@/components/ui/button";
+import axiosInstance from "@/config/axios.config";
+import useCustomQuery from "@/hooks/use-cutstom-query";
+import { toast } from "@/hooks/use-toast";
+import { IAxiosError, Product } from "@/interfaces";
+import { tableSearch } from "@/utils/functions";
 import { cn } from "@/lib/utils";
-import { PenBox, Trash } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Image, PenBox, Trash } from "lucide-react";
+import React, { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-interface product {
-  id: number;
-  name: string;
-  title: string;
-  description: string;
-  quantity: number;
+const Table = lazy(() => import("@/components/Table"));
+
+interface IQuery {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: Product[];
 }
 
-const products: product[] = [
-  {
-    id: 1,
-    name: "Product 1",
-    title: "Product 1",
-    description: "Product 1",
-    quantity: 10,
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    title: "Product 2",
-    description: "Product 2",
-    quantity: 20,
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    title: "Product 3",
-    description: "Product 3",
-    quantity: 30,
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    title: "Product 4",
-    description: "Product 4",
-    quantity: 40,
-  },
-];
-
 function Products() {
-  const tableHeaders = ["name", "title", "description", "quantity", "actions"];
+  const INDEX = sessionStorage.getItem("pageIndex")
+    ? Number(sessionStorage.getItem("pageIndex"))
+    : 1;
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [disabled, setDisabled] = useState(false);
+  const [pageIndex, setPageIndex] = useState(INDEX);
+  const PAGE_SIZE = 5;
+
+  const tableHeaders = useMemo(
+    () => ["image", "name", "category", "price", "discount", "actions"],
+    []
+  );
+
+  const QueryClient = useQueryClient();
+
+  const { data, error } = useCustomQuery<IQuery>({
+    key: ["getAllProducts", `${pageIndex}`],
+    url: `/product/get-all-products?PageSize=${PAGE_SIZE}&PageIndex=${pageIndex}`,
+  });
+
+  useEffect(() => {
+    if (data) setProducts(data.data);
+  }, [data]);
+
+  const handleDeleteProduct = async (id: number) => {
+    try {
+      setDisabled(true);
+      await axiosInstance.delete(`/product/delete-product?id=${id}`);
+      toast({
+        title: "Done",
+        description: "Product deleted successfully",
+        variant: "success",
+      });
+      QueryClient.invalidateQueries({ queryKey: ["getAllProducts"] });
+    } catch (err) {
+      const error = err as AxiosError<IAxiosError>;
+      toast({
+        title: "something went wrong",
+        description: error.response?.data.message,
+        variant: "destructive",
+      });
+    } finally {
+      setDisabled(false);
+    }
+  };
+
+  // ** Render Products Rows ** //
+  const renderProducts = products?.map((product, idx: number) => (
+    <tr key={product.id} className="text-center">
+      <td>{idx + 1}</td>
+      <td>
+        <img
+          src={product.imageUrl}
+          alt="product image"
+          className="w-[80px] h-[50px] mx-auto"
+          loading="lazy"
+        />
+      </td>
+      <td>{product.name}</td>
+      <td>{product.category}</td>
+      <td>{product.price}</td>
+      <td>{product.priceBeforeDiscount - product.price}</td>
+      <td className="space-x-1 min-w-[115px]">
+        <LinkButton
+          className="p-1 bg-green-600 hover:bg-green-500 duration-200"
+          to={`images/${product.id}`}
+          size={"xs"}
+          rounded={"md"}
+        >
+          <Image size={14} />
+        </LinkButton>
+        <LinkButton
+          className="p-1"
+          to={`edit/${product.id}`}
+          size={"xs"}
+          rounded={"md"}
+        >
+          <PenBox size={14} />
+        </LinkButton>
+        <Alert
+          onDelete={() => handleDeleteProduct(product.id)}
+          title={`Are you sure to delete this product "${product.name}"?`}
+          description="you cannot retrieve this product after deleting it."
+          disabled={disabled}
+        >
+          <IconButton className="p-1" variant="destructive">
+            <Trash size={14} />
+          </IconButton>
+        </Alert>
+      </td>
+    </tr>
+  ));
 
   return (
-    <div>
+    <>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Products</h2>
       </PageTitle>
 
-      <div className="mt-2 p-4 rounded-lg bg-background">
+      <div className=" mt-2 p-4 rounded-lg bg-background">
         <Link
           to="add"
           className={cn(
@@ -68,30 +143,24 @@ function Products() {
           Add Product
         </Link>
 
-        <Input placeholder="Search here ..." className="w-full mb-4" />
+        <Input
+          placeholder="Search here ..."
+          className="w-full mb-4"
+          onChange={tableSearch}
+        />
 
-        <Table headers={tableHeaders}>
-          {products.map((product, idx: number) => (
-            <tr key={product.id}>
-              <td>{idx + 1}</td>
-              <td>{product.name}</td>
-              <td>{product.title}</td>
-              <td>{product.description}</td>
-              <td>{product.quantity}</td>
-              <td className="flex gap-2">
-                <Button size={"xs"} rounded={"md"}>
-                  <PenBox size={16} />
-                </Button>
-                <Button size={"xs"} rounded={"md"} variant={"destructive"}>
-                  <Trash size={16} />
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </Table>
+        {products && (
+          <>
+            <Suspense fallback={<Spinner />}>
+              <Table headers={tableHeaders}>{renderProducts}</Table>
+            </Suspense>
+            <Pagination {...{ data, pageIndex, setPageIndex }} />
+          </>
+        )}
+        {error && <ErrorMessage message="Something went wrong" />}
       </div>
-    </div>
+    </>
   );
 }
 
-export default Products;
+export default React.memo(Products);

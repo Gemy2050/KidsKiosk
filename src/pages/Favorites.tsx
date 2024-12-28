@@ -1,12 +1,12 @@
 import Product from "./Products/Product";
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { Heart } from "lucide-react";
 
 export default function Favorites() {
   const { data: products } = useCustomQuery<IProduct[]>({
-    url: "https://fakestoreapi.com/products",
-    key: ["products", "favorites"],
+    url: "/product/get-all-products",
+    key: ["getAllProducts", "favorites"],
   });
   return (
     <main className="relative pt-32  pb-20">

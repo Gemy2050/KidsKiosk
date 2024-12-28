@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { addToCart, removeFromCart } from "@/app/slices/CartSlice";
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useEffect, useState } from "react";

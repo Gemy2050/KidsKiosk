@@ -29,7 +29,7 @@ function ResetPasswordForm() {
     formData
   ) => {
     try {
-      const { data } = await axiosInstance.post(`/Account/resetPassword`, {
+      const { data } = await axiosInstance.post(`/account/resetPassword`, {
         email: email,
         ...formData,
       });

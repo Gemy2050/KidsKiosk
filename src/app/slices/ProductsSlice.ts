@@ -1,4 +1,4 @@
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IInitialState {

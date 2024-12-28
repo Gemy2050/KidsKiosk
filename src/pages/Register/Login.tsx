@@ -31,7 +31,7 @@ function Login() {
   const handleLoginForm: SubmitHandler<LoginFormData> = async (formData) => {
     try {
       const { status, data } = await axiosInstance.post(
-        "/Account/login",
+        "/account/login",
         formData
       );
 
@@ -48,14 +48,13 @@ function Login() {
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
-      console.log(error);
 
       toast({
         title: error.response?.data?.message || "Something went wrong",
         variant: "destructive",
       });
       if (error.response?.data.message === "Email is not confirmed.") {
-        axiosInstance.get(`/Account/resend-otp?email=${formData.email}`);
+        axiosInstance.get(`/account/resend-otp?email=${formData.email}`);
         sessionStorage.removeItem("time");
         navigate("/verificationWithOtp", {
           state: { email: formData.email, time: 2 * 60 * 1000 },
@@ -70,7 +69,7 @@ function Login() {
     try {
       // Send token to backend API to verify and handle login
       const { status, data } = await axiosInstance.post(
-        "/Account/google-signin",
+        "/account/google-signin",
         {
           idToken: tokenId,
           clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,

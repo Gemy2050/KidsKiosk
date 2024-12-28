@@ -7,7 +7,7 @@ const Select = forwardRef(
     return (
       <select
         ref={ref}
-        className={`text-[15px] h-[40.5px] p-2 outline-none shadow-md border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary rounded-lg w-full duration-300 ${className}`}
+        className={`text-[15px] h-[44.5px] p-[10px] outline-none shadow-md border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary rounded-lg w-full duration-300 ${className}`}
         {...rest}
       >
         {children}

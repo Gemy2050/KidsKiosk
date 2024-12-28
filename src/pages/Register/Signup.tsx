@@ -31,7 +31,6 @@ function Signup() {
         city: "0",
         country: "0",
       },
-      redirectUrl: location.origin + "/login",
     };
 
     const formData = new FormData();
@@ -49,7 +48,7 @@ function Signup() {
 
     try {
       const { status } = await axiosInstance.post(
-        "/Account/Register",
+        "/account/register",
         formData,
         {
           headers: {

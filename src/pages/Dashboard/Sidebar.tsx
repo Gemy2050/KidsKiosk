@@ -1,37 +1,56 @@
 import Logo from "@/components/Logo";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  const hideSidebar = window.innerWidth < 992;
+
+  const handleActiveLink = (isActive: boolean, path: string) => {
+    const isMatchingPath = location.pathname.startsWith(path);
+    return `${
+      isActive || isMatchingPath ? "border-primary" : "border-transparent "
+    } p-3 block text-gray-800 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
+  };
+
   return (
     <div
       id="Sidebar"
-      className="w-[200px] bg-background text-foreground py-4 h-screen fixed top-[64px] lg:sticky lg:top-0 bottom-0 left-0 z-30 duration-200"
+      className={`${
+        hideSidebar && "sidebar-hidden"
+      } w-[200px] bg-background text-foreground py-4 h-screen shadow-2xl fixed top-[64px] lg:sticky lg:top-0 bottom-0 left-0 z-30 duration-200`}
     >
-      <Logo className="text-2xl px-3" />
+      <Link to={"/"}>
+        <Logo className="text-2xl px-3" />
+      </Link>
       <ul className="flex flex-col mt-4">
         <li className="border-b border-gray-200 ">
-          <Link
+          <NavLink
             to="dashboard"
-            className="p-3 block text-gray-800 border-e-4 border-transparent hover:ps-4 hover:border-primary duration-300"
+            className={({ isActive }) =>
+              handleActiveLink(isActive, "/admin/dashboard")
+            }
           >
             Home
-          </Link>
+          </NavLink>
         </li>
         <li className="border-b border-gray-200">
-          <Link
+          <NavLink
             to="products"
-            className="p-3 block text-gray-800 border-e-4 border-transparent hover:ps-4 hover:border-primary duration-300"
+            className={({ isActive }) =>
+              handleActiveLink(isActive, "/admin/products")
+            }
           >
             Products
-          </Link>
+          </NavLink>
         </li>
         <li className="border-b border-gray-200">
-          <Link
-            to="products"
-            className="p-3 block text-gray-800 border-e-4 border-transparent hover:ps-4 hover:border-primary duration-300"
+          <NavLink
+            to="categories"
+            className={({ isActive }) =>
+              handleActiveLink(isActive, "/admin/categories")
+            }
           >
             Categories
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </div>

@@ -1,4 +1,8 @@
-import { IRegisterInput, IResetInput } from "./../interfaces/index";
+import {
+  IProductsForm,
+  IRegisterInput,
+  IResetInput,
+} from "./../interfaces/index";
 
 export const REGISTER_FORM: IRegisterInput[] = [
   {
@@ -110,6 +114,78 @@ export const RESET_FORM: IResetInput[] = [
       required: "confirm password is required",
       minLength: 8,
       maxLength: 18,
+    },
+  },
+];
+
+// ** Dashboard **
+
+export const ProductsForm: IProductsForm[] = [
+  {
+    label: "Product Image",
+    name: "image",
+    placeholder: "Product Image",
+    type: "file",
+    validation: {
+      required: "Product Image is required",
+    },
+  },
+  {
+    label: "Product Name",
+    name: "name",
+    placeholder: "Product Name",
+    type: "text",
+    validation: {
+      required: "Product Name is required",
+    },
+  },
+
+  {
+    label: "Product Category",
+    name: "productCategoryId",
+    placeholder: "Product Category",
+    isDynamicOptions: true,
+    type: "select",
+    validation: {
+      required: "Product Category is required",
+    },
+  },
+  {
+    label: "Product Price",
+    name: "price",
+    placeholder: "Product Price",
+    type: "number",
+    validation: {
+      required: "Product Price is required",
+    },
+  },
+  {
+    label: "has discount ?",
+    name: "hasDiscount",
+    placeholder: "Product Category",
+    type: "select",
+    defaultValue: "Yes",
+    options: ["No", "Yes"],
+    validation: {
+      required: "Product Category is required",
+    },
+  },
+  {
+    label: "Product Discount",
+    name: "discount",
+    placeholder: "Discount",
+    type: "number",
+    validation: {
+      required: "Product Discount is required",
+    },
+  },
+  {
+    label: "Product Description",
+    name: "description",
+    placeholder: "Product Description",
+    type: "editor",
+    validation: {
+      required: "Product Description is required",
     },
   },
 ];

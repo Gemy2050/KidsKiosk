@@ -76,3 +76,31 @@ export const resetPasswordSchema = yup.object({
 });
 
 export type ResetPasswordFormData = yup.InferType<typeof resetPasswordSchema>;
+
+// *** Dashboard  ***
+
+// ProductForm Schema
+export const productForm = yup.object({
+  image: yup.mixed().required("image is required"),
+  name: yup.string().required("name is required"),
+  description: yup.string().required("description is required"),
+  quantity: yup.number().required("quantity is required"),
+  price: yup.number().required("price is required"),
+  hasDiscount: yup.string().required("discount is required"),
+  discount: yup.number().required("discount is required"),
+  productCategoryId: yup.number().required("category is required"),
+  productCategory: yup.string().required("category is required"),
+  colors: yup.array().of(
+    yup.object().shape({
+      color: yup.string().required("color is required"),
+      sizes: yup.array().of(
+        yup.object().shape({
+          size: yup.string().required("size is required"),
+          quantity: yup.number().required("quantity is required"),
+        })
+      ),
+    })
+  ),
+});
+
+export type ProductForm = yup.InferType<typeof productForm>;

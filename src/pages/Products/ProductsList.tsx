@@ -1,4 +1,4 @@
-import { IProduct } from "@/interfaces";
+import { Product as IProduct } from "@/interfaces";
 import Product from "./Product";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { useEffect } from "react";
@@ -6,24 +6,25 @@ import { useDispatch } from "react-redux";
 import { setProducts } from "@/app/slices/ProductsSlice";
 import ProductsSkeleton from "./ProductsSkeleton";
 
+interface IQuery {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: IProduct[];
+}
+
 function ProductsList() {
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useCustomQuery<IProduct[]>({
-    url: "https://fakestoreapi.com/products",
+  const { data: products, isLoading } = useCustomQuery<IQuery>({
+    url: "/product/get-all-products?pageIndex=1&pageSize=10",
     key: ["products"],
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (products) {
-      dispatch(setProducts(products));
+      dispatch(setProducts(products.data));
     }
   }, [products]);
-
-  console.log({ products, isLoading, error });
 
   return (
     <div className="container py-20">
@@ -32,7 +33,7 @@ function ProductsList() {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
         {!isLoading ? (
-          products?.map((product) => (
+          products?.data?.map((product) => (
             <Product product={product} key={product.id} />
           ))
         ) : (

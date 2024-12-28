@@ -4,15 +4,17 @@ import { Slider } from "@/components/Slider";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
 import useCustomQuery from "@/hooks/use-cutstom-query";
-import { IProduct } from "@/interfaces";
-import { useState } from "react";
+import { Product as IProduct, ISize } from "@/interfaces";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 import CartGroupButtons from "../Cart/CartGroupButtons";
 import { addToCart } from "@/app/slices/CartSlice";
 
 export default function ProductDetails() {
-  const [size, setSize] = useState(0);
+  const [sizeId, setSizeId] = useState(0);
+  const [availableSizes, setAvailableSizes] = useState<ISize[]>();
+  const [colorId, setColorId] = useState<number | undefined>(0);
   const { id } = useParams();
   const { cart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ export default function ProductDetails() {
 
   const { data, isLoading, isFetched } = useCustomQuery<IProduct>({
     key: ["product", `${id}`],
-    url: `https://fakestoreapi.com/products/${id}`,
+    url: `/product/get-product?id=${id}`,
     options: {
       enabled: !existProduct,
     },
@@ -28,9 +30,22 @@ export default function ProductDetails() {
 
   const product = existProduct || data;
 
+  useEffect(() => {
+    if (product && colorId === 0) {
+      setColorId(product.variants?.[0].id);
+      return;
+    }
+
+    if (product) {
+      const sizes = product.variants?.find(({ id }) => id === colorId)?.sizes;
+      setAvailableSizes(sizes);
+    }
+  }, [colorId, product]);
+
   if (!product && isFetched) {
     return <Navigate to="/products" replace />;
   }
+
   if (!product || isLoading) return <Loader />;
 
   return (
@@ -45,22 +60,22 @@ export default function ProductDetails() {
       <div className="container">
         <img
           className="-mt-[200px] mb-5 w-[350px] h-[280px] max-w-full rounded-lg border border-border shadow-lg mx-auto"
-          src={product.image}
-          alt={product.title}
+          src={product.imageUrl}
+          alt={product.name}
           data-aos="fade-left"
         />
 
         <div className="px-10 text-center" data-aos="fade-right">
           <Slider className="w-[850px] max-w-full mx-auto mt-8">
-            {Array.from({ length: 10 }).map((_, i) => (
+            {product.productImages?.map(({ id, imageUrl }) => (
               <CarouselItem
-                key={i}
+                key={id}
                 className="basis-[100%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
                 <img
-                  src={product.image}
-                  className="object-contain select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
-                  alt={product.title}
+                  src={imageUrl}
+                  className="select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
+                  alt={product.name}
                 />
               </CarouselItem>
             ))}
@@ -74,24 +89,46 @@ export default function ProductDetails() {
           >
             <h3 className="text-3xl font-semibold flex items-center justify-between gap-4">
               {product.category}
-              <span className="font-normal text-2xl ">${product.price}</span>
+              <div className="font-normal flex gap-2">
+                <span className="text-base line-through text-gray-500">
+                  ${product.priceBeforeDiscount}
+                </span>
+                <span className="text-2xl">${product.price}</span>
+              </div>
             </h3>
-            <h4 className="text-lg">{product.title}</h4>
-            <p className="text-gray-500">{product.description}</p>
+            <h4 className="text-lg">{product.name}</h4>
+            <p
+              className="text-gray-500"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            ></p>
           </div>
           {/* Right */}
           <div className="w-[500px] max-w-full" data-aos="fade-left">
-            <h3 className="text-3xl font-semibold mb-4">Size</h3>
+            <h3 className="text-3xl font-semibold mb-4">Colors</h3>
             <div className="mb-8 flex flex-wrap items-center gap-4">
-              {Array.from({ length: 5 }).map((_, i) => (
+              {product.variants?.map(({ id, color }, i) => (
+                <span
+                  key={id}
+                  onClick={() => setColorId(id)}
+                  className={`${
+                    (colorId === id || i === 0) && "active"
+                  } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block p-1 rounded-lg border border-border text-center font-semibold text-gray-500`}
+                >
+                  {color}
+                </span>
+              ))}
+            </div>
+            <h3 className="text-2xl font-semibold mb-4">Available Sizes</h3>
+            <div className="mb-8 flex flex-wrap items-center gap-4">
+              {availableSizes?.map(({ id, size }, i) => (
                 <span
                   key={i}
-                  onClick={() => setSize(i + 20)}
+                  onClick={() => setSizeId(id)}
                   className={`${
-                    size === i + 20 && "active"
+                    (sizeId === id || i === 0) && "active"
                   } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block w-[35px] h-[35px] rounded-lg border border-border text-center font-semibold text-sm leading-9 text-gray-500`}
                 >
-                  {i + 20}
+                  {size}
                 </span>
               ))}
             </div>

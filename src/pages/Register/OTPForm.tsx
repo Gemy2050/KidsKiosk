@@ -23,7 +23,6 @@ function OTPForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log({ timeLeft });
     window.addEventListener("load", () => {
       setTimeLeft(0);
     });
@@ -56,7 +55,7 @@ function OTPForm() {
     try {
       setIsLoading(true);
       const otpCode = otp.join("");
-      const { status } = await axiosInstance.post("/Account/verify-otp", {
+      const { status } = await axiosInstance.post("/account/verify-otp", {
         email: email,
         otp: otpCode,
       });
@@ -86,7 +85,7 @@ function OTPForm() {
     try {
       setIsLoading(true);
       const { status } = await axiosInstance.get(
-        `/Account/resend-otp?email=${email}`
+        `/account/resend-otp?email=${email}`
       );
       if (status === 200) {
         toast({
