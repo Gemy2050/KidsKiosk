@@ -18,12 +18,12 @@ import { useParams } from "react-router-dom";
 
 const Table = lazy(() => import("@/components/Table"));
 
-interface IQuery {
-  pageIndex: number;
-  pageSize: number;
-  count: number;
-  data: Product[];
-}
+// interface IQuery {
+//   pageIndex: number;
+//   pageSize: number;
+//   count: number;
+//   data: Product[];
+// }
 
 function Images() {
   const tableHeaders = ["image", "actions"];
@@ -33,18 +33,23 @@ function Images() {
   const queryClient = useQueryClient();
   const { productId } = useParams();
 
-  const { data: products, error } = useCustomQuery<IQuery>({
-    key: ["getAllProducts"],
-    url: "/product/get-all-products?PageSize=1000&PageIndex=1",
+  // const { data: products, error } = useCustomQuery<IQuery>({
+  //   key: ["getAllProducts"],
+  //   url: "/product/get-all-products?PageSize=1000&PageIndex=1",
+  // });
+  const { data: products, error } = useCustomQuery<Product>({
+    key: ["getProduct"],
+    url: `/product/get-product?id=${productId}`,
   });
 
   useEffect(() => {
-    if (products) {
-      const product = products.data?.find(
-        (product) => product.id === Number(productId)
-      );
-      setProduct(product);
-    }
+    // if (products) {
+    //   const product = products.data?.find(
+    //     (product) => product.id === Number(productId)
+    //   );
+    //   setProduct(product);
+    // }
+    setProduct(products);
   }, [products, productId]);
 
   const handleDeleteImage = async (imgId: number) => {

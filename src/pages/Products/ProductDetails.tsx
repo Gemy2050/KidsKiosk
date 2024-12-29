@@ -111,7 +111,7 @@ export default function ProductDetails() {
                   key={id}
                   onClick={() => setColorId(id)}
                   className={`${
-                    (colorId === id || i === 0) && "active"
+                    (colorId ? colorId === id : i === 0) && "active"
                   } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block p-1 rounded-lg border border-border text-center font-semibold text-gray-500`}
                 >
                   {color}
@@ -125,7 +125,7 @@ export default function ProductDetails() {
                   key={i}
                   onClick={() => setSizeId(id)}
                   className={`${
-                    (sizeId === id || i === 0) && "active"
+                    (sizeId ? sizeId === id : i === 0) && "active"
                   } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block w-[35px] h-[35px] rounded-lg border border-border text-center font-semibold text-sm leading-9 text-gray-500`}
                 >
                   {size}
