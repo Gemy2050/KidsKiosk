@@ -79,6 +79,14 @@ export const REGISTER_FORM: IRegisterInput[] = [
       minLength: 6,
     },
   },
+  {
+    name: "image",
+    placeholder: "profile image",
+    type: "file",
+    validation: {
+      required: "profile image is required",
+    },
+  },
 ];
 
 export const RESET_FORM: IResetInput[] = [

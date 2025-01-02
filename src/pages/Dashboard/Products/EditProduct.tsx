@@ -134,7 +134,7 @@ function EditProduct() {
 
       const description = editorRef.current?.getContent() || "";
       const productCategory =
-        categories?.find((el) => el.id == +productFormData.productCategoryId)
+        categories?.find((el) => el.id == productFormData.productCategoryId)
           ?.name || "";
 
       const sanitizedColors = colors.map(({ id, sizes, ...rest }) => ({

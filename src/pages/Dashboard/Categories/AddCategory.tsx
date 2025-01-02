@@ -26,7 +26,7 @@ function AddCategory() {
       setDisabled(true);
       const description = editorRef.current?.getContent();
 
-      if (!categoryName || !description) {
+      if (!categoryName) {
         toast({
           title: "Error",
           description: "Please fill all fields",

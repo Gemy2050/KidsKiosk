@@ -19,6 +19,8 @@ export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const imageUrl = user?.imageName || user?.image;
+
   useEffect(() => {
     setOpenMenu(false);
   }, [pathname]);
@@ -81,9 +83,9 @@ export default function Header() {
             <ModeToggle />
             <DropDown
               trigger={
-                user?.imageName ? (
+                imageUrl ? (
                   <img
-                    src={user.imageName}
+                    src={imageUrl}
                     alt="user"
                     className="w-10 h-10 rounded-full cursor-pointer"
                   />

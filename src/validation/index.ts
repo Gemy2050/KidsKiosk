@@ -32,6 +32,7 @@ export const registerSchema = yup
       .string()
       .required("Address is required")
       .min(4, "address is too short"),
+    image: yup.mixed().required("image is required"),
   })
   .required();
 

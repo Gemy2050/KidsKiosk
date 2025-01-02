@@ -7,7 +7,8 @@ export type TRegisterInputsNames =
   | "phone"
   | "password"
   | "confirmedPassword"
-  | "address";
+  | "address"
+  | "image";
 
 export type TResetInputsNames = "otp" | "newPassword" | "confirmedNewPassword";
 

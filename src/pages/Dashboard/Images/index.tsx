@@ -18,12 +18,12 @@ import { useParams } from "react-router-dom";
 
 const Table = lazy(() => import("@/components/Table"));
 
-// interface IQuery {
-//   pageIndex: number;
-//   pageSize: number;
-//   count: number;
-//   data: Product[];
-// }
+interface IQuery {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: Product[];
+}
 
 function Images() {
   const tableHeaders = ["image", "actions"];
@@ -33,36 +33,34 @@ function Images() {
   const queryClient = useQueryClient();
   const { productId } = useParams();
 
-  // const { data: products, error } = useCustomQuery<IQuery>({
-  //   key: ["getAllProducts"],
-  //   url: "/product/get-all-products?PageSize=1000&PageIndex=1",
-  // });
-  const { data: products, error } = useCustomQuery<Product>({
-    key: ["getProduct"],
-    url: `/product/get-product?id=${productId}`,
+  const { data: products, error } = useCustomQuery<IQuery>({
+    key: ["getAllProducts"],
+    url: "/product/get-all-products?PageSize=1000&PageIndex=1",
   });
 
   useEffect(() => {
-    // if (products) {
-    //   const product = products.data?.find(
-    //     (product) => product.id === Number(productId)
-    //   );
-    //   setProduct(product);
-    // }
-    setProduct(products);
+    if (products) {
+      const product = products.data?.find(
+        (product) => String(product.id) == String(productId)
+      );
+      setProduct(product);
+    }
   }, [products, productId]);
 
-  const handleDeleteImage = async (imgId: number) => {
+  const handleDeleteImage = async (imgId: number, imageUrl: string) => {
     try {
       setDisabled(true);
       const formData = new FormData();
       formData.append("id", String(imgId));
-      await axiosInstance.delete(`ProductImage/delete-image?id=${productId}`, {
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axiosInstance.delete(
+        `productImage/delete-image?id=${imgId}&imageUrl=${imageUrl}`,
+        {
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       toast({
         title: "Done",
         description: "Image deleted successfully",
@@ -83,14 +81,9 @@ function Images() {
   const deletAllImages = async () => {
     try {
       setDisabled(true);
-      const formData = new FormData();
-      formData.append("id", String(productId));
-      await axiosInstance.delete(`/ProductImage/delete-all-images`, {
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axiosInstance.delete(
+        `/productImage/delete-all-images?id=${productId}`
+      );
       toast({
         title: "Done",
         description: "All Images deleted successfully",
@@ -128,7 +121,7 @@ function Images() {
           <PenBox size={16} />
         </LinkButton>
         <Alert
-          onDelete={() => handleDeleteImage(img.id)}
+          onDelete={() => handleDeleteImage(img.id, img.imageUrl)}
           title={`Are you sure to delete "${idx + 1}" image?`}
           description="you cannot retrieve this image after deleting it."
           disabled={disabled}

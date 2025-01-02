@@ -24,28 +24,24 @@ function Signup() {
   });
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (formObj) => {
-    const bodyData = {
-      ...formObj,
-      address: {
-        street: "0",
-        city: "0",
-        country: "0",
-      },
-    };
-
+    console.log(formObj);
     const formData = new FormData();
 
-    Object.entries(bodyData).forEach(([key, value]) => {
+    Object.entries(formObj).forEach(([key, value]) => {
+      if (key === "image" && value instanceof FileList) {
+        formData.append(key, value[0]);
+        return;
+      }
+
       if (typeof value === "object" && value !== null) {
         // Handle nested objects
         Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-          formData.append(`${key}[${nestedKey}]`, nestedValue);
+          formData.append(`${key}[${nestedKey}]`, String(nestedValue));
         });
       } else {
-        formData.append(key, value);
+        formData.append(key, String(value));
       }
     });
-
     try {
       const { status } = await axiosInstance.post(
         "/account/register",
@@ -57,10 +53,10 @@ function Signup() {
         }
       );
 
-      if (status == 200) {
+      if ([200, 201].includes(status)) {
         navigate("/verificationWithOtp", {
           replace: true,
-          state: { email: bodyData.email, time: 2 * 60 * 1000 },
+          state: { email: formObj.email, time: 2 * 60 * 1000 },
         });
         toast({
           title: "Account created successfully, please verify your email",
@@ -78,7 +74,12 @@ function Signup() {
   };
 
   const renderSignupForm = REGISTER_FORM.map(({ name, placeholder, type }) => (
-    <div key={name}>
+    <div
+      key={name}
+      className={`${
+        ["firstName", "secondName"].includes(name) ? "w-[48%]" : "w-full"
+      } `}
+    >
       <Input
         type={type}
         key={name}
@@ -92,14 +93,14 @@ function Signup() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-3 w-[470px] max-w-full mx-auto md:mx-0"
+      className="flex justify-between flex-wrap gap-3 w-[470px] max-w-full mx-auto md:mx-0"
       data-aos="fade-right"
     >
       {renderSignupForm}
 
       <Button
         size="lg"
-        className=" border disabled:cursor-no-drop disabled:opacity-60"
+        className=" border disabled:cursor-no-drop disabled:opacity-60 w-full"
         disabled={isSubmitting}
       >
         Sign up

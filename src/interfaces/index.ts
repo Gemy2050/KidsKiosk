@@ -35,7 +35,8 @@ export interface IUser {
   firstName: string;
   secondName: string;
   email: string;
-  imageName: string;
+  imageName?: string;
+  image?: string;
   isVerified: boolean;
   token: string;
   expiresOn: string;
@@ -96,6 +97,7 @@ export interface Product {
   hasDiscount: boolean;
   priceBeforeDiscount: number;
   productCategoryId: number;
+  productCategory?: string;
   category: string;
   quantity?: number;
   variants?: {

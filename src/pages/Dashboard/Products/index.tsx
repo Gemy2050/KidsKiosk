@@ -89,7 +89,7 @@ function Products() {
         />
       </td>
       <td>{product.name}</td>
-      <td>{product.category}</td>
+      <td>{product.category || product.productCategory}</td>
       <td>{product.price}</td>
       <td>{product.priceBeforeDiscount - product.price}</td>
       <td className="space-x-1 min-w-[115px]">
