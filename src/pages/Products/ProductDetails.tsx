@@ -18,7 +18,7 @@ export default function ProductDetails() {
   const { id } = useParams();
   const { cart } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
-  const existProduct = cart.find((product) => product.id === +id!);
+  const existProduct = cart.find((product) => String(product.id) == String(id));
 
   const { data, isLoading, isFetched } = useCustomQuery<IProduct>({
     key: ["product", `${id}`],
@@ -29,6 +29,7 @@ export default function ProductDetails() {
   });
 
   const product = existProduct || data;
+  console.log({ product, existProduct });
 
   useEffect(() => {
     if (product && colorId === 0) {
