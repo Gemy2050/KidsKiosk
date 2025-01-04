@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Character encoding and responsiveness -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Title and favicon -->
     <title>KidsKiosk - Shoes for Kids</title>
     <link rel="icon" href="/imgs/logo.jpg" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/imgs/logo.jpg" sizes="180x180" />
+    <link rel="apple-touch-icon" href="/imgs/logo.jpg" />
 
-    <!-- Meta tags for SEO -->
     <meta
       name="description"
-      content="Shop the latest and greatest in kids' shoes at KidsKiosk. Quality footwear for every adventure!"
+      content="KidsKiosk is a platform to Shop the latest and greatest in kids' shoes at KidsKiosk. Find the perfect fit for every adventure!"
     />
+
     <meta
       name="keywords"
-      content="kids shoes, children's footwear, quality kids sneakers, kids sandals, kids boots, KidsKiosk shoes"
+      content="kids shoes, children's footwear, sneakers, sandals, boots, KidsKiosk"
     />
-    <meta name="author" content="KidsKiosk Team" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#ffffff" />
 
-    <!-- Open Graph tags for social sharing -->
-    <meta property="og:title" content="KidsKiosk - Shoes for Kids" />
+    <meta name="author" content="KidsKiosk Team" />
+
+    <meta property="og:title" content="KidsKiosk - The Best Shoes for Kids" />
     <meta
       property="og:description"
       content="Shop the latest kids' shoes at KidsKiosk. Quality footwear for every occasion!"
@@ -35,67 +31,19 @@
     />
     <meta property="og:url" content="https://kidskiosk.vercel.app" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter Cards for social media -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="KidsKiosk - Shoes for Kids" />
-    <meta
-      name="twitter:description"
-      content="Shop the latest and greatest in kids' shoes at KidsKiosk. Find the perfect fit for every adventure!"
-    />
-    <meta
-      name="twitter:image"
-      content="https://kidskiosk.vercel.app/imgs/logo.jpg"
-    />
-
-    <!-- Preconnect and preload for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin="anonymous"
-    />
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Preload hero image -->
     <link rel="preload" as="image" href="/imgs/landing.png" />
-
-    <!-- Structured Data for Rich Snippets -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "KidsKiosk",
-        "url": "https://kidskiosk.vercel.app",
-        "logo": "https://kidskiosk.vercel.app/imgs/logo.jpg",
-        "description": "Shop the latest and greatest in kids' shoes at KidsKiosk. Quality footwear for every adventure!",
-        "sameAs": [
-          "https://www.facebook.com/kidskiosk",
-          "https://www.twitter.com/kidskiosk",
-          "https://www.instagram.com/kidskiosk"
-        ]
-      }
-    </script>
   </head>
 
   <body>
-    <!-- React root element -->
     <div id="root"></div>
-
-    <!-- No-JS Fallback -->
-    <noscript>
-      <p>
-        This website requires JavaScript to function properly. Please enable
-        JavaScript in your browser settings.
-      </p>
-    </noscript>
-
-    <!-- Main JavaScript -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
