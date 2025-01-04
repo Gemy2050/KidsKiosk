@@ -54,7 +54,7 @@ function Products() {
     if (data) setProducts(data.data);
   }, [data]);
 
-  const handleDeleteProduct = async (id: number) => {
+  const handleDeleteProduct = async (id: number | string) => {
     try {
       setDisabled(true);
       await axiosInstance.delete(`/product/delete-product?id=${id}`);

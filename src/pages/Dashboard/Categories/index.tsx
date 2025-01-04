@@ -28,7 +28,7 @@ function Categories() {
     url: "/category/get-all-categories",
   });
 
-  const handleDeleteCategory = async (catId: number) => {
+  const handleDeleteCategory = async (catId: number | string) => {
     try {
       setDisabled(true);
       await axiosInstance.delete(`/category/delete-category?id=${catId}`);
