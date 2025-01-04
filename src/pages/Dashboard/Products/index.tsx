@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Image, PenBox, Trash } from "lucide-react";
-import React, { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import React, { lazy, Suspense, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Table = lazy(() => import("@/components/Table"));
@@ -33,7 +33,6 @@ function Products() {
     ? Number(sessionStorage.getItem("pageIndex"))
     : 1;
 
-  const [products, setProducts] = useState<Product[]>([]);
   const [disabled, setDisabled] = useState(false);
   const [pageIndex, setPageIndex] = useState(INDEX);
   const PAGE_SIZE = 5;
@@ -47,12 +46,8 @@ function Products() {
 
   const { data, error } = useCustomQuery<IQuery>({
     key: ["getAllProducts", `${pageIndex}`],
-    url: `/product/get-all-products?PageSize=${PAGE_SIZE}&PageIndex=${pageIndex}`,
+    url: `/product/get-all-products?pageSize=${PAGE_SIZE}&pageIndex=${pageIndex}`,
   });
-
-  useEffect(() => {
-    if (data) setProducts(data.data);
-  }, [data]);
 
   const handleDeleteProduct = async (id: number | string) => {
     try {
@@ -63,7 +58,19 @@ function Products() {
         description: "Product deleted successfully",
         variant: "success",
       });
-      QueryClient.invalidateQueries({ queryKey: ["getAllProducts"] });
+
+      if (data?.data.length === 1 && pageIndex > 1) {
+        const newPageIndex = pageIndex - 1;
+
+        setPageIndex(newPageIndex);
+        QueryClient.invalidateQueries({
+          queryKey: ["getAllProducts", `${newPageIndex}`],
+        });
+        return;
+      }
+      QueryClient.invalidateQueries({
+        queryKey: ["getAllProducts", `${pageIndex}`],
+      });
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
       toast({
@@ -77,7 +84,7 @@ function Products() {
   };
 
   // ** Render Products Rows ** //
-  const renderProducts = products?.map((product, idx: number) => (
+  const renderProducts = data?.data?.map((product, idx: number) => (
     <tr key={product.id} className="text-center">
       <td>{idx + 1}</td>
       <td>
@@ -89,7 +96,7 @@ function Products() {
         />
       </td>
       <td>{product.name}</td>
-      <td>{product.category || product.productCategory}</td>
+      <td>{product.productCategory}</td>
       <td>{product.price}</td>
       <td>{product.priceBeforeDiscount - product.price}</td>
       <td className="space-x-1 min-w-[115px]">
@@ -149,7 +156,7 @@ function Products() {
           onChange={tableSearch}
         />
 
-        {products && (
+        {data?.data && (
           <>
             <Suspense fallback={<Spinner />}>
               <Table headers={tableHeaders}>{renderProducts}</Table>

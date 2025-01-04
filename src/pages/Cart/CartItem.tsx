@@ -45,7 +45,7 @@ function CartItem({ product }: IProps) {
           {product.name}
         </Link>
         <p className="text-sm text-muted-foreground mt-0 mb-6">
-          {product.category}
+          {product.productCategory}
         </p>
         <div className="flex justify-between items-center gap-3 text-md font-bold">
           <CartGroupButtons

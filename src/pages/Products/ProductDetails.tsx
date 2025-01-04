@@ -67,20 +67,22 @@ export default function ProductDetails() {
         />
 
         <div className="px-10 text-center" data-aos="fade-right">
-          <Slider className="w-[850px] max-w-full mx-auto mt-8">
-            {product.productImages?.map(({ id, imageUrl }) => (
-              <CarouselItem
-                key={id}
-                className="basis-[100%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-              >
-                <img
-                  src={imageUrl}
-                  className="select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
-                  alt={product.name}
-                />
-              </CarouselItem>
-            ))}
-          </Slider>
+          {Number(product.productImages?.length) > 0 && (
+            <Slider className="w-[850px] max-w-full mx-auto mt-8">
+              {product.productImages?.map(({ id, imageUrl }) => (
+                <CarouselItem
+                  key={id}
+                  className="basis-[100%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                >
+                  <img
+                    src={imageUrl}
+                    className="select-none cursor-pointer w-full h-[220px] rounded-lg border border-border shadow-lg"
+                    alt={product.name}
+                  />
+                </CarouselItem>
+              ))}
+            </Slider>
+          )}
         </div>
         <div className="mt-24 flex flex-col md:flex-row justify-between gap-10">
           {/* Left */}
@@ -89,7 +91,7 @@ export default function ProductDetails() {
             data-aos="fade-right"
           >
             <h3 className="text-3xl font-semibold flex items-center justify-between gap-4">
-              {product.category}
+              {product.productCategory}
               <div className="font-normal flex gap-2">
                 <span className="text-base line-through text-gray-500">
                   ${product.priceBeforeDiscount}

@@ -75,7 +75,6 @@ function AddProduct() {
     ]);
     editorRef.current?.setContent("");
     const fileInput = document.querySelector("#image") as HTMLInputElement;
-    console.log(fileInput);
     if (fileInput) {
       fileInput.value = "";
     }
@@ -85,10 +84,13 @@ function AddProduct() {
     try {
       setDisabled(true);
 
-      const description = editorRef.current?.getContent() || "";
       const productCategory =
         categories?.find((el) => el.id == productFormData.productCategoryId)
           ?.name || "";
+
+      const description =
+        editorRef.current?.getContent() ||
+        `the description of ${productFormData.name} for ${productCategory}`;
 
       const sanitizedColors = colors.map(({ id, sizes, ...rest }) => ({
         ...rest,

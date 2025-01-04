@@ -45,7 +45,7 @@ export default function Product({ product }: IProps) {
   return (
     <div
       data-aos="fade-up"
-      className="flex flex-col items-center gap-2 p-5 border-2 border-border rounded-lg [&:hover]:border-primary shadow-xl [&:hover_img]:scale-110 duration-500"
+      className="flex flex-col items-center gap-2 bg-background p-5 border-2 border-border rounded-lg [&:hover]:border-primary shadow-xl [&:hover_img]:scale-110 duration-500"
     >
       <div className="flex justify-between items-center w-full">
         {!isInCart ? (
