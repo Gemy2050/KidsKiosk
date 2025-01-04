@@ -70,11 +70,7 @@ function Login() {
       // Send token to backend API to verify and handle login
       const { status, data } = await axiosInstance.post(
         "/account/google-signin",
-        {
-          idToken: tokenId,
-          clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-          redirectUrl: location.origin,
-        }
+        { idToken: tokenId }
       );
 
       if (status === 200) {

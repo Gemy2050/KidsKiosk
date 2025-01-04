@@ -19,8 +19,6 @@ export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const imageUrl = user?.imageName || user?.image;
-
   useEffect(() => {
     setOpenMenu(false);
   }, [pathname]);
@@ -34,7 +32,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-20 bg-background text-foreground shadow-lg py-4 ">
-      <div className="container flex items-center justify-between gap-8">
+      <div className="px-5 md:px-1 lg:px-5 flex items-center justify-between gap-8">
         <Link to="/" className="min-w-[25%] lg:min-w-[33%] focus:outline-none">
           <Logo className="text-2xl cursor-pointer" />
         </Link>
@@ -54,6 +52,14 @@ export default function Header() {
             onClick={() => setOpenMenu(false)}
           />
           <div className="flex-col md:flex-row flex items-center gap-5">
+            {user?.role && (
+              <NavLink
+                className="[&.active]:text-primary hover:text-primary duration-300"
+                to="/admin/dashboard"
+              >
+                Dashboard
+              </NavLink>
+            )}
             <NavLink
               className="[&.active]:text-primary hover:text-primary duration-300"
               to="/"
@@ -79,13 +85,13 @@ export default function Header() {
               Contact
             </NavLink>
           </div>
-          <div className="flex items-center justify-center gap-5 mt-5 md:mt-0">
+          <div className="flex items-center justify-center gap-4 md:gap-2 lg:gap-4 mt-5 md:mt-0">
             <ModeToggle />
             <DropDown
               trigger={
-                imageUrl ? (
+                user?.image ? (
                   <img
-                    src={imageUrl}
+                    src={user?.image}
                     alt="user"
                     className="w-10 h-10 rounded-full cursor-pointer"
                   />

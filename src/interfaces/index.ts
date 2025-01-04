@@ -32,15 +32,16 @@ export interface IResetInput {
 }
 
 export interface IUser {
+  id: string;
   firstName: string;
   secondName: string;
   email: string;
-  imageName?: string;
   image?: string;
-  isVerified: boolean;
+  verified: boolean;
   token: string;
-  expiresOn: string;
-  refreshTokenExpiration: string;
+  phone: string | null;
+  address: string | null;
+  role: string | null;
 }
 
 export interface IAxiosError {
