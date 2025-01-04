@@ -75,6 +75,7 @@ function AddProduct() {
     ]);
     editorRef.current?.setContent("");
     const fileInput = document.querySelector("#image") as HTMLInputElement;
+    console.log(fileInput);
     if (fileInput) {
       fileInput.value = "";
     }

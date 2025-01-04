@@ -8,6 +8,7 @@ import { IAxiosError } from "@/interfaces";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AxiosError } from "axios";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -16,6 +17,12 @@ function ResetPasswordForm() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const email = searchParams.get("email");
+
+  useEffect(() => {
+    if (!email) {
+      navigate("/login");
+    }
+  }, [email]);
 
   const {
     register,
@@ -59,6 +66,7 @@ function ResetPasswordForm() {
         id={name}
         className="p-3 mt-1"
         {...register(name)}
+        {...(name === "otp" && { maxLength: 6 })}
       />
       <ErrorMessage message={errors[name]?.message} />
     </div>

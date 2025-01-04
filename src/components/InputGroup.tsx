@@ -13,11 +13,9 @@ function InputGroup({ className, children, imageUrl: imgUrl, image }: IProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (image) {
-      setFile(image);
-      return;
-    }
-    if (imgUrl) setImageUrl(imgUrl);
+    setFile(image || null);
+
+    setImageUrl(imgUrl || null);
   }, [imgUrl, image]);
   return (
     <div className={`relative ${className}`} id="input-group">

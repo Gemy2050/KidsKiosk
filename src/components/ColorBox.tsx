@@ -8,7 +8,7 @@ import { Colors } from "@/interfaces";
 interface IProps {
   color: string;
   colors: Colors[];
-  colorId: number;
+  colorId: number | string;
   index: number;
   setColors: React.Dispatch<React.SetStateAction<Colors[]>>;
 }
@@ -83,10 +83,10 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
         {/* Color Name */}
         <div className="flex gap-2 items-center justify-between mb-6">
           <InputGroup className="w-full">
-            <label htmlFor="colorName">color name</label>
+            <label htmlFor={`colorName-${colorId}`}>color name</label>
             <Input
               type="text"
-              id="colorName"
+              id={`colorName-${colorId}`}
               name="color"
               value={color}
               onChange={(e) => handleColorChange(e)}
@@ -104,27 +104,27 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
         {/* Sizes and Quantities */}
 
         {colors[index].sizes.map((el, idx) => (
-          <div className="flex gap-2 mb-5" key={el?.id || el.id}>
+          <div className="flex gap-2 mb-5" key={el.id}>
             <InputGroup className="w-1/2">
-              <label htmlFor="size" className="text-[!10px]">
+              <label htmlFor={`size-${el.id}`} className="text-[!10px]">
                 size
               </label>
               <Input
                 type="text"
                 name="size"
-                id="size"
+                id={`size-${el.id}`}
                 value={el.size}
                 onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
               />
             </InputGroup>
             <InputGroup className="w-1/2">
-              <label htmlFor="quantity" className="text-[!10px]">
+              <label htmlFor={`quantity-${el.id}`} className="text-[!10px]">
                 quantity
               </label>
               <Input
                 type="number"
                 name="quantity"
-                id="quantity"
+                id={`quantity-${el.id}`}
                 value={el.quantity}
                 onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
               />

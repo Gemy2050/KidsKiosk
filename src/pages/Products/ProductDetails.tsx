@@ -12,7 +12,7 @@ import CartGroupButtons from "../Cart/CartGroupButtons";
 import { addToCart } from "@/app/slices/CartSlice";
 
 export default function ProductDetails() {
-  const [sizeId, setSizeId] = useState(0);
+  const [sizeId, setSizeId] = useState<number | string>(0);
   const [availableSizes, setAvailableSizes] = useState<ISize[]>();
   const [colorId, setColorId] = useState<number | undefined>(0);
   const { id } = useParams();
@@ -29,7 +29,6 @@ export default function ProductDetails() {
   });
 
   const product = existProduct || data;
-  console.log({ product, existProduct });
 
   useEffect(() => {
     if (product && colorId === 0) {
@@ -39,6 +38,7 @@ export default function ProductDetails() {
 
     if (product) {
       const sizes = product.variants?.find(({ id }) => id === colorId)?.sizes;
+      setSizeId(sizes?.[0].size || 0);
       setAvailableSizes(sizes);
     }
   }, [colorId, product]);
@@ -121,17 +121,19 @@ export default function ProductDetails() {
             </div>
             <h3 className="text-2xl font-semibold mb-4">Available Sizes</h3>
             <div className="mb-8 flex flex-wrap items-center gap-4">
-              {availableSizes?.map(({ id, size }, i) => (
-                <span
-                  key={i}
-                  onClick={() => setSizeId(id)}
-                  className={`${
-                    (sizeId ? sizeId === id : i === 0) && "active"
-                  } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block w-[35px] h-[35px] rounded-lg border border-border text-center font-semibold text-sm leading-9 text-gray-500`}
-                >
-                  {size}
-                </span>
-              ))}
+              {availableSizes?.map(({ size }, i) => {
+                return (
+                  <span
+                    key={i}
+                    onClick={() => setSizeId(size)}
+                    className={`${
+                      (sizeId ? sizeId === size : i === 0) && "active"
+                    } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block w-[35px] h-[35px] rounded-lg border border-border text-center font-semibold text-sm leading-9 text-gray-500`}
+                  >
+                    {size}
+                  </span>
+                );
+              })}
             </div>
             {!product.quantity ? (
               <Button onClick={() => dispatch(addToCart(product))} fullWidth>

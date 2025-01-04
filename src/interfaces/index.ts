@@ -66,7 +66,7 @@ export interface IInput {
 }
 
 export interface Category {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
 }
@@ -89,7 +89,7 @@ export interface IProductsForm extends IInput {
 }
 
 export interface Product {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
   imageUrl: string;
@@ -109,13 +109,13 @@ export interface Product {
 }
 
 export interface ISize {
-  id: number;
+  id: number | string;
   size: number;
   quantity: number;
 }
 
 export interface ProductResponse {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
   imageUrl: string;
@@ -129,7 +129,7 @@ export interface ProductResponse {
 }
 
 export interface Colors {
-  id: number;
+  id: number | string;
   color: string;
   sizes: { id: number; size: string; quantity: string }[];
 }

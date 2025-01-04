@@ -53,7 +53,7 @@ function Login() {
         title: error.response?.data?.message || "Something went wrong",
         variant: "destructive",
       });
-      if (error.response?.data.message === "Email is not confirmed.") {
+      if (error.response?.data.message.includes("not confirmed")) {
         axiosInstance.get(`/account/resend-otp?email=${formData.email}`);
         sessionStorage.removeItem("time");
         navigate("/verificationWithOtp", {

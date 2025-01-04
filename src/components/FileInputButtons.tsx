@@ -9,7 +9,7 @@ interface IProps {
 function FileInputButtons({ file, setFile, setImageUrl }: IProps) {
   const handleClearFile = () => {
     const input = document.querySelector(
-      "input[type='file'"
+      "input[type='file']"
     ) as HTMLInputElement;
     input.value = "";
     setFile(null);
@@ -35,6 +35,7 @@ function FileInputButtons({ file, setFile, setImageUrl }: IProps) {
         <Trash2
           size={18}
           className="text-red-500 cursor-pointer"
+          id="clearImage"
           onClick={handleClearFile}
         />
       </div>
