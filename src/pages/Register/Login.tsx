@@ -79,7 +79,7 @@ function Login() {
             token: data.returnedUser.token,
             type: "Bearer",
           },
-          userState: data.returnedUser,
+          userState: { ...data.returnedUser, isGoogleUser: true },
         });
         navigate("/", { replace: true });
       }

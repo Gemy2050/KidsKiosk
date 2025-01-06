@@ -42,6 +42,8 @@ export interface IUser {
   phone: string | null;
   address: string | null;
   role: string | null;
+  createdAt: string;
+  isGoogleUser?: boolean;
 }
 
 export interface IAxiosError {

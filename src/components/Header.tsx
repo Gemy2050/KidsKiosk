@@ -10,6 +10,8 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import axiosInstance from "@/config/axios.config";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -18,16 +20,28 @@ export default function Header() {
   let { cart } = useSelector((state: RootState) => state.cart);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { toast } = useToast();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [pathname]);
 
-  const handleSignOut = () => {
-    signOut();
-    localStorage.removeItem("cart");
-    sessionStorage.removeItem("isDemo");
-    navigate("/login", { replace: true });
+  const handleSignOut = async () => {
+    try {
+      if (user) {
+        await axiosInstance.post("/account/signout?id=" + user?.id);
+      }
+      signOut();
+      localStorage.removeItem("cart");
+      sessionStorage.removeItem("isDemo");
+      navigate("/login", { replace: true });
+    } catch (error) {
+      toast({
+        title: "Failed to logout",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -93,9 +93,11 @@ export default function ProductDetails() {
             <h3 className="text-3xl font-semibold flex items-center justify-between gap-4">
               {product.productCategory}
               <div className="font-normal flex gap-2">
-                <span className="text-base line-through text-gray-500">
-                  ${product.priceBeforeDiscount}
-                </span>
+                {product.hasDiscount && (
+                  <span className="text-base line-through text-gray-500">
+                    ${product.priceBeforeDiscount}
+                  </span>
+                )}
                 <span className="text-2xl">${product.price}</span>
               </div>
             </h3>
