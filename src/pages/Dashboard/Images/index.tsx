@@ -35,7 +35,7 @@ function Images() {
 
   const { data: products, error } = useCustomQuery<IQuery>({
     key: ["getAllProducts"],
-    url: "/product/get-all-products?PageSize=1000&PageIndex=1",
+    url: "/product/get-all-products?pageSize=1000&pageIndex=1",
   });
 
   useEffect(() => {
@@ -102,6 +102,8 @@ function Images() {
     }
   };
 
+  console.log({ product, products });
+
   // ** Render **
 
   const renderImages = product?.productImages?.map((img, idx: number) => (
@@ -116,7 +118,7 @@ function Images() {
         />
       </td>
 
-      <td className="space-x-2 min-w-[105px]">
+      <td className="space-x-2 min-w-[105px] ">
         <LinkButton to={`edit/${img.id}`} size={"xs"} rounded={"md"}>
           <PenBox size={16} />
         </LinkButton>

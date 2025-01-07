@@ -81,7 +81,7 @@ export const REGISTER_FORM: IRegisterInput[] = [
   },
   {
     name: "image",
-    placeholder: "profile image",
+    placeholder: "Profile Image",
     type: "file",
     validation: {
       required: "profile image is required",

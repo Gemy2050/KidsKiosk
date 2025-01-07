@@ -24,7 +24,6 @@ function Signup() {
   });
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (formObj) => {
-    console.log(formObj);
     const formData = new FormData();
 
     Object.entries(formObj).forEach(([key, value]) => {

@@ -4,76 +4,45 @@ import InputGroup from "./InputGroup";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
 import { Colors } from "@/interfaces";
+import { ProductForm } from "@/validation";
+import { UseFormReturn } from "react-hook-form";
 
 interface IProps {
-  color: string;
-  colors: Colors[];
   colorId: number | string;
+  colors: Colors[];
   index: number;
-  setColors: React.Dispatch<React.SetStateAction<Colors[]>>;
+  productFormMethods: UseFormReturn<ProductForm>;
 }
 
-const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
+const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
+  const { register, setValue } = productFormMethods;
+
   // Add a new size to a specific color
   const addSize = () => {
+    if (!colors) return;
     const updatedColors = [...colors];
-    updatedColors[index].sizes.push({
+    updatedColors[index].sizes?.push({
       id: Date.now(),
       size: "",
       quantity: "",
     });
-    setColors(updatedColors);
+    // setColors(updatedColors);
+    setValue("colors", updatedColors);
   };
 
   // Remove a specific color
   const removeColor = () => {
-    setColors((prev) => prev.filter((el) => el.id !== colorId));
+    setValue(
+      "colors",
+      colors.filter((el) => el.id !== colorId)
+    );
   };
 
   // Remove a specific size from a specific color
   const removeSize = (sizeIndex: number) => {
     const updatedColors = [...colors];
     updatedColors[index].sizes.splice(sizeIndex, 1);
-    setColors(updatedColors);
-  };
-
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setColors((prev) =>
-      prev.map((el) => {
-        if (el.color === color && el.id === colorId) {
-          return {
-            ...el,
-            color: e.target.value,
-          };
-        }
-        return el;
-      })
-    );
-  };
-
-  const handleSizeAndQuantityChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    setColors((prev) =>
-      prev.map((el) => {
-        if (el.color === color && el.id === colorId) {
-          return {
-            ...el,
-            sizes: el.sizes.map((size) => {
-              if (size.id === id) {
-                return {
-                  ...size,
-                  [e.target.name]: e.target.value,
-                };
-              }
-              return size;
-            }),
-          };
-        }
-        return el;
-      })
-    );
+    setValue("colors", updatedColors);
   };
 
   return (
@@ -87,9 +56,10 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
             <Input
               type="text"
               id={`colorName-${colorId}`}
-              name="color"
-              value={color}
-              onChange={(e) => handleColorChange(e)}
+              // name="color"
+              // value={color}
+              // onChange={(e) => handleColorChange(e)}
+              {...register(`colors.${index}.color`)}
             />
           </InputGroup>
           <button
@@ -103,7 +73,7 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
 
         {/* Sizes and Quantities */}
 
-        {colors[index].sizes.map((el, idx) => (
+        {colors?.[index].sizes?.map((el, idx) => (
           <div className="flex gap-2 mb-5" key={el.id}>
             <InputGroup className="w-1/2">
               <label htmlFor={`size-${el.id}`} className="text-[!10px]">
@@ -111,10 +81,11 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
               </label>
               <Input
                 type="text"
-                name="size"
                 id={`size-${el.id}`}
-                value={el.size}
-                onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
+                // value={el.size}
+                // name="size"
+                // onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
+                {...register(`colors.${index}.sizes.${idx}.size`)}
               />
             </InputGroup>
             <InputGroup className="w-1/2">
@@ -123,10 +94,11 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
               </label>
               <Input
                 type="number"
-                name="quantity"
                 id={`quantity-${el.id}`}
-                value={el.quantity}
-                onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
+                // value={el.quantity}
+                // name="quantity"
+                // onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
+                {...register(`colors.${index}.sizes.${idx}.quantity`)}
               />
             </InputGroup>
             <button
@@ -141,6 +113,7 @@ const ColorBox = ({ color, colors, colorId, index, setColors }: IProps) => {
 
         {/* Add Size Button */}
         <Button
+          type="button"
           className="mt-3"
           fullWidth
           rounded="md"

@@ -3,29 +3,30 @@ import InputGroup from "@/components/InputGroup";
 import Select from "@/components/Select";
 import TinyEditor from "@/components/TinyEditor";
 import { IInput } from "@/interfaces";
-import { ChangeEvent, MutableRefObject } from "react";
+import { ProductForm } from "@/validation";
+import { MutableRefObject } from "react";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { Editor as TinyMCEEditor } from "tinymce";
 
 interface RenderFieldProps {
   field: IInput;
-  formData: { [key: string]: any };
-  handleChange: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  productFormMethods: UseFormReturn<ProductForm>;
   dynamicOptions?: { id: string | number; name: string }[]; // Generalized for any dynamic data
   editorRef?: MutableRefObject<TinyMCEEditor | null>;
 }
 
 export const renderField = ({
   field,
-  formData,
-  handleChange,
+  productFormMethods,
   dynamicOptions = [],
   editorRef,
 }: RenderFieldProps) => {
-  if (field.name === "discount" && formData.hasDiscount !== "Yes") return null;
+  const { register, control, watch } = productFormMethods;
 
-  const fieldValue =
-    field.type === "file" ? undefined : formData[field.name] || "";
-  const imageUrl = field.type === "file" ? formData.imageUrl : "";
+  const formData = watch();
+  const { hasDiscount, image, imageUrl } = formData;
+
+  if (field.name === "discount" && hasDiscount !== "Yes") return null;
 
   switch (field.type) {
     case "select":
@@ -35,11 +36,9 @@ export const renderField = ({
         <InputGroup>
           <label htmlFor={field.name}>{field.label}</label>
           <Select
-            name={field.name}
             id={field.name}
-            value={String(fieldValue || field.defaultValue)}
-            onChange={handleChange}
             className="border p-2 rounded w-full"
+            {...register(field.name as keyof ProductForm)}
           >
             {!field.defaultValue && <option value="">Select an option</option>}
             {options?.map((option) => (
@@ -65,9 +64,16 @@ export const renderField = ({
           >
             {field.label}
           </label>
-          <TinyEditor
-            initialValue={fieldValue}
-            editorRef={editorRef || { current: null }}
+          <Controller
+            control={control}
+            name="description"
+            render={({ field }) => (
+              <TinyEditor
+                value={field.value}
+                onEditorChange={field.onChange}
+                editorRef={editorRef || { current: null }}
+              />
+            )}
           />
         </InputGroup>
       );
@@ -75,17 +81,18 @@ export const renderField = ({
     default:
       return (
         <InputGroup
-          {...(field.type === "file" && { imageUrl, image: formData.image })}
+          {...(field.type === "file" && {
+            imageUrl,
+            image: image instanceof FileList ? image[0] : undefined,
+          })}
         >
           <label htmlFor={field.name}>{field.label}</label>
           <Input
             type={field.type}
             id={field.name}
-            name={field.name}
-            value={fieldValue}
-            onChange={handleChange}
             placeholder={field.placeholder}
             className="border p-2 rounded w-full"
+            {...register(field.name as keyof ProductForm)}
           />
         </InputGroup>
       );

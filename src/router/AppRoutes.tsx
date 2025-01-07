@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Images from "@/pages/Dashboard/Images";
+import Profile from "@/pages/Profile/Profile";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -49,6 +50,7 @@ const AppRoutes = () => (
           <Route path="/products" element={<ProductsList />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
 

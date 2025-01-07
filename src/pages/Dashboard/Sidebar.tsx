@@ -1,8 +1,10 @@
 import Logo from "@/components/Logo";
-import { Link, NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const hideSidebar = window.innerWidth < 992;
+  const { pathname } = useLocation();
 
   const handleActiveLink = (isActive: boolean, path: string) => {
     const isMatchingPath = location.pathname.startsWith(path);
@@ -10,6 +12,10 @@ const Sidebar = () => {
       isActive || isMatchingPath ? "border-primary" : "border-transparent "
     } p-3 block text-gray-800 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
   };
+
+  useEffect(() => {
+    document.querySelector("#Sidebar")?.classList.add("sidebar-hidden");
+  }, [pathname]);
 
   return (
     <div

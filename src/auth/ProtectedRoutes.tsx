@@ -12,8 +12,6 @@ function ProtectedRoutes() {
   const [loading, setLoading] = useState(true);
   const isDemo = !!sessionStorage.getItem("isDemo");
 
-  console.log({ user });
-
   const { isSuccess, isError } = useCustomQuery({
     key: ["verify-token"],
     url: `/account/verify-token?isGoogleProvider=${user?.isGoogleUser || ""}`,
@@ -21,8 +19,6 @@ function ProtectedRoutes() {
       enabled: isAuthenticated,
     },
   });
-
-  console.log({ isSuccess, isError });
 
   useEffect(() => {
     if (isSuccess) setLoading(false);

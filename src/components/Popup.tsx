@@ -12,7 +12,7 @@ function Popup({ children }: { children: React.ReactNode }) {
     >
       <X
         size={30}
-        className="text-red-600 cursor-pointer absolute top-5 left-5"
+        className="text-red-600 cursor-pointer absolute top-3 left-3 z-20"
         onClick={hidePopup}
       />
 

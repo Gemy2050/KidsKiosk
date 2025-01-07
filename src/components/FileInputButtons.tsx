@@ -22,7 +22,7 @@ function FileInputButtons({ file, setFile, setImageUrl }: IProps) {
   };
 
   return (
-    <div className="bg-white w-[98%] h-[85%] ps-2 p-1 absolute justify-between space-x-2 right-[1%] top-1/2 -translate-y-1/2  z-10 flex items-center">
+    <div className="bg-background w-[98%] h-[85%] ps-2 p-1 absolute justify-between space-x-2 right-[1%] top-1/2 -translate-y-1/2  z-10 flex items-center">
       <span className="line-clamp-1 text-ellipsis">
         {file ? file.name : "image"}
       </span>

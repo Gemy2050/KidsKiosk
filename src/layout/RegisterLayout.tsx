@@ -32,7 +32,7 @@ function RegisterLayout() {
       />
       <img
         src={"/imgs/square.svg"}
-        className="w-[150px] md:w-[200px] fixed bottom-0 right-0 z-[-1]"
+        className="hidden md:block md:w-[200px] fixed bottom-0 right-0 z-[-1]"
         alt="square shape"
         width={200}
         height={215}

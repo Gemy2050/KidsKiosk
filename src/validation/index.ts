@@ -82,22 +82,51 @@ export type ResetPasswordFormData = yup.InferType<typeof resetPasswordSchema>;
 
 // ProductForm Schema
 export const productForm = yup.object({
-  image: yup.mixed().required("image is required"),
+  image: yup.mixed().test("required", "Image is required", function (value) {
+    const { imageUrl } = this.parent; // Access other fields in the schema
+    // Validate: Either image should be uploaded or imageUrl should exist
+    return imageUrl || (value && (value as FileList).length > 0);
+  }),
+  imageUrl: yup.string().optional(),
   name: yup.string().required("name is required"),
   description: yup.string().required("description is required"),
-  quantity: yup.number().required("quantity is required"),
-  price: yup.number().required("price is required"),
+  price: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .required("price is required"),
+  productCategoryId: yup.string().required("category is required"),
   hasDiscount: yup.string().required("discount is required"),
-  discount: yup.number().required("discount is required"),
-  productCategoryId: yup.number().required("category is required"),
-  productCategory: yup.string().required("category is required"),
+  discount: yup
+    .number()
+    .transform((value) => (isNaN(value) ? undefined : value))
+    .when(["hasDiscount", "price"], {
+      is: (hasDiscount: string) => hasDiscount === "Yes",
+      then: (schema) =>
+        schema
+          .required("discount is required")
+          .min(0, "Discount must be positive number")
+          .max(yup.ref("price"), "Discount cannot be greater than price"),
+      otherwise: (schema) => schema.nullable(),
+    }),
   colors: yup.array().of(
     yup.object().shape({
+      id: yup
+        .mixed()
+        .default(() => Date.now())
+        .transform((_, originalValue) =>
+          originalValue ? originalValue : Date.now()
+        ),
       color: yup.string().required("color is required"),
       sizes: yup.array().of(
         yup.object().shape({
+          id: yup
+            .number()
+            .default(() => Date.now())
+            .transform((_, originalValue) =>
+              originalValue ? originalValue : Date.now()
+            ),
           size: yup.string().required("size is required"),
-          quantity: yup.number().required("quantity is required"),
+          quantity: yup.string().required("quantity is required"),
         })
       ),
     })

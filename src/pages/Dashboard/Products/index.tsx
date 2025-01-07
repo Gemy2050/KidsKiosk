@@ -86,7 +86,7 @@ function Products() {
   // ** Render Products Rows ** //
   const renderProducts = data?.data?.map((product, idx: number) => (
     <tr key={product.id} className="text-center">
-      <td>{idx + 1}</td>
+      <td>{(pageIndex - 1) * PAGE_SIZE + (idx + 1)}</td>
       <td>
         <img
           src={product.imageUrl}

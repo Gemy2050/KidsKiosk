@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
+import Loader from "./Loader";
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -21,6 +22,7 @@ export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setOpenMenu(false);
@@ -28,8 +30,12 @@ export default function Header() {
 
   const handleSignOut = async () => {
     try {
+      setLoading(true);
       if (user) {
-        await axiosInstance.post("/account/signout?id=" + user?.id);
+        await axiosInstance.post("/account/signout", {
+          id: user?.id,
+          isGoogleProvider: user?.isGoogleUser,
+        });
       }
       signOut();
       localStorage.removeItem("cart");
@@ -41,8 +47,12 @@ export default function Header() {
         description: "Something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loader />;
 
   return (
     <header className="sticky top-0 z-20 bg-background text-foreground shadow-lg py-4 ">
@@ -114,9 +124,14 @@ export default function Header() {
                 )
               }
             >
-              <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem
-                className="[&:hover]:text-destructive"
+                className="cursor-pointer"
+                onClick={() => navigate("/profile")}
+              >
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="[&:hover]:text-destructive cursor-pointer"
                 onClick={handleSignOut}
               >
                 Logout

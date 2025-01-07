@@ -39,3 +39,7 @@ export function addObjectToFormData({
     }
   });
 }
+
+export function getUniqueId() {
+  return Date.now();
+}

@@ -6,9 +6,16 @@ import { memo, useState } from "react";
 interface IProps {
   editorRef: React.MutableRefObject<TinyMCEEditor | null>;
   initialValue?: string;
+  value?: string;
+  onEditorChange?: (value: string) => void;
 }
 
-function TinyEditor({ editorRef, initialValue = "" }: IProps) {
+function TinyEditor({
+  editorRef,
+  initialValue = "",
+  value,
+  onEditorChange,
+}: IProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const onInit = (_evt: any, editor: TinyMCEEditor) => {
@@ -27,6 +34,10 @@ function TinyEditor({ editorRef, initialValue = "" }: IProps) {
         apiKey={import.meta.env.VITE_TINY_API_KEY}
         onInit={onInit}
         initialValue={initialValue}
+        value={value}
+        onEditorChange={(value) => {
+          if (onEditorChange) onEditorChange(value);
+        }}
         init={{
           height: 350,
           menubar: true,
