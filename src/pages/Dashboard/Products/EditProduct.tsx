@@ -34,8 +34,6 @@ function EditProduct() {
     formState: { errors, isSubmitting },
   } = productFormMethods;
 
-  console.log({ errors });
-
   const productFormData = watch();
 
   const { productId } = useParams();
@@ -87,8 +85,6 @@ function EditProduct() {
   }, [product]);
 
   if (productLoading || categoryLoading) return <Loader />;
-
-  console.log(productFormData);
 
   return (
     <div className=" p-0">

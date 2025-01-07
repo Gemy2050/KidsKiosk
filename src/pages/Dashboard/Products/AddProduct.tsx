@@ -31,7 +31,6 @@ function AddProduct() {
   } = productFormMethods;
 
   const productFormData = watch();
-  console.log({ productFormData, errors });
 
   const onSubmit: SubmitHandler<ProductForm> = async (data) => {
     const result = await handleAddProduct(data);

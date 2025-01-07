@@ -38,8 +38,6 @@ export function useProductManagement() {
       sizes: [{ id: Date.now(), size: "", quantity: "" }],
     });
 
-    console.log({ updatedColors });
-
     // Remove the separate setState call since setValue will handle the form state
     setValue("colors", updatedColors);
   };

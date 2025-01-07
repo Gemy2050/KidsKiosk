@@ -102,8 +102,6 @@ function Images() {
     }
   };
 
-  console.log({ product, products });
-
   // ** Render **
 
   const renderImages = product?.productImages?.map((img, idx: number) => (
