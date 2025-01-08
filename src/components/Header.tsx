@@ -69,7 +69,7 @@ export default function Header() {
         <div
           className={`${
             openMenu ? "left-0" : "left-[-100%]"
-          } fixed w-[380px] py-8 md:py-0 h-full max-w-full bg-background top-[66px] z-10 flex-1 md:static flex flex-col md:flex-row gap-4 md:justify-between duration-300 shadow-lg md:shadow-none`}
+          } fixed w-[380px] py-8 md:py-0 h-full max-w-full bg-background top-[64px] z-10 flex-1 md:static flex flex-col md:flex-row gap-4 md:justify-between duration-300 shadow-lg md:shadow-none`}
         >
           <X
             className="absolute block md:hidden left-2 top-2 cursor-pointer"

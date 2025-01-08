@@ -78,6 +78,28 @@ export const resetPasswordSchema = yup.object({
 
 export type ResetPasswordFormData = yup.InferType<typeof resetPasswordSchema>;
 
+//* Profile Schema
+export const profileSchema = yup
+  .object({
+    firstName: yup
+      .string()
+      .required("First name is required")
+      .min(3, "first name should be at least 3 characters"),
+    secondName: yup
+      .string()
+      .required("Second name is required")
+      .min(3, "last name should be at least 3 characters"),
+    phone: yup.string().required("Phone is required").min(11).max(11),
+    address: yup
+      .string()
+      .required("Address is required")
+      .min(4, "address is too short"),
+    image: yup.mixed().required("image is required"),
+  })
+  .required();
+
+export type ProfileFormData = yup.InferType<typeof profileSchema>;
+
 // *** Dashboard  ***
 
 // ProductForm Schema

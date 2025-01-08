@@ -26,7 +26,6 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
       size: "",
       quantity: "",
     });
-    // setColors(updatedColors);
     setValue("colors", updatedColors);
   };
 

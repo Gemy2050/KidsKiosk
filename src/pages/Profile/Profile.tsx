@@ -1,7 +1,7 @@
 import Input from "@/components/Input";
 import { Button } from "@/components/ui/button";
-import { REGISTER_FORM } from "@/data";
-import { type RegisterFormData, registerSchema } from "@/validation";
+import { PROFILE_FORM } from "@/data";
+import { type ProfileFormData, profileSchema } from "@/validation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -12,24 +12,26 @@ import { useToast } from "@/hooks/use-toast";
 import InputGroup from "@/components/InputGroup";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import Popup from "@/components/Popup";
+import { getImagePreviewUrl } from "@/utils/imageUtils";
+import { addObjectToFormData } from "@/utils/functions";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 
 function Profile() {
   const { toast } = useToast();
-  // const [user, setUser] = useState<IUser | null>(null);
-  const { firstName, secondName, email, phone, address, image }: IUser =
-    useAuthUser()!;
+  const signIn = useSignIn();
+  const user: IUser = useAuthUser()!;
+  const { id, firstName, secondName, phone, address, image, token } = user;
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterFormData>({
-    resolver: yupResolver(registerSchema),
+  } = useForm<ProfileFormData>({
+    resolver: yupResolver(profileSchema),
     defaultValues: {
       firstName,
       secondName,
-      email,
       phone: phone || "",
       address: address || "",
       image,
@@ -38,56 +40,45 @@ function Profile() {
 
   const imageValue = watch("image");
 
-  // useEffect(() => {
-  //   const fetchUserProfile = async () => {
-  //     try {
-  //       const { data } = await axiosInstance.get("/account/profile");
-  //       setUser(data);
-  //       reset({
-  //         firstName: data.firstName,
-  //         secondName: data.secondName,
-  //         email: data.email,
-  //         phone: data.phone || "",
-  //         address: data.address || "",
-  //       });
-  //     } catch (err) {
-  //       const error = err as AxiosError<IAxiosError>;
-  //       toast({
-  //         title: error.response?.data?.message || "Failed to fetch profile",
-  //         variant: "destructive",
-  //       });
-  //     }
-  //   };
-  //   fetchUserProfile();
-  // }, [reset, toast]);
+  const onSubmit: SubmitHandler<ProfileFormData> = async (
+    formObj: ProfileFormData
+  ) => {
+    const sameData = Object.entries(formObj).every(
+      ([key, value]) => value === user[key as keyof IUser]
+    );
 
-  const onSubmit: SubmitHandler<RegisterFormData> = async (formObj) => {
+    if (sameData) {
+      toast({
+        title: "No Change in Your Information",
+        variant: "success",
+      });
+      return;
+    }
+
     const formData = new FormData();
 
-    Object.entries(formObj).forEach(([key, value]) => {
-      if (key === "image" && value instanceof FileList) {
-        formData.append(key, value[0]);
-        return;
-      }
-
-      if (typeof value === "object" && value !== null) {
-        Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-          formData.append(`${key}[${nestedKey}]`, String(nestedValue));
-        });
-      } else {
-        formData.append(key, String(value));
-      }
-    });
+    addObjectToFormData({ formData, data: { id, ...formObj } });
 
     try {
-      const { status } = await axiosInstance.put("/account/profile", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data, status } = await axiosInstance.put(
+        "/account/update-profile",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if ([200, 201].includes(status)) {
-        // setUser(data);
+        signIn({
+          auth: {
+            token: token,
+            type: "Bearer",
+          },
+          userState: { ...user, ...data },
+        });
+
         toast({
           title: "Profile updated successfully",
           variant: "success",
@@ -102,9 +93,7 @@ function Profile() {
     }
   };
 
-  const renderProfileForm = REGISTER_FORM.filter(
-    (field) => field.name !== "confirmedPassword" && field.name !== "password"
-  ).map(({ name, placeholder, type }) => (
+  const renderProfileForm = PROFILE_FORM.map(({ name, placeholder, type }) => (
     <div
       key={name}
       className={`${
@@ -127,12 +116,12 @@ function Profile() {
   ));
 
   return (
-    <div className="container min-h-[calc(100dvh-72px)] relative mx-auto py-8">
+    <div className="container min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] relative mx-auto py-8">
       <h1
         className="text-[28px] sm:text-[40px] text-center md:text-start font-semibold mb-8"
         data-aos="fade-right"
       >
-        Profile Settings
+        Profile Info
       </h1>
 
       <form
@@ -155,7 +144,7 @@ function Profile() {
         <img
           src={
             imageValue instanceof FileList
-              ? URL.createObjectURL(imageValue[0])
+              ? getImagePreviewUrl(imageValue[0])
               : image
           }
           alt="Product"

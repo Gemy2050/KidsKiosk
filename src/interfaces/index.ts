@@ -1,8 +1,12 @@
-import { TRegisterInputsNames, TResetInputsNames } from "@/types";
+import {
+  TProfileInputsNames,
+  TRegisterInputsNames,
+  TResetInputsNames,
+} from "@/types";
 import { InputHTMLAttributes } from "react";
 
-export interface IRegisterInput {
-  name: TRegisterInputsNames;
+export interface IFormInput {
+  name: string;
   placeholder: string;
   type: string;
   validation: {
@@ -16,19 +20,14 @@ export interface IRegisterInput {
   };
 }
 
-export interface IResetInput {
+export interface IRegisterInput extends IFormInput {
+  name: TRegisterInputsNames;
+}
+export interface IResetInput extends IFormInput {
   name: TResetInputsNames;
-  placeholder: string;
-  type: string;
-  validation: {
-    required?: string;
-    minLength?: number;
-    maxLength?: number;
-    pattern?: {
-      value: RegExp;
-      message: string;
-    };
-  };
+}
+export interface IProfileInput extends IFormInput {
+  name: TProfileInputsNames;
 }
 
 export interface IUser {

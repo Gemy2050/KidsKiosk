@@ -28,15 +28,31 @@ export function addObjectToFormData({
   formData: FormData;
 }) {
   Object.entries(data).forEach(([key, value]) => {
+    if (value instanceof FileList) {
+      formData.append(key, value[0]);
+      return;
+    }
+
     if (value instanceof File) {
       formData.append(key, value);
-    } else if (Array.isArray(value)) {
+      return;
+    }
+
+    if (value instanceof FileList) {
+      Array.from(value).forEach((file, index) => {
+        formData.append(`${key}[${index}]`, file);
+      });
+      return;
+    }
+
+    if (Array.isArray(value)) {
       value.forEach((item, index) => {
         formData.append(`${key}[${index}]`, String(item));
       });
-    } else {
-      formData.append(key, String(value));
+      return;
     }
+
+    formData.append(key, String(value));
   });
 }
 
