@@ -61,7 +61,7 @@ export function useProductManagement() {
         description,
         productCategory,
         priceBeforeDiscount:
-          +productFormData.price + +(productFormData.discount || 0),
+          +productFormData.price + Number(productFormData.discount || 0),
         hasDiscount:
           productFormData.hasDiscount === "Yes" &&
           Number(productFormData.discount) > 0,
@@ -105,10 +105,12 @@ export function useProductManagement() {
         id: productId,
         description,
         productCategory,
-        priceBeforeDiscount:
-          +productFormData.price + +(productFormData.discount || 0),
-        hasDiscount: productFormData.hasDiscount === "Yes",
         variantsDto: JSON.stringify(productFormData.colors),
+        priceBeforeDiscount:
+          +productFormData.price + Number(productFormData.discount || 0),
+        hasDiscount:
+          productFormData.hasDiscount === "Yes" &&
+          Number(productFormData.discount) > 0,
         image:
           (productFormData.image as FileList).length > 0
             ? (productFormData.image as FileList)[0]

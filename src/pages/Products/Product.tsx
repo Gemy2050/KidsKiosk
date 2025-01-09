@@ -91,7 +91,17 @@ export default function Product({ product }: IProps) {
         className="line-clamp-3 min-h-[75px] w-full"
         dangerouslySetInnerHTML={{ __html: product.description }}
       ></p>
-      <h3 className="font-bold text-gray-500">${product.price}</h3>
+      <div className="flex justify-between items-center w-full">
+        <h3 className="font-bold">{product.productCategory}</h3>
+        <div className="flex items-center gap-2">
+          {product.hasDiscount && (
+            <h3 className="text-xs text-gray-400 line-through">
+              {product.priceBeforeDiscount}
+            </h3>
+          )}
+          <h3 className="font-bold text-gray-400">${product.price}</h3>
+        </div>
+      </div>
     </div>
   );
 }

@@ -76,7 +76,7 @@ export default function Header() {
             onClick={() => setOpenMenu(false)}
           />
           <div className="flex-col md:flex-row flex items-center gap-5">
-            {user?.role && (
+            {user?.role == "admin" && (
               <NavLink
                 className="[&.active]:text-primary hover:text-primary duration-300"
                 to="/admin/dashboard"

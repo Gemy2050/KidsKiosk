@@ -100,6 +100,28 @@ export const profileSchema = yup
 
 export type ProfileFormData = yup.InferType<typeof profileSchema>;
 
+//* Contact Schema
+
+export const contactSchema = yup
+  .object({
+    fullName: yup
+      .string()
+      .required("Full name is required")
+      .min(5, "Full name should be at least 5 characters")
+      .max(50, "Full name should be at most 50 characters"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Email is not valid"
+      ),
+    message: yup.string().required("Message is required").min(20),
+  })
+  .required();
+
+export type ContactFormData = yup.InferType<typeof contactSchema>;
+
 // *** Dashboard  ***
 
 // ProductForm Schema

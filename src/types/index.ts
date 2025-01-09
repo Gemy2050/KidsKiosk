@@ -18,5 +18,6 @@ export type TProfileInputsNames =
   | "image";
 
 export type TResetInputsNames = "otp" | "newPassword" | "confirmedNewPassword";
+export type TContactInputsNames = "fullName" | "message" | "email";
 
 export type User = IUser | null;

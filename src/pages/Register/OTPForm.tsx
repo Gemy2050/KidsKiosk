@@ -93,7 +93,7 @@ function OTPForm() {
           description: "check your email",
           variant: "success",
         });
-        setTimeLeft(2 * 60 * 1000);
+        setTimeLeft(3 * 60 * 1000);
       }
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;

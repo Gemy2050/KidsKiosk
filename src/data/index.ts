@@ -1,4 +1,5 @@
 import {
+  IContactForm,
   IProductsForm,
   IProfileInput,
   IRegisterInput,
@@ -176,6 +177,40 @@ export const PROFILE_FORM: IProfileInput[] = [
     type: "file",
     validation: {
       required: "profile image is required",
+    },
+  },
+];
+
+export const CONTACT_FORM: IContactForm[] = [
+  {
+    name: "fullName",
+    placeholder: "Full Name",
+    type: "text",
+    validation: {
+      required: "Full Name is required",
+      minLength: 3,
+      maxLength: 50,
+    },
+  },
+  {
+    name: "email",
+    placeholder: "Email",
+    type: "email",
+    validation: {
+      required: "email is required",
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: "invalid email address",
+      },
+    },
+  },
+  {
+    name: "message",
+    placeholder: "Message",
+    type: "textarea",
+    validation: {
+      required: "message is required",
+      minLength: 20,
     },
   },
 ];

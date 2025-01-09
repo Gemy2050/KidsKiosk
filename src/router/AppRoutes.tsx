@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Images from "@/pages/Dashboard/Images";
 import Profile from "@/pages/Profile/Profile";
+import Contact from "@/pages/Contact/Contact";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -51,6 +52,7 @@ const AppRoutes = () => (
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
       </Route>
 

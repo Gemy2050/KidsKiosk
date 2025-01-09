@@ -15,17 +15,37 @@ import Popup from "@/components/Popup";
 import { getImagePreviewUrl } from "@/utils/imageUtils";
 import { addObjectToFormData } from "@/utils/functions";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { Navigate } from "react-router-dom";
 
 function Profile() {
   const { toast } = useToast();
   const signIn = useSignIn();
   const user: IUser = useAuthUser()!;
-  const { id, firstName, secondName, phone, address, image, token } = user;
+
+  if (!user) {
+    toast({
+      title: "Cannot access profile page in guest mode",
+      variant: "destructive",
+    });
+    return <Navigate to="/" replace />;
+  }
+
+  const {
+    id,
+    firstName,
+    secondName,
+    phone,
+    address,
+    image,
+    token,
+    isGoogleUser,
+  } = user;
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<ProfileFormData>({
     resolver: yupResolver(profileSchema),
@@ -57,7 +77,7 @@ function Profile() {
 
     const formData = new FormData();
 
-    addObjectToFormData({ formData, data: { id, ...formObj } });
+    addObjectToFormData({ formData, data: { id, isGoogleUser, ...formObj } });
 
     try {
       const { data, status } = await axiosInstance.put(
@@ -78,6 +98,8 @@ function Profile() {
           },
           userState: { ...user, ...data },
         });
+
+        setValue("image", data.image);
 
         toast({
           title: "Profile updated successfully",
@@ -119,7 +141,7 @@ function Profile() {
     <div className="container min-h-[calc(100dvh-64px)] md:min-h-[calc(100dvh-72px)] relative mx-auto py-8">
       <h1
         className="text-[28px] sm:text-[40px] text-center md:text-start font-semibold mb-8"
-        data-aos="fade-right"
+        data-aos="fade-left"
       >
         Profile Info
       </h1>
@@ -147,7 +169,7 @@ function Profile() {
               ? getImagePreviewUrl(imageValue[0])
               : image
           }
-          alt="Product"
+          alt="user image"
           className="object-contain h-full w-full"
         />
       </Popup>

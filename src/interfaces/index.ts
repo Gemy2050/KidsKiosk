@@ -1,4 +1,5 @@
 import {
+  TContactInputsNames,
   TProfileInputsNames,
   TRegisterInputsNames,
   TResetInputsNames,
@@ -28,6 +29,9 @@ export interface IResetInput extends IFormInput {
 }
 export interface IProfileInput extends IFormInput {
   name: TProfileInputsNames;
+}
+export interface IContactForm extends IFormInput {
+  name: TContactInputsNames;
 }
 
 export interface IUser {

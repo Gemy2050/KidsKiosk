@@ -24,7 +24,10 @@ function ProtectedRoutes() {
   });
 
   useEffect(() => {
-    if (isSuccess || isDemo) setLoading(false);
+    if (isSuccess || isDemo) {
+      setLoading(false);
+      return;
+    }
     if (isError || !isAuthenticated) {
       Cookies.remove("auth");
       Cookies.remove("auth_state");

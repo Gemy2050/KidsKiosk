@@ -15,7 +15,7 @@ interface IQuery {
 
 function ProductsList() {
   const { data: products, isLoading } = useCustomQuery<IQuery>({
-    url: "/product/get-all-products?pageIndex=1&pageSize=10",
+    url: "/product/get-all-products?pageIndex=1&pageSize=24",
     key: ["products"],
   });
   const dispatch = useDispatch();
