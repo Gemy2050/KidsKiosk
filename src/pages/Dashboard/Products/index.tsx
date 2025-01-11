@@ -16,10 +16,11 @@ import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Image, PenBox, Trash } from "lucide-react";
-import React, { lazy, Suspense, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-
-const Table = lazy(() => import("@/components/Table"));
+import { useDispatch } from "react-redux";
+import { setProducts } from "@/app/slices/ProductsSlice";
+import Table from "@/components/Table";
 
 interface IQuery {
   pageIndex: number;
@@ -33,6 +34,7 @@ function Products() {
     ? Number(sessionStorage.getItem("pageIndex"))
     : 1;
 
+  const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(false);
   const [pageIndex, setPageIndex] = useState(INDEX);
   const PAGE_SIZE = 5;
@@ -48,6 +50,12 @@ function Products() {
     key: ["getAllProducts", `${pageIndex}`],
     url: `/product/get-all-products?pageSize=${PAGE_SIZE}&pageIndex=${pageIndex}`,
   });
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setProducts(data.data));
+    }
+  }, [data]);
 
   const handleDeleteProduct = async (id: number | string) => {
     try {
@@ -156,13 +164,13 @@ function Products() {
           onChange={tableSearch}
         />
 
-        {data?.data && (
+        {data?.data ? (
           <>
-            <Suspense fallback={<Spinner />}>
-              <Table headers={tableHeaders}>{renderProducts}</Table>
-            </Suspense>
+            <Table headers={tableHeaders}>{renderProducts}</Table>
             <Pagination {...{ data, pageIndex, setPageIndex }} />
           </>
+        ) : (
+          <Spinner />
         )}
         {error && <ErrorMessage message="Something went wrong" />}
       </div>

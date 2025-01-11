@@ -3,12 +3,11 @@ import Input from "@/components/Input";
 import Textarea from "@/components/Textarea";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/config/axios.config";
-import { CONTACT_FORM } from "@/data";
+import { CONTACT_FORM, SOCIAL_LINKS } from "@/data";
 import { useToast } from "@/hooks/use-toast";
 import { addObjectToFormData } from "@/utils/functions";
 import { ContactFormData, contactSchema } from "@/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Facebook, Github, Linkedin, Phone } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const Contact = () => {
@@ -51,43 +50,26 @@ const Contact = () => {
         >
           Contact Us
         </h1>
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-10 w-full max-w-">
-          <div
-            className="flex w-[450px] md:w-auto max-w-full flex-row md:flex-col gap-5 justify-between aos-init aos-animate"
-            data-aos="zoom-in-left"
-          >
-            <a
-              className="[&:hover>svg]:rotate-[360deg] flex justify-center items-center w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-md bg-background  border border-gray-300  hover:border-primary hover:ring-2 hover:ring-primary hover:shadow-xl hover:shadow-primary duration-300"
-              href="https://www.facebook.com/profile.php?id=100013438807065"
-              target="_blank"
-            >
-              <Facebook size={30} className="duration-500" />
-            </a>
-            <a
-              className="[&:hover>svg]:rotate-[360deg] flex justify-center items-center w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-md bg-background  border border-gray-300 hover:border-primary  hover:ring-2 hover:ring-primary hover:shadow-xl hover:shadow-primary duration-300"
-              href="https://wa.me/201021595806"
-              target="_blank"
-            >
-              <Phone size={30} className="duration-500" />
-            </a>
-            <a
-              className="[&:hover>svg]:rotate-[360deg] flex justify-center items-center w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-md bg-background  border border-gray-300 hover:border-primary  hover:ring-2 hover:ring-primary hover:shadow-xl hover:shadow-primary duration-300"
-              href="https://www.linkedin.com/in/mohamed-gamal-18a006225"
-              target="_blank"
-            >
-              <Linkedin size={30} className="duration-500" />
-            </a>
-            <a
-              className="[&:hover>svg]:rotate-[360deg] flex justify-center items-center w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-md bg-background  border border-gray-300 hover:border-primary  hover:ring-2 hover:ring-primary hover:shadow-xl hover:shadow-primary duration-300"
-              href="https://github.com/gemy2050"
-              target="_blank"
-            >
-              <Github size={30} className="duration-500" />
-            </a>
+        <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-10 w-full max-w-">
+          <div className="flex self-center md:self-auto w-[450px] md:w-auto max-w-full flex-row md:flex-col gap-5 justify-between ">
+            {SOCIAL_LINKS.map(({ name, link, icon: Icon }) => {
+              return (
+                <a
+                  key={name}
+                  href={link}
+                  className="[&:hover>svg]:rotate-[360deg] flex justify-center items-center w-[50px] h-[50px] rounded-md bg-background  border border-gray-300  hover:border-primary hover:ring-2 hover:ring-primary hover:shadow-xl hover:shadow-primary duration-300"
+                  target="_blank"
+                  rel="noopener"
+                  data-aos="zoom-in"
+                >
+                  <Icon className="duration-500" size={30} />
+                </a>
+              );
+            })}
           </div>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 w-[450px] max-w-full"
+            className="self-center space-y-4 w-[450px] max-w-full"
             data-aos="fade-right"
           >
             {CONTACT_FORM.map(({ name, placeholder, type }) =>
@@ -118,7 +100,7 @@ const Contact = () => {
       </div>
       <img
         src={"/imgs/square.svg"}
-        className="w-[150px] md:w-[200px] fixed bottom-0 right-[-40px] z-[-1]"
+        className="w-[150px] md:w-[200px] hidden md:block fixed bottom-0 right-[-40px] z-[-1]"
         alt="square shape"
       />
       <img

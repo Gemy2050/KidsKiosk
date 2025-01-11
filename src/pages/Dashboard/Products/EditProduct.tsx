@@ -4,17 +4,19 @@ import { CornerUpRight } from "lucide-react";
 import { Fragment, useEffect } from "react";
 import LinkButton from "@/components/LinkButton";
 import useCustomQuery from "@/hooks/use-cutstom-query";
-import { ProductResponse } from "@/interfaces";
+import { Product } from "@/interfaces";
 import Loader from "@/components/Loader";
 import ColorBox from "@/components/ColorBox";
 import { ProductsForm } from "@/data";
 import { renderField } from "@/utils/FormUtils";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import Popup from "@/components/Popup";
 import { useProductManagement } from "@/hooks/useProductManagement";
 import { getImagePreviewUrl } from "@/utils/imageUtils";
 import { ProductForm } from "@/validation";
 import { SubmitHandler } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 function EditProduct() {
   const {
@@ -37,25 +39,23 @@ function EditProduct() {
   const productFormData = watch();
 
   const { productId } = useParams();
+  const { products } = useSelector((state: RootState) => state.products);
 
-  const onSubmit: SubmitHandler<ProductForm> = async (data) => {
-    const result = await handleEditProduct(productId!, data);
-    if (result) reset();
-  };
+  const productFound = products.find((product) => product.id === productId);
 
-  const onError = () => {
-    // To Focus Tinymce Editor Manually
-    if (errors.description) {
-      editorRef.current?.focus();
-      return;
-    }
-  };
+  const {
+    data,
+    isLoading: productLoading,
+    isError,
+  } = useCustomQuery<Product>({
+    key: ["getProduct", `${productId}`],
+    url: `/product/get-product?id=${productId}`,
+    options: {
+      enabled: !productFound,
+    },
+  });
 
-  const { data: product, isLoading: productLoading } =
-    useCustomQuery<ProductResponse>({
-      key: ["getProduct", `${productId}`],
-      url: `/product/get-product?id=${productId}`,
-    });
+  const product = data || productFound;
 
   useEffect(() => {
     if (product) {
@@ -84,7 +84,21 @@ function EditProduct() {
     }
   }, [product]);
 
+  const onSubmit: SubmitHandler<ProductForm> = async (data) => {
+    const result = await handleEditProduct(productId!, data);
+    if (result) reset();
+  };
+
+  const onError = () => {
+    // To Focus Tinymce Editor Manually
+    if (errors.description) {
+      editorRef.current?.focus();
+      return;
+    }
+  };
+
   if (productLoading || categoryLoading) return <Loader />;
+  if (isError) return <Navigate to="/admin/products" replace />;
 
   return (
     <div className=" p-0">

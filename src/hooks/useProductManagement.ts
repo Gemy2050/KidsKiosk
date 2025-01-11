@@ -3,13 +3,14 @@ import { Editor as TinyMCEEditor } from "tinymce";
 import { useToast } from "@/hooks/use-toast";
 import { addProduct, updateProduct } from "@/services/product";
 import { addObjectToFormData } from "@/utils/functions";
-import { Category, IAxiosError } from "@/interfaces";
+import { IAxiosError } from "@/interfaces";
 import { ProductForm } from "@/validation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import useCustomQuery from "./use-cutstom-query";
 import { useProductForm } from "./useProductForm";
+
+import useGetCategories from "./useGetCategories";
 
 export function useProductManagement() {
   const { toast } = useToast();
@@ -21,12 +22,7 @@ export function useProductManagement() {
   const { setValue, watch } = productFormMethods;
   const productFormData = watch();
 
-  const { data: categories, isLoading: categoryLoading } = useCustomQuery<
-    Category[]
-  >({
-    key: ["getAllCategories"],
-    url: "/category/get-all-categories",
-  });
+  const { data: categories, isLoading: categoryLoading } = useGetCategories();
 
   const addNewColorBox = () => {
     const colors = productFormData.colors || [];
@@ -38,7 +34,6 @@ export function useProductManagement() {
       sizes: [{ id: Date.now(), size: "", quantity: "" }],
     });
 
-    // Remove the separate setState call since setValue will handle the form state
     setValue("colors", updatedColors);
   };
 

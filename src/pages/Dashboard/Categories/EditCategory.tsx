@@ -3,7 +3,6 @@ import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { CornerUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
 import TinyEditor from "@/components/TinyEditor";
 import { Editor as TinyMCEEditor } from "tinymce";
 import LinkButton from "@/components/LinkButton";
@@ -11,34 +10,39 @@ import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { IAxiosError } from "@/interfaces";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
-import { useQueryClient } from "@tanstack/react-query";
+import useGetCategories from "@/hooks/useGetCategories";
+import { useDispatch } from "react-redux";
+import { updateCategory } from "@/app/slices/categoriesSlice";
 
 function EditCategory() {
   const [categoryName, setCategoryName] = useState("");
   const [description, setDescription] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
   const editorRef = useRef<TinyMCEEditor>(null);
   const { toast } = useToast();
   const { productId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { data: categories, isLoading } = useGetCategories();
 
-  const queryClient = useQueryClient();
+  const category = categories?.find((el) => el.id == productId);
+
+  console.log({ name: categoryName });
 
   useEffect(() => {
-    axiosInstance.get(`/category/get-category?id=${productId}`).then((res) => {
-      setCategoryName(res.data.name);
-      setDescription(res.data.description);
-      setIsLoading(false);
-    });
-  }, []);
+    if (categories) {
+      setCategoryName(category?.name || "");
+      setDescription(category?.description || "");
+    }
+  }, [categories]);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  if (!categoryName) {
+  if (!categories || !category) {
     return <Navigate to="/admin/categories" replace />;
   }
 
@@ -47,7 +51,7 @@ function EditCategory() {
       setDisabled(true);
       const description = editorRef.current?.getContent() || "";
 
-      if (!categoryName || !description) {
+      if (!categoryName) {
         toast({
           title: "Error",
           description: "Please fill all fields",
@@ -55,18 +59,22 @@ function EditCategory() {
         });
         return;
       }
+      console.log({ categoryName });
 
-      await axiosInstance.put(
+      const { data } = await axiosInstance.put(
         `/category/update-category?id=${productId}&categoryName=${categoryName}&description=${description}`
       );
+      dispatch(updateCategory(data));
+
+      navigate("/admin/categories");
       setCategoryName("");
       editorRef.current?.setContent("");
+
       toast({
         title: "Done",
         description: "Category updated successfully",
         variant: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["getAllCategories"] });
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
       toast({

@@ -103,35 +103,17 @@ export interface Product {
   hasDiscount: boolean;
   priceBeforeDiscount: number;
   productCategoryId: number;
-  productCategory?: string;
-  category: string;
+  productCategory: string;
+  category?: string;
   quantity?: number;
-  variants?: {
-    id: number;
-    color: string;
-    sizes: ISize[];
-  }[];
+  variants?: Colors[];
   productImages?: { id: number; imageUrl: string }[];
 }
 
 export interface ISize {
-  id: number | string;
-  size: number;
-  quantity: number;
-}
-
-export interface ProductResponse {
-  id: number | string;
-  name: string;
-  description: string;
-  imageUrl: string;
-  price: number;
-  hasDiscount: boolean;
-  priceBeforeDiscount: number;
-  productCategoryId: number;
-  category: string;
-  variants: Colors[];
-  productImages?: [];
+  id: number;
+  size: string;
+  quantity: string;
 }
 
 export interface Colors {

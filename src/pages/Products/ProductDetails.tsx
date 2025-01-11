@@ -14,11 +14,15 @@ import { addToCart } from "@/app/slices/CartSlice";
 export default function ProductDetails() {
   const [sizeId, setSizeId] = useState<number | string>(0);
   const [availableSizes, setAvailableSizes] = useState<ISize[]>();
-  const [colorId, setColorId] = useState<number | undefined>(0);
+  const [colorId, setColorId] = useState<string | number | undefined>(0);
   const { id } = useParams();
   const { cart } = useSelector((state: RootState) => state.cart);
+  const { products } = useSelector((state: RootState) => state.products);
   const dispatch = useDispatch();
-  const existProduct = cart.find((product) => String(product.id) == String(id));
+
+  const existProduct =
+    cart.find((product) => String(product.id) == String(id)) ||
+    products.find((product) => String(product.id) == String(id));
 
   const { data, isLoading, isFetched } = useCustomQuery<IProduct>({
     key: ["product", `${id}`],
@@ -42,7 +46,6 @@ export default function ProductDetails() {
       setAvailableSizes(sizes);
     }
   }, [colorId, product]);
-
   if (!product && isFetched) {
     return <Navigate to="/products" replace />;
   }

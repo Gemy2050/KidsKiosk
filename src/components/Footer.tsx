@@ -1,6 +1,5 @@
 import Logo from "@/components/Logo";
-import { Facebook, Linkedin, Twitter } from "lucide-react";
-import { Link } from "react-router-dom";
+import { SOCIAL_LINKS } from "@/data";
 
 export default function Footer() {
   return (
@@ -28,16 +27,20 @@ export default function Footer() {
             className="w-full sm:w-1/2 md:w-1/3 sm:px-5 py-5 md:py-0"
           >
             <h4 className="text-[#B3B3B3] mb-5">Follow Us</h4>
-            <div className="flex gap-5 items-center justify-center">
-              <Link to={"#"}>
-                <Facebook size={30} />
-              </Link>
-              <Link to={"#"}>
-                <Linkedin size={30} />
-              </Link>
-              <Link to={"#"}>
-                <Twitter size={30} />
-              </Link>
+            <div className="flex gap-4 items-center justify-center">
+              {SOCIAL_LINKS.map(({ name, link, icon: Icon }) => {
+                return (
+                  <a
+                    key={name}
+                    href={link}
+                    target="_blank"
+                    rel="noopener"
+                    className="hover:text-primary duration-300"
+                  >
+                    <Icon size={25} />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { deleteCategory } from "@/app/slices/categoriesSlice";
 import Alert from "@/components/Alert";
 import ErrorMessage from "@/components/ErrorMessage";
 import IconButton from "@/components/IconButton";
@@ -5,28 +6,24 @@ import Input from "@/components/Input";
 import LinkButton from "@/components/LinkButton";
 import PageTitle from "@/components/PageTitle";
 import Spinner from "@/components/Spinner";
+import Table from "@/components/Table";
 import axiosInstance from "@/config/axios.config";
-import useCustomQuery from "@/hooks/use-cutstom-query";
 import { useToast } from "@/hooks/use-toast";
-import { Category, IAxiosError } from "@/interfaces";
+import useGetCategories from "@/hooks/useGetCategories";
+import { IAxiosError } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
-import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { PenBox, Trash } from "lucide-react";
-import { lazy, Suspense, useState } from "react";
-
-const Table = lazy(() => import("@/components/Table"));
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 function Categories() {
   const tableHeaders = ["name", "description", "actions"];
   const [disabled, setDisabled] = useState(false);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
-  const { data: categories, error } = useCustomQuery<Category[]>({
-    key: ["getAllCategories"],
-    url: "/category/get-all-categories",
-  });
+  const { data: categories, error } = useGetCategories();
 
   const handleDeleteCategory = async (catId: number | string) => {
     try {
@@ -37,8 +34,7 @@ function Categories() {
         description: "Category deleted successfully",
         variant: "success",
       });
-      // setCategories((prev) => prev.filter((cat) => cat.id !== catId));
-      queryClient.invalidateQueries({ queryKey: ["getAllCategories"] });
+      dispatch(deleteCategory(String(catId)));
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
       toast({
@@ -52,7 +48,6 @@ function Categories() {
   };
 
   // ** Render **
-
   const renderCategories = categories?.map((cat, idx: number) => (
     <tr key={cat.id}>
       <td>{idx + 1}</td>
@@ -100,10 +95,10 @@ function Categories() {
           onChange={tableSearch}
         />
 
-        {categories && (
-          <Suspense fallback={<Spinner />}>
-            <Table headers={tableHeaders}>{renderCategories}</Table>
-          </Suspense>
+        {categories ? (
+          <Table headers={tableHeaders}>{renderCategories}</Table>
+        ) : (
+          <Spinner />
         )}
         {error && <ErrorMessage message="Something went wrong" />}
       </div>

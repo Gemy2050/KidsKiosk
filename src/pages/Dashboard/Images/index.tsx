@@ -5,6 +5,7 @@ import Input from "@/components/Input";
 import LinkButton from "@/components/LinkButton";
 import PageTitle from "@/components/PageTitle";
 import Spinner from "@/components/Spinner";
+import Table from "@/components/Table";
 import axiosInstance from "@/config/axios.config";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { useToast } from "@/hooks/use-toast";
@@ -12,11 +13,9 @@ import { IAxiosError, Product } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { PenBox, Trash } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-const Table = lazy(() => import("@/components/Table"));
 
 interface IQuery {
   pageIndex: number;
@@ -33,7 +32,11 @@ function Images() {
   const queryClient = useQueryClient();
   const { productId } = useParams();
 
-  const { data: products, error } = useCustomQuery<IQuery>({
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useCustomQuery<IQuery>({
     key: ["getAllProducts"],
     url: "/product/get-all-products?pageSize=1000&pageIndex=1",
   });
@@ -117,9 +120,9 @@ function Images() {
       </td>
 
       <td className="space-x-2 min-w-[105px] ">
-        <LinkButton to={`edit/${img.id}`} size={"xs"} rounded={"md"}>
+        {/* <LinkButton to={`edit/${img.id}`} size={"xs"} rounded={"md"}>
           <PenBox size={16} />
-        </LinkButton>
+        </LinkButton> */}
         <Alert
           onDelete={() => handleDeleteImage(img.id, img.imageUrl)}
           title={`Are you sure to delete "${idx + 1}" image?`}
@@ -171,11 +174,12 @@ function Images() {
           onChange={tableSearch}
         />
 
-        {product?.productImages?.length ? (
-          <Suspense fallback={<Spinner />}>
-            <Table headers={tableHeaders}>{renderImages}</Table>
-          </Suspense>
+        {!isLoading && products ? (
+          <Table headers={tableHeaders}>{renderImages}</Table>
         ) : (
+          <Spinner />
+        )}
+        {product?.productImages?.length === 0 && (
           <h3 className="text-center text-xl text-gray-500">No Images</h3>
         )}
         {error && <ErrorMessage message="Something went wrong" />}

@@ -10,21 +10,22 @@ import LinkButton from "@/components/LinkButton";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
-import { IAxiosError } from "@/interfaces";
-import { useQueryClient } from "@tanstack/react-query";
+import { Category, IAxiosError } from "@/interfaces";
 import InputGroup from "@/components/InputGroup";
+import { useDispatch } from "react-redux";
+import { addCategory } from "@/app/slices/categoriesSlice";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
   const [disabled, setDisabled] = useState(false);
   const editorRef = useRef<TinyMCEEditor>(null);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   const handleAddCategory = async () => {
     try {
       setDisabled(true);
-      const description = editorRef.current?.getContent();
+      const description = editorRef.current?.getContent() || "";
 
       if (!categoryName) {
         toast({
@@ -35,7 +36,7 @@ function AddCategory() {
         return;
       }
 
-      await axiosInstance.post(
+      const { data } = await axiosInstance.post(
         `/category/add-category?categoryName=${categoryName}&description=${description}`
       );
       setCategoryName("");
@@ -45,7 +46,8 @@ function AddCategory() {
         description: "Category added successfully",
         variant: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["getAllCategories"] });
+
+      dispatch(addCategory(data as Category));
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;
       toast({
