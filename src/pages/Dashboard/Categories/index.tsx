@@ -1,4 +1,4 @@
-import { deleteCategory } from "@/app/slices/categoriesSlice";
+import { deleteCategory } from "@/app/slices/CategoriesSlice";
 import Alert from "@/components/Alert";
 import ErrorMessage from "@/components/ErrorMessage";
 import IconButton from "@/components/IconButton";

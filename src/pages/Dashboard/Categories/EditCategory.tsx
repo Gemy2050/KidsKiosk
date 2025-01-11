@@ -14,7 +14,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
 import useGetCategories from "@/hooks/useGetCategories";
 import { useDispatch } from "react-redux";
-import { updateCategory } from "@/app/slices/categoriesSlice";
+import { updateCategory } from "@/app/slices/CategoriesSlice";
 
 function EditCategory() {
   const [categoryName, setCategoryName] = useState("");

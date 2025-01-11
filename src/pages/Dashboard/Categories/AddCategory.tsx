@@ -13,7 +13,7 @@ import { AxiosError } from "axios";
 import { Category, IAxiosError } from "@/interfaces";
 import InputGroup from "@/components/InputGroup";
 import { useDispatch } from "react-redux";
-import { addCategory } from "@/app/slices/categoriesSlice";
+import { addCategory } from "@/app/slices/CategoriesSlice";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");

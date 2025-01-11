@@ -3,7 +3,7 @@ import useCustomQuery from "./use-cutstom-query";
 import { Category } from "@/interfaces";
 import { RootState } from "@/app/store";
 import { useEffect } from "react";
-import { setCategories } from "@/app/slices/categoriesSlice";
+import { setCategories } from "@/app/slices/CategoriesSlice";
 
 function useGetCategories() {
   const { categories: categoriesSlice } = useSelector(
