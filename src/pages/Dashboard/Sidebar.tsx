@@ -7,7 +7,7 @@ const Sidebar = () => {
   const { pathname } = useLocation();
 
   const handleActiveLink = (isActive: boolean, path: string) => {
-    const isMatchingPath = location.pathname.startsWith(path);
+    const isMatchingPath = location.pathname.startsWith("/admin" + path);
     return `${
       isActive || isMatchingPath ? "border-primary" : "border-transparent "
     } p-3 block text-gray-800 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
@@ -22,7 +22,7 @@ const Sidebar = () => {
       id="Sidebar"
       className={`${
         hideSidebar && "sidebar-hidden"
-      } w-[200px] bg-background text-foreground py-4 h-screen shadow-2xl fixed top-[64px] lg:sticky lg:top-0 bottom-0 left-0 z-30 duration-200`}
+      } flex-shrink-0 w-[200px] bg-background text-foreground py-4 h-screen shadow-2xl fixed top-[64px] lg:sticky lg:top-0 bottom-0 left-0 z-30 duration-200`}
     >
       <Link to={"/"}>
         <Logo className="text-2xl px-3" />
@@ -32,7 +32,7 @@ const Sidebar = () => {
           <NavLink
             to="dashboard"
             className={({ isActive }) =>
-              handleActiveLink(isActive, "/admin/dashboard")
+              handleActiveLink(isActive, "/dashboard")
             }
           >
             Home
@@ -42,7 +42,7 @@ const Sidebar = () => {
           <NavLink
             to="products"
             className={({ isActive }) =>
-              handleActiveLink(isActive, "/admin/products")
+              handleActiveLink(isActive, "/products")
             }
           >
             Products
@@ -52,10 +52,20 @@ const Sidebar = () => {
           <NavLink
             to="categories"
             className={({ isActive }) =>
-              handleActiveLink(isActive, "/admin/categories")
+              handleActiveLink(isActive, "/categories")
             }
           >
             Categories
+          </NavLink>
+        </li>
+        <li className="border-b border-gray-200">
+          <NavLink
+            to="customers"
+            className={({ isActive }) =>
+              handleActiveLink(isActive, "/customers")
+            }
+          >
+            Customers
           </NavLink>
         </li>
       </ul>

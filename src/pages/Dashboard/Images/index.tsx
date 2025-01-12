@@ -114,18 +114,15 @@ function Images() {
         <img
           src={img.imageUrl}
           alt="product image"
-          className="w-[100px] h-[70px] mx-auto"
+          className="w-[80px] h-[50px] mx-auto"
           loading="lazy"
         />
       </td>
 
       <td className="space-x-2 min-w-[105px] ">
-        {/* <LinkButton to={`edit/${img.id}`} size={"xs"} rounded={"md"}>
-          <PenBox size={16} />
-        </LinkButton> */}
         <Alert
           onDelete={() => handleDeleteImage(img.id, img.imageUrl)}
-          title={`Are you sure to delete "${idx + 1}" image?`}
+          title={`Are you sure to delete image "${idx + 1}" ?`}
           description="you cannot retrieve this image after deleting it."
           disabled={disabled}
         >
@@ -136,6 +133,9 @@ function Images() {
       </td>
     </tr>
   ));
+
+  console.log(Number(product?.productImages?.length) > 0);
+  console.log("A");
 
   return (
     <div>
@@ -149,6 +149,7 @@ function Images() {
           size="lg"
           rounded="md"
           className="text-base font-bold mb-5 me-3"
+          data-aos="fade-up"
         >
           Add Images
         </LinkButton>
@@ -162,6 +163,7 @@ function Images() {
             size="lg"
             rounded="md"
             className=" text-base font-bold mb-8"
+            data-aos="fade-up"
           >
             Delete All Images
           </IconButton>
@@ -171,18 +173,21 @@ function Images() {
           type="search"
           placeholder="Search here ..."
           className="w-full mb-4"
+          data-aos="fade-up"
           onChange={tableSearch}
         />
 
-        {!isLoading && products ? (
-          <Table headers={tableHeaders}>{renderImages}</Table>
+        {!isLoading && product ? (
+          <Table className="min-w-[auto]" headers={tableHeaders}>
+            {renderImages}
+          </Table>
         ) : (
           <Spinner />
         )}
+        {error && <ErrorMessage message="Something went wrong" />}
         {product?.productImages?.length === 0 && (
           <h3 className="text-center text-xl text-gray-500">No Images</h3>
         )}
-        {error && <ErrorMessage message="Something went wrong" />}
       </div>
     </div>
   );

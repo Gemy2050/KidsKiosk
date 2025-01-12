@@ -17,6 +17,7 @@ interface IProps {
   rounded?: "default" | "none" | "sm" | "md" | "lg" | "full";
   className?: string;
   fullWidth?: boolean;
+  "data-aos"?: string;
 }
 
 function LinkButton({
@@ -27,6 +28,7 @@ function LinkButton({
   size = "default",
   variant = "default",
   rounded = "default",
+  "data-aos": dataAos,
 }: IProps) {
   return (
     <Link
@@ -40,6 +42,7 @@ function LinkButton({
           fullWidth,
         })
       )}
+      data-aos={dataAos}
     >
       {children}
     </Link>

@@ -8,16 +8,19 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import Loader from "./Loader";
+import { clearCart } from "@/app/slices/CartSlice";
+import { clearFavorites } from "@/app/slices/FavoritesSlice";
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
   const signOut = useSignOut();
   const user: User = useAuthUser();
+  const dispatch = useDispatch();
   let { cart } = useSelector((state: RootState) => state.cart);
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -38,7 +41,8 @@ export default function Header() {
         });
       }
       signOut();
-      localStorage.removeItem("cart");
+      dispatch(clearCart());
+      dispatch(clearFavorites());
       sessionStorage.removeItem("isDemo");
       navigate("/login", { replace: true });
     } catch (error) {

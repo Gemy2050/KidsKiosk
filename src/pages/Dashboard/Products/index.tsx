@@ -34,10 +34,10 @@ function Products() {
     ? Number(sessionStorage.getItem("pageIndex"))
     : 1;
 
-  const dispatch = useDispatch();
-  const [disabled, setDisabled] = useState(false);
-  const [pageIndex, setPageIndex] = useState(INDEX);
   const PAGE_SIZE = 5;
+  const [pageIndex, setPageIndex] = useState(INDEX);
+  const [disabled, setDisabled] = useState(false);
+  const dispatch = useDispatch();
 
   const tableHeaders = useMemo(
     () => ["image", "name", "category", "price", "discount", "actions"],
@@ -154,6 +154,7 @@ function Products() {
               className: "text-base font-bold mb-8",
             })
           )}
+          data-aos="fade-up"
         >
           Add Product
         </Link>
@@ -161,6 +162,7 @@ function Products() {
         <Input
           placeholder="Search here ..."
           className="w-full mb-4"
+          data-aos="fade-up"
           onChange={tableSearch}
         />
 

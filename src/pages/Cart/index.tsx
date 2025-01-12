@@ -35,13 +35,15 @@ function Cart() {
         <div
           data-aos="fade-up"
           data-aos-offset="0"
-          className="bg-background mt-16 w-[350px] max-w-full mx-auto p-5 rounded-lg border border-border shadow-lg"
+          className="bg-background mt-16 w-[450px] max-w-full mx-auto p-5 rounded-lg border border-border shadow-lg"
         >
           {cart.length > 0 ? (
             <>
-              <h3 className="text-3xl">Total Price: ${getTotalPrice(cart)}</h3>
+              <h3 className="text-3xl text-center">
+                Total Price: ${getTotalPrice(cart)}
+              </h3>
               <Button className=" rounded-lg mt-5" fullWidth>
-                Checkout
+                Checkout (In Progress)
               </Button>
             </>
           ) : (

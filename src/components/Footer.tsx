@@ -13,7 +13,9 @@ export default function Footer() {
             <h3>
               <Logo className="text-2xl mb-3" />
             </h3>
-            <p>Platform for newsletter fans and Owners</p>
+            <p>
+              Platform for Shoes that keep kids feet comfortable all day long.
+            </p>
           </div>
           <div
             data-aos="fade-up"

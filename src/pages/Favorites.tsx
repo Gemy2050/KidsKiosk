@@ -1,17 +1,11 @@
+import { RootState } from "@/app/store";
 import Product from "./Products/Product";
-import { Product as IProduct } from "@/interfaces";
-import useCustomQuery from "@/hooks/use-cutstom-query";
 import { Heart } from "lucide-react";
-
-interface IQuery {
-  data: IProduct[];
-}
+import { useSelector } from "react-redux";
 
 export default function Favorites() {
-  const { data } = useCustomQuery<IQuery>({
-    url: "/product/get-all-products",
-    key: ["getAllProducts", "favorites"],
-  });
+  const { favorites } = useSelector((state: RootState) => state.favorites);
+
   return (
     <main className="relative pt-24  pb-20">
       <img
@@ -29,7 +23,7 @@ export default function Favorites() {
           Favorites <Heart size={30} />
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center">
-          {data?.data.map((product) => (
+          {favorites.map((product) => (
             <Product product={product} key={product.id} />
           ))}
         </div>

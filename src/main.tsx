@@ -11,8 +11,8 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 
 AOS.init({
-  duration: 1000,
-  easing: "ease-in",
+  duration: 900,
+  easing: "ease-in-out",
 });
 
 const queryClient = new QueryClient({

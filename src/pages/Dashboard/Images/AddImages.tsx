@@ -74,7 +74,10 @@ function AddImages() {
           <CornerUpRight size={40} strokeWidth={2.5} />
         </LinkButton>
       </PageTitle>
-      <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
+      <div
+        className="mt-2 p-5 pt-7 rounded-lg bg-background"
+        data-aos="fade-up"
+      >
         <div className=" mb-5">
           <label
             htmlFor="imageInput"
@@ -112,6 +115,7 @@ function AddImages() {
           size={"lg"}
           rounded={"md"}
           className="mt-10 text-base font-bold"
+          data-aos="fade-up"
           disabled={disabled}
           onClick={addProductImages}
         >

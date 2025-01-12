@@ -14,6 +14,7 @@ interface IProps {
     | "link";
   rounded?: "default" | "none" | "sm" | "md" | "lg" | "full";
   size?: "default" | "xs" | "sm" | "lg" | "icon";
+  "data-aos"?: string;
 }
 
 function LinkButton({
@@ -22,9 +23,13 @@ function LinkButton({
   rounded = "md",
   size = "xs",
   className = "",
+  "data-aos": dataAos,
 }: IProps) {
   return (
-    <span className={cn(buttonVariants({ className, size, rounded, variant }))}>
+    <span
+      className={cn(buttonVariants({ className, size, rounded, variant }))}
+      data-aos={dataAos}
+    >
       {children}
     </span>
   );

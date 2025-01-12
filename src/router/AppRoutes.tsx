@@ -4,6 +4,7 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import Images from "@/pages/Dashboard/Images";
 import Profile from "@/pages/Profile/Profile";
 import Contact from "@/pages/Contact/Contact";
+import Customers from "@/pages/Dashboard/users";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -71,6 +72,7 @@ const AppRoutes = () => (
           <Route path="add" element={<AddCategory />} />
           <Route path="edit/:productId" element={<EditCategory />} />
         </Route>
+        <Route path="customers" element={<Customers />} />
       </Route>
 
       <Route path="/verificationWithOtp" element={<OTPForm />} />

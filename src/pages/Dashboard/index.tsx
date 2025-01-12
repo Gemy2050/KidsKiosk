@@ -11,6 +11,10 @@ import {
   Bar,
 } from "recharts";
 import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
+import PageTitle from "@/components/PageTitle";
+import useCustomQuery from "@/hooks/use-cutstom-query";
+import Loader from "@/components/Loader";
+import Table from "@/components/Table";
 
 const salesData = [
   { month: "Jan", sales: 4000 },
@@ -71,22 +75,44 @@ const getStatusColor = (status: string) => {
 };
 
 const Dashboard = () => {
+  const { data: products, isLoading: productsLoading } = useCustomQuery<any>({
+    key: ["getAllProducts"],
+    url: "/product/get-all-products",
+  });
+  const { data: users, isLoading: usersLoading } = useCustomQuery<any>({
+    key: ["getUsers"],
+    url: "/get-users",
+  });
+
+  if (productsLoading || usersLoading) {
+    return <Loader />;
+  }
+
   return (
-    <div className=" space-y-6">
+    <div className=" space-y-3">
+      <PageTitle>
+        <h2 className="text-lg sm:text-2xl">Analytics (In Progress) </h2>
+      </PageTitle>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-blue-500">
+        <Card
+          data-aos="fade-up"
+          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-blue-500"
+        >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-blue-100 rounded-full transition-colors duration-300 hover:bg-blue-200">
               <DollarSign className="text-blue-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Revenue</p>
-              <h3 className="text-2xl font-bold">$24,560</h3>
+              <h3 className="text-2xl font-bold">24,560</h3>
             </div>
           </div>
         </Card>
-        <Card className="p-4 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-green-500">
+        <Card
+          data-aos="fade-up"
+          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-green-500"
+        >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-green-100 rounded-full transition-colors duration-300 hover:bg-green-200">
               <ShoppingCart className="text-green-600" />
@@ -97,25 +123,31 @@ const Dashboard = () => {
             </div>
           </div>
         </Card>
-        <Card className="p-4 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-purple-500">
+        <Card
+          data-aos="fade-up"
+          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-purple-500"
+        >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-purple-100 rounded-full transition-colors duration-300 hover:bg-purple-200">
               <Package className="text-purple-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Products</p>
-              <h3 className="text-2xl font-bold">89</h3>
+              <h3 className="text-2xl font-bold">{products.data.length}</h3>
             </div>
           </div>
         </Card>
-        <Card className="p-4 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-orange-500">
+        <Card
+          data-aos="fade-up"
+          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-orange-500"
+        >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-orange-100 rounded-full transition-colors duration-300 hover:bg-orange-200">
               <Users className="text-orange-600" />
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Customers</p>
-              <h3 className="text-2xl font-bold">2,450</h3>
+              <h3 className="text-2xl font-bold">{users.users.length}</h3>
             </div>
           </div>
         </Card>
@@ -123,7 +155,10 @@ const Dashboard = () => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 transition-all duration-300 hover:shadow-lg">
+        <Card
+          data-aos="fade-right"
+          className="p-6 transition-all duration-300 hover:shadow-lg"
+        >
           <h3 className="text-lg font-semibold mb-4">Sales Overview</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={salesData}>
@@ -141,7 +176,10 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </Card>
 
-        <Card className="p-6 transition-all duration-300 hover:shadow-lg">
+        <Card
+          data-aos="fade-left"
+          className="p-6 transition-all duration-300 hover:shadow-lg"
+        >
           <h3 className="text-lg font-semibold mb-4">Top Products</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={topProducts}>
@@ -158,38 +196,25 @@ const Dashboard = () => {
       {/* Recent Orders Table */}
       <Card className="p-6 transition-all duration-300 hover:shadow-lg">
         <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left p-2">Order ID</th>
-                <th className="text-left p-2">Customer</th>
-                <th className="text-left p-2">Product</th>
-                <th className="text-left p-2">Amount</th>
-                <th className="text-left p-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentOrders.map((order) => (
-                <tr key={order.id} className="border-b hover:bg-gray-50">
-                  <td className="p-2">{order.id}</td>
-                  <td className="p-2">{order.customer}</td>
-                  <td className="p-2">{order.product}</td>
-                  <td className="p-2">${order.amount}</td>
-                  <td className="p-2">
-                    <span
-                      className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
-                        order.status
-                      )}`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Table headers={["Customer", "Product", "Amount", "Status"]}>
+          {recentOrders.map((order) => (
+            <tr key={order.id} className="border-b  p-8">
+              <td className="p-4">{order.id}</td>
+              <td className="p-4">{order.customer}</td>
+              <td className="p-4">{order.product}</td>
+              <td className="p-4">${order.amount}</td>
+              <td className="p-4">
+                <span
+                  className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
+                    order.status
+                  )}`}
+                >
+                  {order.status}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </Table>
       </Card>
     </div>
   );

@@ -84,6 +84,7 @@ function Categories() {
           size="lg"
           rounded="md"
           className="text-base font-bold mb-8"
+          data-aos="fade-up"
         >
           Add Category
         </LinkButton>
@@ -92,6 +93,7 @@ function Categories() {
           type="search"
           placeholder="Search here ..."
           className="w-full mb-4"
+          data-aos="fade-up"
           onChange={tableSearch}
         />
 

@@ -34,7 +34,7 @@ function CartItem({ product }: IProps) {
         <img
           src={product.imageUrl}
           alt="product"
-          className="rounded-lg w-full h-[150px] object-contain"
+          className="rounded-lg w-full h-[150px] aspect-square"
         />
       </Link>
       <div className="flex-1 text-center">

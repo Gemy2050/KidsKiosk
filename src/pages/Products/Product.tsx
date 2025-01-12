@@ -1,4 +1,5 @@
 import { addToCart, removeFromCart } from "@/app/slices/CartSlice";
+import { setFavorites } from "@/app/slices/FavoritesSlice";
 import { RootState } from "@/app/store";
 import { useToast } from "@/hooks/use-toast";
 import { Product as IProduct } from "@/interfaces";
@@ -13,7 +14,10 @@ interface IProps {
 
 export default function Product({ product }: IProps) {
   const { cart } = useSelector((state: RootState) => state.cart);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { favorites } = useSelector((state: RootState) => state.favorites);
+  const [isFavorite, setIsFavorite] = useState(
+    favorites.some((el) => el.id === product.id)
+  );
   const [isInCart, setIsInCart] = useState(
     cart.some((el) => el.id === product.id)
   );
@@ -39,8 +43,25 @@ export default function Product({ product }: IProps) {
     setIsInCart(!isInCart);
   };
 
-  const addToFavorite = () => {
-    setIsFavorite(!isFavorite);
+  const removeFromFavorites = (product: IProduct) => {
+    const updatedFavorites = favorites.filter(
+      (favorite) => favorite.id !== product.id
+    );
+    dispatch(setFavorites(updatedFavorites));
+  };
+
+  const addToFavorites = (product: IProduct) => {
+    const updatedFavorites = [...favorites, product];
+    dispatch(setFavorites(updatedFavorites));
+  };
+
+  const handleFavorites = () => {
+    if (isFavorite) {
+      removeFromFavorites(product);
+    } else {
+      addToFavorites(product);
+    }
+    setIsFavorite((prev) => !prev);
   };
   return (
     <div
@@ -66,7 +87,7 @@ export default function Product({ product }: IProps) {
           className={`${
             isFavorite && " bg-foreground text-background"
           } ms-auto cursor-pointer p-1 rounded-full hover:text-red-500 duration-300`}
-          onClick={addToFavorite}
+          onClick={handleFavorites}
         />
       </div>
 

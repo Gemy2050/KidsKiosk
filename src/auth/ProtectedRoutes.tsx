@@ -1,7 +1,7 @@
 import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
@@ -38,10 +38,6 @@ function ProtectedRoutes() {
 
   if (loading) {
     return <Loader />;
-  }
-
-  if (!isSuccess && !isDemo) {
-    return <Navigate to={"/login"} replace />;
   }
 
   return <Outlet />;

@@ -46,18 +46,13 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
 
   return (
     <div className=" rounded-md flex flex-col items-center">
-      {/* Color Section */}
       <div className="w-full border-2 border-gray-100 max-w-md p-4 pt-6 bg-white rounded-lg shadow-lg mb-2">
-        {/* Color Name */}
         <div className="flex gap-2 items-center justify-between mb-6">
           <InputGroup className="w-full">
             <label htmlFor={`colorName-${colorId}`}>color name</label>
             <Input
               type="text"
               id={`colorName-${colorId}`}
-              // name="color"
-              // value={color}
-              // onChange={(e) => handleColorChange(e)}
               {...register(`colors.${index}.color`)}
             />
           </InputGroup>
@@ -81,9 +76,6 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
               <Input
                 type="text"
                 id={`size-${el.id}`}
-                // value={el.size}
-                // name="size"
-                // onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
                 {...register(`colors.${index}.sizes.${idx}.size`)}
               />
             </InputGroup>
@@ -94,9 +86,6 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
               <Input
                 type="number"
                 id={`quantity-${el.id}`}
-                // value={el.quantity}
-                // name="quantity"
-                // onChange={(e) => handleSizeAndQuantityChange(e, el.id)}
                 {...register(`colors.${index}.sizes.${idx}.quantity`)}
               />
             </InputGroup>

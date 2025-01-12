@@ -69,7 +69,10 @@ function AddCategory() {
         </LinkButton>
       </PageTitle>
       <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-3 gap-y-8"
+          data-aos="fade-up"
+        >
           <InputGroup>
             <label htmlFor="name">category name</label>
             <Input
@@ -81,7 +84,7 @@ function AddCategory() {
           </InputGroup>
         </div>
 
-        <div className="relative mt-8">
+        <div className="relative mt-8" data-aos="fade-up">
           <label
             htmlFor="Discount"
             className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-white"
@@ -94,6 +97,7 @@ function AddCategory() {
           size={"lg"}
           rounded={"md"}
           className="mt-10 text-base font-bold"
+          data-aos="fade-up"
           disabled={disabled}
           onClick={handleAddCategory}
         >

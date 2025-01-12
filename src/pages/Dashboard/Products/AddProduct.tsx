@@ -68,7 +68,10 @@ function AddProduct() {
         className="mt-2 p-5 pt-7 rounded-lg bg-background"
       >
         {/* Render Inputs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-8"
+          data-aos="fade-up"
+        >
           {ProductsForm.map((field, idx) => (
             <Fragment key={idx}>
               {renderField({
@@ -81,7 +84,7 @@ function AddProduct() {
           ))}
         </div>
 
-        <div className="my-8">
+        <div className="my-8" data-aos="fade-up">
           <div className="mb-3 flex items-center gap-x-2">
             <h3 className="text-2xl text-gray-400">Product Colors: </h3>
             <Button

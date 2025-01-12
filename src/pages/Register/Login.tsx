@@ -178,7 +178,13 @@ function Login() {
           className="gap-4"
           disabled={isSubmitting}
         >
-          <img src="/imgs/google.svg" alt="google" className="w-6" />
+          <img
+            src="/imgs/google.svg"
+            alt="google"
+            className="w-6"
+            width={24}
+            height={24}
+          />
           Continue with Google
         </Button>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
@@ -198,6 +204,7 @@ function Login() {
       <Button
         type="button"
         className="border border-border"
+        disabled={isSubmitting}
         onClick={BrowseDemo}
       >
         Browse Demo
