@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 
 import TinyEditor from "@/components/TinyEditor";
 import { Editor as TinyMCEEditor } from "tinymce";
-import LinkButton from "@/components/LinkButton";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
@@ -14,6 +13,7 @@ import { Category, IAxiosError } from "@/interfaces";
 import InputGroup from "@/components/InputGroup";
 import { useDispatch } from "react-redux";
 import { addCategory } from "@/app/slices/CategoriesSlice";
+import { Link } from "react-router-dom";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
@@ -64,9 +64,9 @@ function AddCategory() {
     <div>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Add Category</h2>
-        <LinkButton size="sm" to="/admin/categories">
+        <Link relative="path" to="..">
           <CornerUpRight size={40} strokeWidth={2.5} />
-        </LinkButton>
+        </Link>
       </PageTitle>
       <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
         <div
@@ -87,7 +87,7 @@ function AddCategory() {
         <div className="relative mt-8" data-aos="fade-up">
           <label
             htmlFor="Discount"
-            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-white"
+            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-background"
           >
             category description
           </label>

@@ -16,7 +16,7 @@ function Table({ headers, className = "", children }: IProps) {
       <table
         className={`rounded-2xl overflow-hidden w-full min-w-[850px] lg:min-w-full ${className}`}
       >
-        <thead className="bg-[var(--dark-gray)] text-white ">
+        <thead className="bg-[var(--dark-gray)] dark:bg-[#292828] text-white ">
           <tr>
             <th className="capitalize p-4">#</th>
             {headers.map((header: any, idx: number) => (
@@ -26,7 +26,9 @@ function Table({ headers, className = "", children }: IProps) {
             ))}
           </tr>
         </thead>
-        <tbody>{children}</tbody>
+        <tbody className="[&>tr]:border-b [&>tr]:dark:bg-[#111] [&>tr]:dark:text-gray-300 [&>tr]:dark:!border-gray-800">
+          {children}
+        </tbody>
       </table>
     </div>
   );

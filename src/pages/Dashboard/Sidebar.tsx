@@ -10,7 +10,7 @@ const Sidebar = () => {
     const isMatchingPath = location.pathname.startsWith("/admin" + path);
     return `${
       isActive || isMatchingPath ? "border-primary" : "border-transparent "
-    } p-3 block text-gray-800 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
+    } p-3 block text-gray-800 dark:text-gray-300 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
   };
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Sidebar = () => {
         <Logo className="text-2xl px-3" />
       </Link>
       <ul className="flex flex-col mt-4">
-        <li className="border-b border-gray-200 ">
+        <li className="border-b border-gray-200  dark:border-b-gray-600">
           <NavLink
             to="dashboard"
             className={({ isActive }) =>
@@ -38,7 +38,7 @@ const Sidebar = () => {
             Home
           </NavLink>
         </li>
-        <li className="border-b border-gray-200">
+        <li className="border-b border-gray-200 dark:border-b-gray-600">
           <NavLink
             to="products"
             className={({ isActive }) =>
@@ -48,7 +48,7 @@ const Sidebar = () => {
             Products
           </NavLink>
         </li>
-        <li className="border-b border-gray-200">
+        <li className="border-b border-gray-200 dark:border-b-gray-600">
           <NavLink
             to="categories"
             className={({ isActive }) =>
@@ -58,12 +58,10 @@ const Sidebar = () => {
             Categories
           </NavLink>
         </li>
-        <li className="border-b border-gray-200">
+        <li className="border-b border-gray-200 dark:border-b-gray-600">
           <NavLink
-            to="customers"
-            className={({ isActive }) =>
-              handleActiveLink(isActive, "/customers")
-            }
+            to="users"
+            className={({ isActive }) => handleActiveLink(isActive, "/users")}
           >
             Users
           </NavLink>

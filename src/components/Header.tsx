@@ -60,7 +60,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-20 bg-background text-foreground shadow-lg py-4 ">
-      <div className="px-5 md:px-1 lg:px-5 flex items-center justify-between gap-8">
+      <div className="px-5 md:px-1 lg:px-5 flex items-center justify-between gap-0 lg:gap-8">
         <Link to="/" className="min-w-[25%] lg:min-w-[33%] focus:outline-none">
           <Logo className="text-2xl cursor-pointer" />
         </Link>
@@ -79,7 +79,7 @@ export default function Header() {
             className="absolute block md:hidden left-2 top-2 cursor-pointer"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="flex-col md:flex-row flex items-center gap-5">
+          <div className="flex-col md:flex-row flex items-center gap-4 text-[15px] ">
             {user?.role == "admin" && (
               <NavLink
                 className="[&.active]:text-primary hover:text-primary duration-300"
@@ -105,6 +105,12 @@ export default function Header() {
               to="/favorites"
             >
               Favorites
+            </NavLink>
+            <NavLink
+              className="[&.active]:text-primary hover:text-primary duration-300"
+              to="/orders"
+            >
+              Orders
             </NavLink>
             <NavLink
               className="[&.active]:text-primary hover:text-primary duration-300"

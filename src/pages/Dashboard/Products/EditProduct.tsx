@@ -2,14 +2,13 @@ import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { CornerUpRight } from "lucide-react";
 import { Fragment, useEffect } from "react";
-import LinkButton from "@/components/LinkButton";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { Product } from "@/interfaces";
 import Loader from "@/components/Loader";
 import ColorBox from "@/components/ColorBox";
 import { ProductsForm } from "@/data";
 import { renderField } from "@/utils/FormUtils";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Popup from "@/components/Popup";
 import { useProductManagement } from "@/hooks/useProductManagement";
 import { getImagePreviewUrl } from "@/utils/imageUtils";
@@ -117,9 +116,9 @@ function EditProduct() {
       </Popup>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Edit Product</h2>
-        <LinkButton to="/admin/products" size="sm" className="text-3xl">
+        <Link relative="path" to="../..">
           <CornerUpRight size={40} strokeWidth={2.5} />
-        </LinkButton>
+        </Link>
       </PageTitle>
       <form
         onSubmit={handleSubmit(onSubmit, onError)}

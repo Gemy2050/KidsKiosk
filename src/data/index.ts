@@ -153,7 +153,7 @@ export const PROFILE_FORM: IProfileInput[] = [
   {
     name: "phone",
     placeholder: "Phone",
-    type: "string",
+    type: "number",
     validation: {
       required: "phone is required",
       maxLength: 11,

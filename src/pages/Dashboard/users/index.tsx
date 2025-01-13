@@ -8,7 +8,7 @@ import { IUser } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
 import { useMemo } from "react";
 
-function Customers() {
+function Users() {
   const { data, isLoading, error } = useCustomQuery<{ users: IUser[] }>({
     key: ["getUsers"],
     url: `/get-users`,
@@ -44,7 +44,7 @@ function Customers() {
   return (
     <div>
       <PageTitle>
-        <h2 className="text-lg sm:text-2xl">Customers</h2>
+        <h2 className="text-lg sm:text-2xl">Users</h2>
       </PageTitle>
 
       <div className="mt-2 p-4 rounded-lg bg-background">
@@ -67,4 +67,4 @@ function Customers() {
   );
 }
 
-export default Customers;
+export default Users;

@@ -5,12 +5,11 @@ import { CornerUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import TinyEditor from "@/components/TinyEditor";
 import { Editor as TinyMCEEditor } from "tinymce";
-import LinkButton from "@/components/LinkButton";
 import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { IAxiosError } from "@/interfaces";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import Loader from "@/components/Loader";
 import useGetCategories from "@/hooks/useGetCategories";
 import { useDispatch } from "react-redux";
@@ -91,9 +90,9 @@ function EditCategory() {
     <div>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Edit Category</h2>
-        <LinkButton size="sm" to="/admin/categories">
+        <Link relative="path" to="../..">
           <CornerUpRight size={40} strokeWidth={2.5} />
-        </LinkButton>
+        </Link>
       </PageTitle>
       <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
         <div

@@ -46,7 +46,7 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
 
   return (
     <div className=" rounded-md flex flex-col items-center">
-      <div className="w-full border-2 border-gray-100 max-w-md p-4 pt-6 bg-white rounded-lg shadow-lg mb-2">
+      <div className="w-full border-2 border-gray-200 dark:border-gray-400 max-w-md p-4 pt-6 bg-background rounded-lg shadow-lg mb-2">
         <div className="flex gap-2 items-center justify-between mb-6">
           <InputGroup className="w-full">
             <label htmlFor={`colorName-${colorId}`}>color name</label>

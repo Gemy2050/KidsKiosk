@@ -60,7 +60,7 @@ export const renderField = ({
         <InputGroup className="col-span-full">
           <label
             htmlFor="Discount"
-            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-white"
+            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-background"
           >
             {field.label}
           </label>

@@ -4,9 +4,17 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import Images from "@/pages/Dashboard/Images";
 import Profile from "@/pages/Profile/Profile";
 import Contact from "@/pages/Contact/Contact";
-import Customers from "@/pages/Dashboard/users";
 import Success from "@/pages/Success";
 import Orders from "@/pages/Orders";
+import Users from "@/pages/Dashboard/users";
+import Dashboard from "@/pages/Dashboard";
+import Products from "@/pages/Dashboard/Products";
+import AddProduct from "@/pages/Dashboard/Products/AddProduct";
+import EditProduct from "@/pages/Dashboard/Products/EditProduct";
+import AddImages from "@/pages/Dashboard/Images/AddImages";
+import Categories from "@/pages/Dashboard/Categories";
+import AddCategory from "@/pages/Dashboard/Categories/AddCategory";
+import EditCategory from "@/pages/Dashboard/Categories/EditCategory";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -22,22 +30,6 @@ const Signup = lazy(() => import("@/pages/Register/Signup"));
 const ForgetPassword = lazy(() => import("@/pages/ForgetPassword"));
 const Loader = lazy(() => import("@/components/Loader"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
-
-const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Products = lazy(() => import("@/pages/Dashboard/Products"));
-const AddProduct = lazy(() => import("@/pages/Dashboard/Products/AddProduct"));
-const EditProduct = lazy(
-  () => import("@/pages/Dashboard/Products/EditProduct")
-);
-const AddImages = lazy(() => import("@/pages/Dashboard/Images/AddImages"));
-
-const Categories = lazy(() => import("@/pages/Dashboard/Categories"));
-const AddCategory = lazy(
-  () => import("@/pages/Dashboard/Categories/AddCategory")
-);
-const EditCategory = lazy(
-  () => import("@/pages/Dashboard/Categories/EditCategory")
-);
 
 const AppRoutes = () => (
   <Suspense fallback={<Loader />}>
@@ -76,7 +68,7 @@ const AppRoutes = () => (
           <Route path="add" element={<AddCategory />} />
           <Route path="edit/:productId" element={<EditCategory />} />
         </Route>
-        <Route path="customers" element={<Customers />} />
+        <Route path="users" element={<Users />} />
       </Route>
 
       <Route path="/verificationWithOtp" element={<OTPForm />} />

@@ -29,7 +29,7 @@ function Success() {
   }, [sessionId]);
 
   const validateSession = async () => {
-    if (!sessionId) {
+    if (!sessionId || !cart.length) {
       setLoading(false);
       return <Navigate to="/" replace />;
     }

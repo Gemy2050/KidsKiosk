@@ -16,6 +16,7 @@ import useCustomQuery from "@/hooks/use-cutstom-query";
 import Loader from "@/components/Loader";
 import Table from "@/components/Table";
 import { format } from "date-fns";
+import { useTheme } from "next-themes";
 
 const getStatusColor = (status: string) => {
   const colors = {
@@ -27,6 +28,8 @@ const getStatusColor = (status: string) => {
 };
 
 const Dashboard = () => {
+  const { theme } = useTheme();
+
   const { data: analytics, isLoading: analyticsLoading } = useCustomQuery<any>({
     key: ["getAnalytics"],
     url: "/analytics",
@@ -56,7 +59,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card
           data-aos="fade-up"
-          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-blue-500"
+          className="bg-background p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-blue-500"
         >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-blue-100 rounded-full transition-colors duration-300 hover:bg-blue-200">
@@ -70,7 +73,7 @@ const Dashboard = () => {
         </Card>
         <Card
           data-aos="fade-up"
-          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-green-500"
+          className="bg-background p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-green-500"
         >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-green-100 rounded-full transition-colors duration-300 hover:bg-green-200">
@@ -84,7 +87,7 @@ const Dashboard = () => {
         </Card>
         <Card
           data-aos="fade-up"
-          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-purple-500"
+          className="bg-background p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-purple-500"
         >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-purple-100 rounded-full transition-colors duration-300 hover:bg-purple-200">
@@ -98,7 +101,7 @@ const Dashboard = () => {
         </Card>
         <Card
           data-aos="fade-up"
-          className="p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-orange-500"
+          className="bg-background p-4 !transition-all !duration-500 hover:!scale-105 hover:shadow-xl cursor-pointer border-l-4 border-l-orange-500"
         >
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-orange-100 rounded-full transition-colors duration-300 hover:bg-orange-200">
@@ -116,15 +119,23 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card
           data-aos="fade-right"
-          className="p-6 transition-all duration-300 hover:shadow-lg"
+          className="p-6 transition-all duration-300 hover:shadow-lg bg-background"
         >
           <h3 className="text-lg font-semibold mb-4">Sales Overview</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray=".5" />
               <XAxis dataKey="date" />
               <YAxis />
-              <Tooltip />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: theme == "dark" ? "#1a1a1a" : "#fff",
+                  border: `1px solid ${
+                    theme == "dark" ? "#404040" : "#e0e0e0"
+                  }`,
+                  color: theme == "dark" ? "#fff" : "#333",
+                }}
+              />
               <Area
                 type="monotone"
                 dataKey="sales"
@@ -137,15 +148,23 @@ const Dashboard = () => {
 
         <Card
           data-aos="fade-left"
-          className="p-6 transition-all duration-300 hover:shadow-lg"
+          className="p-6 transition-all duration-300 hover:shadow-lg bg-background"
         >
           <h3 className="text-lg font-semibold mb-4">Top Products</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={topProducts}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid strokeDasharray=".5" />
               <XAxis dataKey="name" />
               <YAxis />
-              <Tooltip />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: theme == "dark" ? "#1a1a1a" : "#fff",
+                  border: `1px solid ${
+                    theme == "dark" ? "#404040" : "#e0e0e0"
+                  }`,
+                  color: theme == "dark" ? "#fff" : "#333",
+                }}
+              />
               <Bar dataKey="quantity" fill="#82ca9d" />
             </BarChart>
           </ResponsiveContainer>
@@ -153,13 +172,13 @@ const Dashboard = () => {
 
         {/* Recent Orders Table */}
         <Card
-          className="col-span-full p-6 transition-all duration-300 hover:shadow-lg"
+          className="bg-background col-span-full p-6 transition-all duration-300 hover:shadow-lg"
           data-aos="fade-up"
           data-aos-offset="50"
         >
           <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
           <Table
-            className="min-w-[1000px]"
+            className="!min-w-[950px]"
             headers={[
               "name",
               "Email",
@@ -170,18 +189,18 @@ const Dashboard = () => {
             ]}
           >
             {recentOrders?.map((order: any, idx: number) => (
-              <tr key={order.id} className="border-b  p-8">
-                <td className="p-4">{idx + 1}</td>
-                <td className="p-4">
+              <tr key={order.id}>
+                <td className="!p-5">{idx + 1}</td>
+                <td className="!p-5 capitalize">
                   {order.firstName + " " + order.secondName}
                 </td>
-                <td className="p-4">{order.email}</td>
-                <td className="p-4">{order.address}</td>
-                <td className="p-4">${order.totalAmount}</td>
-                <td className="p-4">
+                <td className="!p-5">{order.email}</td>
+                <td className="!p-5">{order.address}</td>
+                <td className="!p-5">${order.totalAmount}</td>
+                <td className="!p-5">
                   {format(new Date(order.createdAt), "dd MMM, yyyy - hh:mm a")}
                 </td>
-                <td className="p-4">
+                <td className="!p-5">
                   <span
                     className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
                       order.status

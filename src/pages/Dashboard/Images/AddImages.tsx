@@ -1,5 +1,4 @@
 import Input from "@/components/Input";
-import LinkButton from "@/components/LinkButton";
 import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/config/axios.config";
@@ -9,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { CornerUpRight } from "lucide-react";
 import { ChangeEvent, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function AddImages() {
   const [images, setImages] = useState<File[]>([]);
@@ -70,9 +69,9 @@ function AddImages() {
     <div>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Add Product Images</h2>
-        <LinkButton size="sm" to="/admin/products">
+        <Link relative="path" to="..">
           <CornerUpRight size={40} strokeWidth={2.5} />
-        </LinkButton>
+        </Link>
       </PageTitle>
       <div
         className="mt-2 p-5 pt-7 rounded-lg bg-background"

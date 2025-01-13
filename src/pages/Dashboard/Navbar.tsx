@@ -1,4 +1,5 @@
 import DropDown from "@/components/DropDown";
+import { ModeToggle } from "@/components/ModeToggler";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { MenuSquare } from "lucide-react";
 
@@ -16,20 +17,23 @@ const Navbar = () => {
         onClick={toggleSidebar}
       />
 
-      <DropDown
-        align="end"
-        trigger={
-          <img
-            src="https://picsum.photos/200/300"
-            className="ms-auto w-10 h-10 rounded-full cursor-pointer"
-            alt="profile"
-          />
-        }
-      >
-        <DropdownMenuItem className="[&:hover]:text-destructive">
-          Logout
-        </DropdownMenuItem>
-      </DropDown>
+      <div className="flex items-center gap-2 ms-auto">
+        <ModeToggle />
+        <DropDown
+          align="end"
+          trigger={
+            <img
+              src="https://picsum.photos/200/300"
+              className="ms-auto w-10 h-10 rounded-full cursor-pointer"
+              alt="profile"
+            />
+          }
+        >
+          <DropdownMenuItem className="[&:hover]:text-destructive">
+            Logout
+          </DropdownMenuItem>
+        </DropDown>
+      </div>
     </div>
   );
 };

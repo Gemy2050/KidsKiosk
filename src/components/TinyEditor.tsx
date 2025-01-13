@@ -2,6 +2,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
 // import Loader from "./Loader";
 import { memo, useState } from "react";
+import { useTheme } from "next-themes";
 
 interface IProps {
   editorRef: React.MutableRefObject<TinyMCEEditor | null>;
@@ -10,6 +11,20 @@ interface IProps {
   onEditorChange?: (value: string) => void;
 }
 
+const darkModeSettings = {
+  skin: "oxide-dark",
+  content_css: "dark",
+  content_style: `
+    body {
+      background-color: #141b1e;
+      color: #ffffff;
+    }
+    .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+      color: #666;
+    }
+  `,
+};
+
 function TinyEditor({
   editorRef,
   initialValue = "",
@@ -17,6 +32,7 @@ function TinyEditor({
   onEditorChange,
 }: IProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const { theme } = useTheme();
 
   const onInit = (_evt: any, editor: TinyMCEEditor) => {
     editorRef.current = editor;
@@ -39,6 +55,7 @@ function TinyEditor({
           if (onEditorChange) onEditorChange(value);
         }}
         init={{
+          ...(theme === "dark" ? darkModeSettings : {}),
           height: 350,
           menubar: true,
           setup: (editor) => {

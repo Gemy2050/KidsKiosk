@@ -2,7 +2,6 @@ import PageTitle from "@/components/PageTitle";
 import { Button } from "@/components/ui/button";
 import { CornerUpRight } from "lucide-react";
 import { Fragment } from "react";
-import LinkButton from "@/components/LinkButton";
 import Loader from "@/components/Loader";
 import ColorBox from "@/components/ColorBox";
 import { ProductsForm } from "@/data";
@@ -12,6 +11,7 @@ import { useProductManagement } from "@/hooks/useProductManagement";
 import { SubmitHandler } from "react-hook-form";
 import { ProductForm } from "@/validation";
 import { getImagePreviewUrl } from "@/utils/imageUtils";
+import { Link } from "react-router-dom";
 
 function AddProduct() {
   const {
@@ -51,9 +51,9 @@ function AddProduct() {
     <div className="p-0">
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Add Product</h2>
-        <LinkButton to="/admin/products" size="sm" className="text-3xl">
+        <Link relative="path" to="..">
           <CornerUpRight size={40} strokeWidth={2.5} />
-        </LinkButton>
+        </Link>
       </PageTitle>
       {/* Popup */}
       <Popup>
