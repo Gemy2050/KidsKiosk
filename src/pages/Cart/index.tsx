@@ -7,8 +7,37 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { getTotalPrice } from "@/utils/functions";
 
+import { loadStripe } from "@stripe/stripe-js";
+import axiosInstance from "@/config/axios.config";
+import { useState } from "react";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
+
 function Cart() {
   let { cart } = useSelector((state: RootState) => state.cart);
+  const [disabled, setDisabled] = useState(false);
+
+  const handleCheckout = async () => {
+    try {
+      setDisabled(true);
+      const stripe = await stripePromise;
+
+      const { data } = await axiosInstance.post("/checkout", {
+        items: cart,
+      });
+
+      const { sessionId } = data;
+
+      // Redirect to Stripe checkout
+      await stripe?.redirectToCheckout({
+        sessionId,
+      });
+    } catch (error) {
+      console.error("Checkout error:", error);
+    } finally {
+      setDisabled(false);
+    }
+  };
 
   return (
     <main className="relative pt-20 pb-20">
@@ -40,15 +69,20 @@ function Cart() {
           {cart.length > 0 ? (
             <>
               <h3 className="text-3xl text-center">
-                Total Price: ${getTotalPrice(cart)}
+                Total Price <br /> ${getTotalPrice(cart)}
               </h3>
-              <Button className=" rounded-lg mt-5" fullWidth>
-                Checkout (In Progress)
+              <Button
+                className="rounded-lg mt-5"
+                fullWidth
+                disabled={disabled}
+                onClick={handleCheckout}
+              >
+                Proceed to Checkout
               </Button>
             </>
           ) : (
             <>
-              <h3 className="text-3xl">Your Cart is Empty</h3>
+              <h3 className="text-3xl text-center">Your Cart is Empty</h3>
               <Link
                 className={`${cn(
                   buttonVariants({ fullWidth: true, variant: "default" })

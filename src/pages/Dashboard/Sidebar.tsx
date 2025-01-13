@@ -65,7 +65,7 @@ const Sidebar = () => {
               handleActiveLink(isActive, "/customers")
             }
           >
-            Customers
+            Users
           </NavLink>
         </li>
       </ul>

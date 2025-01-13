@@ -5,6 +5,8 @@ import Images from "@/pages/Dashboard/Images";
 import Profile from "@/pages/Profile/Profile";
 import Contact from "@/pages/Contact/Contact";
 import Customers from "@/pages/Dashboard/users";
+import Success from "@/pages/Success";
+import Orders from "@/pages/Orders";
 
 const ProtectedRoutes = lazy(() => import("@/auth/ProtectedRoutes"));
 const AppLayout = lazy(() => import("@/layout/AppLayout"));
@@ -52,6 +54,8 @@ const AppRoutes = () => (
           <Route path="/products" element={<ProductsList />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact" element={<Contact />} />
         </Route>

@@ -15,78 +15,37 @@ import PageTitle from "@/components/PageTitle";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import Loader from "@/components/Loader";
 import Table from "@/components/Table";
-
-const salesData = [
-  { month: "Jan", sales: 4000 },
-  { month: "Feb", sales: 3000 },
-  { month: "Mar", sales: 5000 },
-  { month: "Apr", sales: 4500 },
-  { month: "May", sales: 6000 },
-  { month: "Jun", sales: 5500 },
-  { month: "Jul", sales: 7000 },
-];
-
-const topProducts = [
-  { name: "Product A", sales: 120 },
-  { name: "Product B", sales: 98 },
-  { name: "Product C", sales: 86 },
-  { name: "Product D", sales: 75 },
-  { name: "Product E", sales: 65 },
-];
-
-const recentOrders = [
-  {
-    id: "#12345",
-    customer: "Ahmed Ali",
-    product: "Product A",
-    amount: 120,
-    status: "Completed",
-  },
-  {
-    id: "#12346",
-    customer: "Mohamed Omar",
-    product: "Product B",
-    amount: 150,
-    status: "Pending",
-  },
-  {
-    id: "#12347",
-    customer: "Zain Nader",
-    product: "Product C",
-    amount: 200,
-    status: "Processing",
-  },
-  {
-    id: "#12348",
-    customer: "Amir Hassan",
-    product: "Product D",
-    amount: 180,
-    status: "Completed",
-  },
-];
+import { format } from "date-fns";
 
 const getStatusColor = (status: string) => {
   const colors = {
-    Completed: "bg-green-100 text-green-800",
-    Pending: "bg-yellow-100 text-yellow-800",
-    Processing: "bg-blue-100 text-blue-800",
+    completed: "bg-green-100 text-green-800",
+    pending: "bg-yellow-100 text-yellow-800",
+    processing: "bg-blue-100 text-blue-800",
   };
   return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-800";
 };
 
 const Dashboard = () => {
-  const { data: products, isLoading: productsLoading } = useCustomQuery<any>({
-    key: ["getAllProducts"],
-    url: "/product/get-all-products",
-  });
-  const { data: users, isLoading: usersLoading } = useCustomQuery<any>({
-    key: ["getUsers"],
-    url: "/get-users",
+  const { data: analytics, isLoading: analyticsLoading } = useCustomQuery<any>({
+    key: ["getAnalytics"],
+    url: "/analytics",
   });
 
-  if (productsLoading || usersLoading) {
+  const {
+    charts: { topProducts, salesOverview },
+    metrics: { totalCustomers, totalOrders, totalProducts, totalRevenue },
+    recentOrders,
+  } = analytics || { charts: {}, metrics: {} };
+
+  if (analyticsLoading) {
     return <Loader />;
   }
+
+  const salesData = salesOverview?.map((day: any) => ({
+    date: format(day.createdAt, "MMM dd"),
+    sales: day._sum.totalAmount || 0,
+  }));
 
   return (
     <div className=" space-y-3">
@@ -105,7 +64,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Revenue</p>
-              <h3 className="text-2xl font-bold">24,560</h3>
+              <h3 className="text-2xl font-bold">{totalRevenue}</h3>
             </div>
           </div>
         </Card>
@@ -119,7 +78,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Orders</p>
-              <h3 className="text-2xl font-bold">145</h3>
+              <h3 className="text-2xl font-bold">{totalOrders}</h3>
             </div>
           </div>
         </Card>
@@ -133,7 +92,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Products</p>
-              <h3 className="text-2xl font-bold">{products.data.length}</h3>
+              <h3 className="text-2xl font-bold">{totalProducts}</h3>
             </div>
           </div>
         </Card>
@@ -147,7 +106,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Total Customers</p>
-              <h3 className="text-2xl font-bold">{users.users.length}</h3>
+              <h3 className="text-2xl font-bold">{totalCustomers}</h3>
             </div>
           </div>
         </Card>
@@ -163,7 +122,7 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={salesData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
               <Area
@@ -187,35 +146,55 @@ const Dashboard = () => {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="sales" fill="#82ca9d" />
+              <Bar dataKey="quantity" fill="#82ca9d" />
             </BarChart>
           </ResponsiveContainer>
         </Card>
-      </div>
 
-      {/* Recent Orders Table */}
-      <Card className="p-6 transition-all duration-300 hover:shadow-lg">
-        <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-        <Table headers={["Customer", "Product", "Amount", "Status"]}>
-          {recentOrders.map((order) => (
-            <tr key={order.id} className="border-b  p-8">
-              <td className="p-4">{order.id}</td>
-              <td className="p-4">{order.customer}</td>
-              <td className="p-4">{order.product}</td>
-              <td className="p-4">${order.amount}</td>
-              <td className="p-4">
-                <span
-                  className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
-                    order.status
-                  )}`}
-                >
-                  {order.status}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </Table>
-      </Card>
+        {/* Recent Orders Table */}
+        <Card
+          className="col-span-full p-6 transition-all duration-300 hover:shadow-lg"
+          data-aos="fade-up"
+          data-aos-offset="50"
+        >
+          <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
+          <Table
+            className="min-w-[1000px]"
+            headers={[
+              "name",
+              "Email",
+              "address",
+              "Toatal amount",
+              "Created at",
+              "Status",
+            ]}
+          >
+            {recentOrders?.map((order: any, idx: number) => (
+              <tr key={order.id} className="border-b  p-8">
+                <td className="p-4">{idx + 1}</td>
+                <td className="p-4">
+                  {order.firstName + " " + order.secondName}
+                </td>
+                <td className="p-4">{order.email}</td>
+                <td className="p-4">{order.address}</td>
+                <td className="p-4">${order.totalAmount}</td>
+                <td className="p-4">
+                  {format(new Date(order.createdAt), "dd MMM, yyyy - hh:mm a")}
+                </td>
+                <td className="p-4">
+                  <span
+                    className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
+                      order.status
+                    )}`}
+                  >
+                    {order.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </Table>
+        </Card>
+      </div>
     </div>
   );
 };
