@@ -25,21 +25,18 @@ export default function Product({ product }: IProps) {
   const { toast } = useToast();
 
   const handleCartEvent = () => {
+    let message = "Product added to cart";
     if (!isInCart) {
-      toast({
-        title: "Product added to cart",
-        description: "You can see your cart in the navbar",
-        variant: "success",
-      });
       dispatch(addToCart(product));
     } else {
-      toast({
-        title: "Product removed from cart",
-        description: "You can see your cart in the navbar",
-        variant: "success",
-      });
+      message = "Product removed from cart";
       dispatch(removeFromCart(product));
     }
+    toast({
+      title: message,
+      description: "You can see your cart in the navbar",
+      variant: "success",
+    });
     setIsInCart(!isInCart);
   };
 

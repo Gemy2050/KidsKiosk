@@ -8,7 +8,11 @@ const NotFound = () => {
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-background relative overflow-hidden">
-      <div className="text-center" data-aos="fade-up" data-aos-duration="1000">
+      <div
+        className="relative z-10 text-center"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+      >
         <h1
           className="text-9xl font-bold text-primary"
           data-aos="zoom-in"

@@ -42,10 +42,12 @@ export default function ProductDetails() {
 
     if (product) {
       const sizes = product.variants?.find(({ id }) => id === colorId)?.sizes;
-      setSizeId(sizes?.[0].size || 0);
       setAvailableSizes(sizes);
+
+      if (!sizeId) setSizeId(sizes?.[0].size || 0);
     }
   }, [colorId, product]);
+
   if (!product && isFetched) {
     return <Navigate to="/products" replace />;
   }
@@ -117,7 +119,10 @@ export default function ProductDetails() {
               {product.variants?.map(({ id, color }, i) => (
                 <span
                   key={id}
-                  onClick={() => setColorId(id)}
+                  onClick={() => {
+                    setColorId(id);
+                    setSizeId(0);
+                  }}
                   className={`${
                     (colorId ? colorId === id : i === 0) && "active"
                   } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block p-1 rounded-lg border border-border text-center font-semibold text-gray-500`}

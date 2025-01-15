@@ -49,15 +49,12 @@ function Success() {
   };
 
   const storeOrder = async () => {
-    const theUser =
-      user || JSON.parse(sessionStorage.getItem("demoUser") || "{}");
-
     const orderData = {
       sessionId: sessionId,
-      email: theUser.email,
-      firstName: theUser.firstName,
-      secondName: theUser.secondName,
-      address: theUser.address || "",
+      email: user?.email,
+      firstName: user?.firstName,
+      secondName: user?.secondName,
+      address: user?.address || "",
       items: JSON.stringify(cart),
       totalAmount: getTotalPrice(cart),
       status: "completed",

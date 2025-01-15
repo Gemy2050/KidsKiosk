@@ -109,20 +109,6 @@ function Login() {
     );
   };
 
-  //* Only For Demo.. Remove it Later
-  const BrowseDemo = () => {
-    sessionStorage.setItem("isDemo", "true");
-    sessionStorage.setItem(
-      "demoUser",
-      JSON.stringify({
-        firstName: "Demo",
-        secondName: "User",
-        email: "demo@example.com",
-      })
-    );
-    navigate("/", { replace: true });
-  };
-
   return (
     <form
       className="flex flex-col gap-4 w-[400px] max-w-full mx-auto md:mx-0"
@@ -213,14 +199,6 @@ function Login() {
           )}
         </GoogleOAuthProvider>
       </div>
-      <Button
-        type="button"
-        className="border border-border"
-        disabled={isSubmitting || disabled}
-        onClick={BrowseDemo}
-      >
-        Browse Demo
-      </Button>
     </form>
   );
 }

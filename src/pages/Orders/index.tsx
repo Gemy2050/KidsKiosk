@@ -8,11 +8,10 @@ import Spinner from "@/components/Spinner";
 
 function Orders() {
   const user: User = useAuthUser();
-  const demoUser = JSON.parse(sessionStorage.getItem("demoUser")!);
 
   const { data: orders, isLoading } = useCustomQuery<IOrder[]>({
     key: ["orders"],
-    url: `/order?email=${user?.email || demoUser.email}`,
+    url: `/order?email=${user?.email}`,
   });
 
   return (

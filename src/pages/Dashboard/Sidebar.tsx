@@ -20,7 +20,7 @@ const Sidebar = () => {
     const isMatchingPath = location.pathname.startsWith("/admin" + path);
     return `${
       isActive || isMatchingPath
-        ? "border-primary text-primary font-bold"
+        ? "border-primary !text-primary font-bold"
         : "border-transparent "
     } flex gap-2 items-center p-3 block text-gray-800 dark:text-gray-300 border-e-4 hover:ps-4 hover:border-primary active:border-primary duration-300`;
   };

@@ -25,6 +25,7 @@ import { useTheme } from "next-themes";
 import { getStatusColor } from "@/utils/functions";
 import { useMemo } from "react";
 import Spinner from "@/components/Spinner";
+import { IOrder } from "@/interfaces";
 
 const Dashboard = () => {
   const { theme } = useTheme();
@@ -70,7 +71,7 @@ const Dashboard = () => {
   }));
 
   // Render Orders Table
-  const renderRecentOrders = recentOrders?.map((order: any, idx: number) => (
+  const renderRecentOrders = recentOrders?.map((order: IOrder, idx: number) => (
     <tr key={order.id}>
       <td className="!p-5">{idx + 1}</td>
       <td className="!p-5 capitalize">
@@ -229,7 +230,7 @@ const Dashboard = () => {
           data-aos-offset="50"
         >
           <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-          <Table className="!min-w-[950px]" headers={headers}>
+          <Table className="!min-w-[980px]" headers={headers}>
             {renderRecentOrders}
           </Table>
         </Card>
