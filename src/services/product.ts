@@ -19,3 +19,11 @@ export async function updateProduct(product: FormData) {
 
   return response;
 }
+
+export async function deleteProduct(id: any) {
+  const response = await axiosInstance.delete(
+    `/product/delete-product?id=${id}`
+  );
+
+  return response;
+}

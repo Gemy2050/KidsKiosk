@@ -74,7 +74,12 @@ export function useProductManagement() {
         title: "Product added successfully",
         variant: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["getAllProducts"] });
+
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "getAllProducts" ||
+          query.queryKey[0] === "getAnalytics",
+      });
       return true;
     } catch (error) {
       toast({

@@ -5,7 +5,6 @@ import { CornerUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import TinyEditor from "@/components/TinyEditor";
 import { Editor as TinyMCEEditor } from "tinymce";
-import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { IAxiosError } from "@/interfaces";
@@ -14,6 +13,7 @@ import Loader from "@/components/Loader";
 import useGetCategories from "@/hooks/useGetCategories";
 import { useDispatch } from "react-redux";
 import { updateCategory } from "@/app/slices/CategoriesSlice";
+import { editCategory } from "@/services/category";
 
 function EditCategory() {
   const [categoryName, setCategoryName] = useState("");
@@ -21,14 +21,12 @@ function EditCategory() {
   const [disabled, setDisabled] = useState(false);
   const editorRef = useRef<TinyMCEEditor>(null);
   const { toast } = useToast();
-  const { productId } = useParams();
+  const { catId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data: categories, isLoading } = useGetCategories();
 
-  const category = categories?.find((el) => el.id == productId);
-
-  console.log({ name: categoryName });
+  const category = categories?.find((el) => el.id == catId);
 
   useEffect(() => {
     if (categories) {
@@ -58,11 +56,12 @@ function EditCategory() {
         });
         return;
       }
-      console.log({ categoryName });
 
-      const { data } = await axiosInstance.put(
-        `/category/update-category?id=${productId}&categoryName=${categoryName}&description=${description}`
-      );
+      const { data } = await editCategory({
+        catId: catId || "",
+        categoryName,
+        description,
+      });
       dispatch(updateCategory(data));
 
       navigate("/admin/categories");
@@ -94,15 +93,15 @@ function EditCategory() {
           <CornerUpRight size={40} strokeWidth={2.5} />
         </Link>
       </PageTitle>
-      <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-x-3 gap-y-8"
-          data-aos="fade-up"
-        >
+      <div
+        className="mt-2 p-5 pt-7 rounded-lg bg-background"
+        data-aos="fade-up"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 gap-x-3 gap-y-8">
           <div className="relative">
             <label
               htmlFor="name"
-              className="absolute px-2 left-4 -top-3 text-sm text-gray-500 bg-white"
+              className="absolute px-2 left-4 -top-3 text-sm text-gray-500 bg-background"
             >
               category name
             </label>
@@ -116,10 +115,10 @@ function EditCategory() {
           </div>
         </div>
 
-        <div className="relative mt-8" data-aos="fade-up">
+        <div className="relative mt-8">
           <label
             htmlFor="Discount"
-            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-white"
+            className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-background"
           >
             category description
           </label>
@@ -129,7 +128,6 @@ function EditCategory() {
           size={"lg"}
           rounded={"md"}
           className="mt-10 "
-          data-aos="fade-up"
           disabled={disabled}
           onClick={handleEditCategory}
         >

@@ -5,56 +5,27 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Menu, ShoppingCart, UserCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import useSignOut from "react-auth-kit/hooks/useSignOut";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import axiosInstance from "@/config/axios.config";
-import { useToast } from "@/hooks/use-toast";
+
 import Loader from "./Loader";
-import { clearCart } from "@/app/slices/CartSlice";
-import { clearFavorites } from "@/app/slices/FavoritesSlice";
+import useSignout from "@/hooks/useSignout";
+import { NAV_LINKS } from "@/data/links";
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
-  const signOut = useSignOut();
   const user: User = useAuthUser();
-  const dispatch = useDispatch();
   let { cart } = useSelector((state: RootState) => state.cart);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+
+  const { handleSignout, loading } = useSignout();
 
   useEffect(() => {
     setOpenMenu(false);
   }, [pathname]);
-
-  const handleSignOut = async () => {
-    try {
-      setLoading(true);
-      if (user) {
-        await axiosInstance.post("/account/signout", {
-          id: user?.id,
-          isGoogleProvider: user?.isGoogleUser,
-        });
-      }
-      signOut();
-      dispatch(clearCart());
-      dispatch(clearFavorites());
-      sessionStorage.removeItem("isDemo");
-      navigate("/login", { replace: true });
-    } catch (error) {
-      toast({
-        title: "Failed to logout",
-        description: "Something went wrong",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) return <Loader />;
 
@@ -88,36 +59,15 @@ export default function Header() {
                 Dashboard
               </NavLink>
             )}
-            <NavLink
-              className="[&.active]:text-primary hover:text-primary duration-300"
-              to="/"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              className="[&.active]:text-primary hover:text-primary duration-300"
-              to="/products"
-            >
-              Products
-            </NavLink>
-            <NavLink
-              className="[&.active]:text-primary hover:text-primary duration-300"
-              to="/favorites"
-            >
-              Favorites
-            </NavLink>
-            <NavLink
-              className="[&.active]:text-primary hover:text-primary duration-300"
-              to="/orders"
-            >
-              Orders
-            </NavLink>
-            <NavLink
-              className="[&.active]:text-primary hover:text-primary duration-300"
-              to="/contact"
-            >
-              Contact
-            </NavLink>
+            {NAV_LINKS.map(({ link, name }) => (
+              <NavLink
+                key={name}
+                className="[&.active]:text-primary hover:text-primary duration-300"
+                to={link}
+              >
+                {name}
+              </NavLink>
+            ))}
           </div>
           <div className="flex items-center justify-center gap-4 md:gap-2 lg:gap-4 mt-5 md:mt-0">
             <ModeToggle />
@@ -142,7 +92,7 @@ export default function Header() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="[&:hover]:text-destructive cursor-pointer"
-                onClick={handleSignOut}
+                onClick={handleSignout}
               >
                 Logout
               </DropdownMenuItem>

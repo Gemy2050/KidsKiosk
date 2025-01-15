@@ -1,5 +1,5 @@
 import Logo from "@/components/Logo";
-import { SOCIAL_LINKS } from "@/data";
+import { SOCIAL_LINKS } from "@/data/links";
 
 export default function Footer() {
   return (

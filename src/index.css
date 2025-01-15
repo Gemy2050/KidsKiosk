@@ -50,7 +50,7 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 199, 18.14%, 6.79%;
+    --border: 0 0% 40.8%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
@@ -100,6 +100,10 @@
   display: none;
 }
 
+#root > *:not(#Dashboard) {
+  overflow: hidden;
+}
+
 /* Popup */
 #Popup.open {
   @apply !scale-100;
@@ -120,7 +124,7 @@
 
 /* Custom Table */
 #customTable tbody tr {
-  @apply border-gray-200 even:bg-gray-100 dark:even:bg-[rgb(10_10_10)];
+  @apply border-gray-200 even:bg-gray-100 dark:even:bg-[rgb(10_10_10)] hover:bg-gray-300 dark:hover:bg-slate-900 duration-200;
 }
 
 #customTable tbody tr td {

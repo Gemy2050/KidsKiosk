@@ -6,10 +6,14 @@ import Table from "@/components/Table";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { IUser } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
+import { format } from "date-fns";
+import { RefreshCw } from "lucide-react";
 import { useMemo } from "react";
 
 function Users() {
-  const { data, isLoading, error } = useCustomQuery<{ users: IUser[] }>({
+  const { data, error, isFetching, refetch } = useCustomQuery<{
+    users: IUser[];
+  }>({
     key: ["getUsers"],
     url: `/get-users`,
   });
@@ -37,7 +41,7 @@ function Users() {
       <td>{user.email}</td>
       <td>{user.phone || "-"}</td>
       <td>{user.address || "-"}</td>
-      <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+      <td>{format(user.createdAt, "dd MMM yyyy")}</td>
     </tr>
   ));
 
@@ -45,6 +49,13 @@ function Users() {
     <div>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Users</h2>
+        <RefreshCw
+          size={25}
+          className={`cursor-pointer hover:text-primary transition-all duration-500 ease-linear ${
+            isFetching ? "animate-spin pointer-events-none opacity-50" : ""
+          }`}
+          onClick={() => refetch()}
+        />
       </PageTitle>
 
       <div className="mt-2 p-4 rounded-lg bg-background">
@@ -56,7 +67,7 @@ function Users() {
           onChange={tableSearch}
         />
 
-        {!isLoading ? (
+        {!isFetching ? (
           <Table headers={tableHeaders}>{renderCategories}</Table>
         ) : (
           <Spinner />

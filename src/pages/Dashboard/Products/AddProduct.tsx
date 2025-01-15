@@ -4,7 +4,7 @@ import { CornerUpRight } from "lucide-react";
 import { Fragment } from "react";
 import Loader from "@/components/Loader";
 import ColorBox from "@/components/ColorBox";
-import { ProductsForm } from "@/data";
+import { ProductsForm } from "@/data/forms";
 import { renderField } from "@/utils/FormUtils";
 import Popup from "@/components/Popup";
 import { useProductManagement } from "@/hooks/useProductManagement";

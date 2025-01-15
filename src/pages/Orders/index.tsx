@@ -1,34 +1,19 @@
 import { Package, Clock, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import useCustomQuery from "@/hooks/use-cutstom-query";
-import { Product } from "@/interfaces";
-import Loader from "@/components/Loader";
+import { IOrder } from "@/interfaces";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
-
-interface IOrders {
-  status: string;
-  id: string;
-  email: string;
-  sessionId: string;
-  items: Product[];
-  totalAmount: number;
-  createdAt: Date;
-}
+import Spinner from "@/components/Spinner";
 
 function Orders() {
-  // const orders = useSelector((state: RootState) => state.orders.orders);
-
   const user: User = useAuthUser();
+  const demoUser = JSON.parse(sessionStorage.getItem("demoUser")!);
 
-  const { data: orders, isLoading } = useCustomQuery<IOrders[]>({
+  const { data: orders, isLoading } = useCustomQuery<IOrder[]>({
     key: ["orders"],
-    url: `/order?email=${user?.email}`,
+    url: `/order?email=${user?.email || demoUser.email}`,
   });
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <main className="relative pt-20 pb-20">
@@ -49,6 +34,7 @@ function Orders() {
         </h2>
 
         <div className="grid gap-6">
+          {isLoading && <Spinner />}
           {orders?.map((order) => (
             <div
               key={order.sessionId}
@@ -96,7 +82,7 @@ function Orders() {
             </div>
           ))}
 
-          {(!orders || orders?.length === 0) && (
+          {orders?.length === 0 && (
             <div
               className="text-center p-10 bg-background rounded-lg border border-border"
               data-aos="fade-up"

@@ -2,7 +2,7 @@ import ErrorMessage from "@/components/ErrorMessage";
 import Input from "@/components/Input";
 import { Button } from "@/components/ui/button";
 import axiosInstance from "@/config/axios.config";
-import { RESET_FORM } from "@/data";
+import { RESET_FORM } from "@/data/forms";
 import { useToast } from "@/hooks/use-toast";
 import { IAxiosError } from "@/interfaces";
 import { ResetPasswordFormData, resetPasswordSchema } from "@/validation";

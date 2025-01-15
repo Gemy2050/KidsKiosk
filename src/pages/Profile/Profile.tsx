@@ -1,6 +1,6 @@
 import Input from "@/components/Input";
 import { Button } from "@/components/ui/button";
-import { PROFILE_FORM } from "@/data";
+import { PROFILE_FORM } from "@/data/forms";
 import { type ProfileFormData, profileSchema } from "@/validation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

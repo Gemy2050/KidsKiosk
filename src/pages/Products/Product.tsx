@@ -117,7 +117,7 @@ export default function Product({ product }: IProps) {
         <div className="flex items-center gap-2">
           {product.hasDiscount && (
             <h3 className="text-xs text-gray-400 line-through">
-              {product.priceBeforeDiscount}
+              ${product.priceBeforeDiscount}
             </h3>
           )}
           <h3 className="font-bold text-gray-400">${product.price}</h3>

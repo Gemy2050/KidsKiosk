@@ -1,16 +1,9 @@
 import useCustomQuery from "./use-cutstom-query";
-import { Product } from "@/interfaces";
+import { IQuery, Product } from "@/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { useEffect } from "react";
 import { setProducts } from "@/app/slices/ProductsSlice";
-
-interface IQuery {
-  pageIndex: number;
-  pageSize: number;
-  count: number;
-  data: Product[];
-}
 
 function useGetProducts({
   pageIndex,
@@ -24,7 +17,7 @@ function useGetProducts({
   );
   const dispatch = useDispatch();
 
-  const { data, ...rest } = useCustomQuery<IQuery>({
+  const { data, ...rest } = useCustomQuery<IQuery<Product>>({
     key: ["getAllProducts"],
     url: `/product/get-all-products?pageSize=${pageSize}&pageIndex=${pageIndex}`,
     options: {

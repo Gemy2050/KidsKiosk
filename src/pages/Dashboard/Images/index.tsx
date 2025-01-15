@@ -9,20 +9,13 @@ import Table from "@/components/Table";
 import axiosInstance from "@/config/axios.config";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { useToast } from "@/hooks/use-toast";
-import { IAxiosError, Product } from "@/interfaces";
+import { IAxiosError, IQuery, Product } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Trash } from "lucide-react";
+import { CornerUpRight, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-interface IQuery {
-  pageIndex: number;
-  pageSize: number;
-  count: number;
-  data: Product[];
-}
+import { Link, useParams } from "react-router-dom";
 
 function Images() {
   const tableHeaders = ["image", "actions"];
@@ -36,7 +29,7 @@ function Images() {
     data: products,
     error,
     isLoading,
-  } = useCustomQuery<IQuery>({
+  } = useCustomQuery<IQuery<Product>>({
     key: ["getAllProducts"],
     url: "/product/get-all-products?pageSize=1000&pageIndex=1",
   });
@@ -134,13 +127,13 @@ function Images() {
     </tr>
   ));
 
-  console.log(Number(product?.productImages?.length) > 0);
-  console.log("A");
-
   return (
     <div>
       <PageTitle>
         <h2 className="text-lg sm:text-2xl">Product Images</h2>
+        <Link relative="path" to="../..">
+          <CornerUpRight size={40} strokeWidth={2.5} />
+        </Link>
       </PageTitle>
 
       <div className="mt-2 p-4 rounded-lg bg-background">

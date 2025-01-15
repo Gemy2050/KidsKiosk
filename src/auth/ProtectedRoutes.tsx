@@ -20,6 +20,12 @@ function ProtectedRoutes() {
     url: `/account/verify-token?isGoogleProvider=${user?.isGoogleUser || ""}`,
     options: {
       enabled: isAuthenticated,
+      retry: false,
+    },
+    config: {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("auth")}`,
+      },
     },
   });
 

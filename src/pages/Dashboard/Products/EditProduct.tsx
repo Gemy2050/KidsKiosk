@@ -6,7 +6,7 @@ import useCustomQuery from "@/hooks/use-cutstom-query";
 import { Product } from "@/interfaces";
 import Loader from "@/components/Loader";
 import ColorBox from "@/components/ColorBox";
-import { ProductsForm } from "@/data";
+import { ProductsForm } from "@/data/forms";
 import { renderField } from "@/utils/FormUtils";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Popup from "@/components/Popup";

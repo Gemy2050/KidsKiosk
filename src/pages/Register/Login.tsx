@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [passwordType, setPasswordType] = useState("password");
+  const [disabled, setDisabled] = useState(false);
   const signIn = useSignIn();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -64,9 +65,10 @@ function Login() {
   };
 
   const handleGoogleLoginSuccess = async (credentialResponse: any) => {
-    const tokenId = credentialResponse.credential;
-
     try {
+      setDisabled(true);
+
+      const tokenId = credentialResponse.credential;
       // Send token to backend API to verify and handle login
       const { status, data } = await axiosInstance.post(
         "/account/google-signin",
@@ -89,6 +91,8 @@ function Login() {
         title: axiosError.response?.data.message || "Something went wrong",
         variant: "destructive",
       });
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -108,6 +112,14 @@ function Login() {
   //* Only For Demo.. Remove it Later
   const BrowseDemo = () => {
     sessionStorage.setItem("isDemo", "true");
+    sessionStorage.setItem(
+      "demoUser",
+      JSON.stringify({
+        firstName: "Demo",
+        secondName: "User",
+        email: "demo@example.com",
+      })
+    );
     navigate("/", { replace: true });
   };
 
@@ -158,7 +170,7 @@ function Login() {
       <Button
         size="lg"
         className="border-[#DADADA] border py-6 mt-1 disabled:opacity-60"
-        disabled={isSubmitting}
+        disabled={isSubmitting || disabled}
       >
         Sign in
       </Button>
@@ -176,7 +188,7 @@ function Login() {
           variant={"outline"}
           fullWidth
           className="gap-4"
-          disabled={isSubmitting}
+          disabled={isSubmitting || disabled}
         >
           <img
             src="/imgs/google.svg"
@@ -188,7 +200,7 @@ function Login() {
           Continue with Google
         </Button>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          {!isSubmitting && (
+          {(!isSubmitting || !disabled) && (
             <div className=" absolute top-0 left-0 w-full h-full opacity-0">
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
@@ -204,7 +216,7 @@ function Login() {
       <Button
         type="button"
         className="border border-border"
-        disabled={isSubmitting}
+        disabled={isSubmitting || disabled}
         onClick={BrowseDemo}
       >
         Browse Demo

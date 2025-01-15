@@ -1,7 +1,6 @@
 import { Editor } from "@tinymce/tinymce-react";
 import { Editor as TinyMCEEditor } from "tinymce";
-// import Loader from "./Loader";
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useTheme } from "next-themes";
 
 interface IProps {
@@ -31,16 +30,10 @@ function TinyEditor({
   value,
   onEditorChange,
 }: IProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
   const { theme } = useTheme();
 
   const onInit = (_evt: any, editor: TinyMCEEditor) => {
     editorRef.current = editor;
-  };
-
-  const handleEditorInit = () => {
-    console.log(isLoaded);
-    if (setIsLoaded) setIsLoaded(true);
   };
 
   return (
@@ -58,9 +51,6 @@ function TinyEditor({
           ...(theme === "dark" ? darkModeSettings : {}),
           height: 350,
           menubar: true,
-          setup: (editor) => {
-            editor.on("init", handleEditorInit);
-          },
 
           plugins: [
             "advlist",

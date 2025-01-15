@@ -22,6 +22,8 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 5,
+      retry: 3,
+      networkMode: "offlineFirst",
     },
   },
 });

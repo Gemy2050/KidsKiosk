@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 
 import TinyEditor from "@/components/TinyEditor";
 import { Editor as TinyMCEEditor } from "tinymce";
-import axiosInstance from "@/config/axios.config";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { Category, IAxiosError } from "@/interfaces";
@@ -14,6 +13,7 @@ import InputGroup from "@/components/InputGroup";
 import { useDispatch } from "react-redux";
 import { addCategory } from "@/app/slices/CategoriesSlice";
 import { Link } from "react-router-dom";
+import { addNewCategory } from "@/services/category";
 
 function AddCategory() {
   const [categoryName, setCategoryName] = useState("");
@@ -36,9 +36,7 @@ function AddCategory() {
         return;
       }
 
-      const { data } = await axiosInstance.post(
-        `/category/add-category?categoryName=${categoryName}&description=${description}`
-      );
+      const { data } = await addNewCategory(categoryName, description);
       setCategoryName("");
       editorRef.current?.setContent("");
       toast({
@@ -68,11 +66,11 @@ function AddCategory() {
           <CornerUpRight size={40} strokeWidth={2.5} />
         </Link>
       </PageTitle>
-      <div className="mt-2 p-5 pt-7 rounded-lg bg-background">
-        <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-3 gap-y-8"
-          data-aos="fade-up"
-        >
+      <div
+        className="mt-2 p-5 pt-7 rounded-lg bg-background"
+        data-aos="fade-up"
+      >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-x-3 gap-y-8">
           <InputGroup>
             <label htmlFor="name">category name</label>
             <Input
@@ -84,7 +82,7 @@ function AddCategory() {
           </InputGroup>
         </div>
 
-        <div className="relative mt-8" data-aos="fade-up">
+        <div className="relative mt-8">
           <label
             htmlFor="Discount"
             className="absolute z-20 px-2 left-4 -top-3 text-sm text-gray-500 bg-background"
@@ -97,7 +95,6 @@ function AddCategory() {
           size={"lg"}
           rounded={"md"}
           className="mt-10 text-base font-bold"
-          data-aos="fade-up"
           disabled={disabled}
           onClick={handleAddCategory}
         >

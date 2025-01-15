@@ -7,10 +7,9 @@ import PageTitle from "@/components/PageTitle";
 import Pagination from "@/components/Pagination";
 import Spinner from "@/components/Spinner";
 import { buttonVariants } from "@/components/ui/button";
-import axiosInstance from "@/config/axios.config";
 import useCustomQuery from "@/hooks/use-cutstom-query";
 import { toast } from "@/hooks/use-toast";
-import { IAxiosError, Product } from "@/interfaces";
+import { IAxiosError, IQuery, Product } from "@/interfaces";
 import { tableSearch } from "@/utils/functions";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
@@ -21,18 +20,10 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setProducts } from "@/app/slices/ProductsSlice";
 import Table from "@/components/Table";
-
-interface IQuery {
-  pageIndex: number;
-  pageSize: number;
-  count: number;
-  data: Product[];
-}
+import { deleteProduct } from "@/services/product";
 
 function Products() {
-  const INDEX = sessionStorage.getItem("pageIndex")
-    ? Number(sessionStorage.getItem("pageIndex"))
-    : 1;
+  const INDEX = Number(sessionStorage.getItem("productsIndex") || 1);
 
   const PAGE_SIZE = 5;
   const [pageIndex, setPageIndex] = useState(INDEX);
@@ -46,7 +37,7 @@ function Products() {
 
   const QueryClient = useQueryClient();
 
-  const { data, error } = useCustomQuery<IQuery>({
+  const { data, error } = useCustomQuery<IQuery<Product>>({
     key: ["getAllProducts", `${pageIndex}`],
     url: `/product/get-all-products?pageSize=${PAGE_SIZE}&pageIndex=${pageIndex}`,
   });
@@ -57,10 +48,14 @@ function Products() {
     }
   }, [data]);
 
+  useEffect(() => {
+    sessionStorage.setItem("productsIndex", pageIndex.toString());
+  }, [pageIndex]);
+
   const handleDeleteProduct = async (id: number | string) => {
     try {
       setDisabled(true);
-      await axiosInstance.delete(`/product/delete-product?id=${id}`);
+      await deleteProduct(id);
       toast({
         title: "Done",
         description: "Product deleted successfully",
@@ -72,12 +67,17 @@ function Products() {
 
         setPageIndex(newPageIndex);
         QueryClient.invalidateQueries({
-          queryKey: ["getAllProducts", `${newPageIndex}`],
+          predicate: (query) =>
+            query.queryKey[0] === "getAllProducts" ||
+            query.queryKey[0] === "getAnalytics" ||
+            query.queryKey[1] === `${newPageIndex}`,
         });
         return;
       }
       QueryClient.invalidateQueries({
-        queryKey: ["getAllProducts", `${pageIndex}`],
+        predicate: (query) =>
+          query.queryKey[0] === "getAllProducts" ||
+          query.queryKey[0] === "getAnalytics",
       });
     } catch (err) {
       const error = err as AxiosError<IAxiosError>;

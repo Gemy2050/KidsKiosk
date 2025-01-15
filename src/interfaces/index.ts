@@ -121,3 +121,23 @@ export interface Colors {
   color: string;
   sizes: { id: number; size: string; quantity: string }[];
 }
+
+export interface IOrder {
+  items: Product[];
+  totalAmount: number;
+  id: string;
+  email: string;
+  firstName: string;
+  secondName: string;
+  address: string;
+  sessionId: string;
+  status: string;
+  createdAt: Date;
+}
+
+export interface IQuery<T> {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: T[];
+}
