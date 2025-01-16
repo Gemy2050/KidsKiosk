@@ -3,8 +3,8 @@ import { SOCIAL_LINKS } from "@/data/links";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#242424] text-white pt-20 text-center">
-      <div className="container">
+    <footer className="bg-[#242424] text-white pt-20 text-center relative">
+      <div className="container relative z-10">
         <div className="flex flex-wrap justify-center items-center ">
           <div
             data-aos="fade-up"
@@ -50,6 +50,15 @@ export default function Footer() {
           @2024 Kids Kiosk. All rights reserved
         </p>
       </div>
+      {/* Background Elements */}
+      <div
+        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-primary/10 blur-3xl "
+        data-aos="fade-right"
+      />
+      <div
+        className="absolute bottom-20 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl "
+        data-aos="fade-left"
+      />
     </footer>
   );
 }

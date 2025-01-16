@@ -67,13 +67,28 @@ function Orders() {
                       <p className="text-muted-foreground text-sm">
                         Quantity: {item.quantity} × ${item.price}
                       </p>
+                      <div className="flex gap-2 items-center">
+                        <div className="flex items-center gap-1">
+                          <span
+                            className="w-[15px] h-[15px] mt-[-1px] block rounded-full border"
+                            style={{ backgroundColor: item.color }}
+                          ></span>
+                          <span className="text-sm text-muted-foreground">
+                            {item.color}
+                          </span>
+                        </div>
+                        <span className="text-muted-foreground">|</span>
+                        <span className="text-sm text-muted-foreground">
+                          Size: {item.size}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-4 p-3 bg-muted rounded-lg flex items-center justify-between">
-                <span className="font-medium">Order Status</span>
+              <div className="mt-4 p-3 bg-muted rounded-lg flex flex-wrap gap-3 items-center justify-between">
+                <span className="font-medium text-sm">ID: {order.id}</span>
                 <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                   {order.status}
                 </span>

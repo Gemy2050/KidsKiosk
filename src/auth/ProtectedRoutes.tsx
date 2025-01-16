@@ -16,6 +16,7 @@ function ProtectedRoutes() {
     options: {
       enabled: !!user && isAuthenticated,
       retry: false,
+      gcTime: 1000 * 60 * 10,
     },
     config: {
       headers: {

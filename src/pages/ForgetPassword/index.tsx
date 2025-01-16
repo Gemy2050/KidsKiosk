@@ -29,6 +29,7 @@ export default function ForgetPassword() {
               className="hidden md:block md:w-[350px] xl:w-[400px] max-w-full mx-auto md:mx-0"
               width={400}
               height={200}
+              data-aos="fade-left"
             />
           </div>
         </div>

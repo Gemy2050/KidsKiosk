@@ -68,9 +68,24 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
                 />
                 <div>
                   <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Quantity: {item.quantity}
                   </p>
+                  <div className="flex gap-2 items-center">
+                    <div className="flex items-center gap-1">
+                      <span
+                        className="w-[15px] h-[15px] mt-[-1px] rounded-full border"
+                        style={{ backgroundColor: item.color }}
+                      ></span>
+                      <span className="text-sm text-muted-foreground">
+                        {item.color}
+                      </span>
+                    </div>
+                    <span className="text-muted-foreground">|</span>
+                    <span className="text-sm text-muted-foreground">
+                      Size: {item.size}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="text-right">

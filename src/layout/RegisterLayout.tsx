@@ -30,6 +30,7 @@ function RegisterLayout() {
         width={120}
         height={185}
         loading="eager"
+        data-aos="fade-left"
       />
       <img
         src={"/imgs/square.svg"}
@@ -38,6 +39,7 @@ function RegisterLayout() {
         width={200}
         height={215}
         loading="eager"
+        data-aos="fade-left"
       />
     </section>
   );

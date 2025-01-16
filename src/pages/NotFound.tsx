@@ -42,11 +42,11 @@ const NotFound = () => {
 
       {/* Background Elements */}
       <div
-        className="absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-primary/20 blur-3xl animate-pulse"
+        className="absolute top-20 left-20 w-[500px] h-[500px] rounded-full bg-primary/15 blur-3xl animate-pulse"
         data-aos="fade-right"
       />
       <div
-        className="absolute bottom-20 right-20 w-[500px] h-[500px] rounded-full bg-primary/20 blur-3xl animate-pulse"
+        className="absolute bottom-20 right-20 w-[500px] h-[500px] rounded-full bg-primary/15 blur-3xl animate-pulse"
         data-aos="fade-left"
       />
     </div>

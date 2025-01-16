@@ -25,7 +25,7 @@ import { deleteProduct } from "@/services/product";
 function Products() {
   const INDEX = Number(sessionStorage.getItem("productsIndex") || 1);
 
-  const PAGE_SIZE = 5;
+  const PAGE_SIZE = 10;
   const [pageIndex, setPageIndex] = useState(INDEX);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
@@ -160,6 +160,7 @@ function Products() {
         </Link>
 
         <Input
+          type="search"
           placeholder="Search here ..."
           className="w-full mb-4"
           data-aos="fade-up"

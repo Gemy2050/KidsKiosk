@@ -10,12 +10,21 @@ import { getStatusColor, tableSearch } from "@/utils/functions";
 import { format } from "date-fns";
 import { RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import OrderDetails from "@/components/OrderDetails";
 
 function DashboardOrders() {
   const INDEX = Number(sessionStorage.getItem("ordersIndex") || 1);
 
   const PAGE_SIZE = 10;
   const [pageIndex, setPageIndex] = useState(INDEX);
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data, error, isFetching, refetch } = useCustomQuery<IQuery<IOrder>>({
     key: ["getOrders", `${pageIndex}`],
@@ -32,9 +41,9 @@ function DashboardOrders() {
   }, [pageIndex]);
 
   // ** Render **
-  const renderOrders = data?.data.map((order, idx: number) => (
+  const renderOrders = data?.data?.map((order: IOrder, idx: number) => (
     <tr key={order.id}>
-      <td>{idx + 1}</td>
+      <td>{(pageIndex - 1) * PAGE_SIZE + (idx + 1)}</td>
       <td className=" capitalize">
         {order.firstName + " " + order.secondName}
       </td>
@@ -43,6 +52,15 @@ function DashboardOrders() {
       <td>${order.totalAmount} </td>
       <td>{format(order.createdAt, "dd MMM yyyy - hh:mm a")}</td>
       <td>
+        <span
+          className=" cursor-pointer text-blue-500 hover:underline me-3"
+          onClick={() => {
+            setSelectedOrder(order);
+            setIsDialogOpen(true);
+          }}
+        >
+          View{" "}
+        </span>
         <span
           className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
             order.status
@@ -79,7 +97,7 @@ function DashboardOrders() {
         {!isFetching ? (
           <>
             <Table
-              className="!min-w-[900px] [&>tbody>tr>td]:!py-5"
+              className="!min-w-[1030px]  [&>tbody>tr>td]:!py-5"
               headers={tableHeaders}
             >
               {renderOrders}
@@ -91,6 +109,14 @@ function DashboardOrders() {
         )}
         {error && <ErrorMessage message="Something went wrong" />}
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="dialog-scroll max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Order Details</DialogTitle>
+          </DialogHeader>
+          {selectedOrder && <OrderDetails order={selectedOrder} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

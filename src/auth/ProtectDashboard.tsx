@@ -15,6 +15,7 @@ const ProtectDashboard = () => {
     url: `/account/verify-token`,
     options: {
       enabled: !!user && isAuthenticated,
+      gcTime: 1000 * 60 * 10,
     },
   });
 
