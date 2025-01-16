@@ -106,6 +106,8 @@ export interface Product {
   productCategory: string;
   category?: string;
   quantity?: number;
+  color?: string;
+  size?: string | number;
   variants?: Colors[];
   productImages?: { id: number; imageUrl: string }[];
 }
@@ -129,6 +131,7 @@ export interface IOrder {
   email: string;
   firstName: string;
   secondName: string;
+  phone: string;
   address: string;
   sessionId: string;
   status: string;

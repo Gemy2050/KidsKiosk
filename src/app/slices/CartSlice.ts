@@ -24,7 +24,7 @@ const cartSlice = createSlice({
 
       if (productFound) {
         state.cart = state.cart.map((el) =>
-          el.id === product.id ? { ...el, quantity: quantity + 1 } : el
+          el.id === product.id ? { ...product, quantity: quantity + 1 } : el
         );
       } else {
         state.cart = [...state.cart, { ...product, quantity: 1 }];

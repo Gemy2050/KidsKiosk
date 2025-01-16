@@ -55,6 +55,7 @@ function Success() {
       firstName: user?.firstName,
       secondName: user?.secondName,
       address: user?.address || "",
+      phone: user?.phone || "",
       items: JSON.stringify(cart),
       totalAmount: getTotalPrice(cart),
       status: "completed",

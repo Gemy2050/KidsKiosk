@@ -1,5 +1,11 @@
 import { Card } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   AreaChart,
   Area,
   XAxis,
@@ -23,12 +29,15 @@ import Table from "@/components/Table";
 import { format } from "date-fns";
 import { useTheme } from "next-themes";
 import { getStatusColor } from "@/utils/functions";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Spinner from "@/components/Spinner";
 import { IOrder } from "@/interfaces";
+import OrderDetails from "@/components/OrderDetails";
 
 const Dashboard = () => {
   const { theme } = useTheme();
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     data: analytics,
@@ -84,6 +93,15 @@ const Dashboard = () => {
         {format(new Date(order.createdAt), "dd MMM, yyyy - hh:mm a")}
       </td>
       <td className="!p-5">
+        <span
+          className=" cursor-pointer text-blue-500 hover:underline me-3"
+          onClick={() => {
+            setSelectedOrder(order);
+            setIsDialogOpen(true);
+          }}
+        >
+          View{" "}
+        </span>
         <span
           className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
             order.status
@@ -230,11 +248,19 @@ const Dashboard = () => {
           data-aos-offset="50"
         >
           <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-          <Table className="!min-w-[980px]" headers={headers}>
+          <Table className="!min-w-[1030px]" headers={headers}>
             {renderRecentOrders}
           </Table>
         </Card>
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="dialog-scroll max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Order Details</DialogTitle>
+          </DialogHeader>
+          {selectedOrder && <OrderDetails order={selectedOrder} />}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

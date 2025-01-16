@@ -4,7 +4,7 @@ import { Slider } from "@/components/Slider";
 import { Button } from "@/components/ui/button";
 import { CarouselItem } from "@/components/ui/carousel";
 import useCustomQuery from "@/hooks/use-cutstom-query";
-import { Product as IProduct, ISize } from "@/interfaces";
+import { Colors, Product as IProduct, ISize } from "@/interfaces";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import { addToCart } from "@/app/slices/CartSlice";
 export default function ProductDetails() {
   const [sizeId, setSizeId] = useState<number | string>(0);
   const [availableSizes, setAvailableSizes] = useState<ISize[]>();
-  const [colorId, setColorId] = useState<string | number | undefined>(0);
+  const [colorId, setColorId] = useState<string | undefined>();
   const { id } = useParams();
   const { cart } = useSelector((state: RootState) => state.cart);
   const { products } = useSelector((state: RootState) => state.products);
@@ -35,18 +35,48 @@ export default function ProductDetails() {
   const product = existProduct || data;
 
   useEffect(() => {
-    if (product && colorId === 0) {
-      setColorId(product.variants?.[0].id);
+    if (product && !colorId) {
+      setColorId(product.variants?.[0].color);
       return;
     }
 
     if (product) {
-      const sizes = product.variants?.find(({ id }) => id === colorId)?.sizes;
+      const sizes = product.variants?.find(
+        ({ color }) => color === colorId
+      )?.sizes;
       setAvailableSizes(sizes);
 
       if (!sizeId) setSizeId(sizes?.[0].size || 0);
     }
   }, [colorId, product]);
+
+  const handleSetColor = ({ color, sizes }: Colors) => {
+    setColorId(color);
+    setSizeId(0);
+    if (product?.quantity) {
+      dispatch(
+        addToCart({
+          ...product,
+          color,
+          size: sizes?.[0].size,
+          quantity: product.quantity - 1,
+        })
+      );
+    }
+  };
+
+  const handleSetSize = (size: number | string) => {
+    setSizeId(size);
+    if (product?.quantity) {
+      dispatch(
+        addToCart({
+          ...product,
+          size,
+          quantity: product.quantity - 1,
+        })
+      );
+    }
+  };
 
   if (!product && isFetched) {
     return <Navigate to="/products" replace />;
@@ -116,18 +146,15 @@ export default function ProductDetails() {
           <div className="w-[500px] max-w-full" data-aos="fade-left">
             <h3 className="text-3xl font-semibold mb-4">Colors</h3>
             <div className="mb-8 flex flex-wrap items-center gap-4">
-              {product.variants?.map(({ id, color }, i) => (
+              {product.variants?.map((color, i) => (
                 <span
-                  key={id}
-                  onClick={() => {
-                    setColorId(id);
-                    setSizeId(0);
-                  }}
+                  key={color.id}
+                  onClick={() => handleSetColor(color)}
                   className={`${
-                    (colorId ? colorId === id : i === 0) && "active"
+                    (colorId ? colorId === color.color : i === 0) && "active"
                   } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block p-1 rounded-lg border border-border text-center font-semibold text-gray-500`}
                 >
-                  {color}
+                  {color.color}
                 </span>
               ))}
             </div>
@@ -137,7 +164,7 @@ export default function ProductDetails() {
                 return (
                   <span
                     key={i}
-                    onClick={() => setSizeId(size)}
+                    onClick={() => handleSetSize(size)}
                     className={`${
                       (sizeId ? sizeId === size : i === 0) && "active"
                     } cursor-pointer select-none [&.active]:bg-primary [&.active]:text-white hover:bg-secondary block w-[35px] h-[35px] rounded-lg border border-border text-center font-semibold text-sm leading-9 text-gray-500`}
@@ -148,7 +175,14 @@ export default function ProductDetails() {
               })}
             </div>
             {!product.quantity ? (
-              <Button onClick={() => dispatch(addToCart(product))} fullWidth>
+              <Button
+                onClick={() =>
+                  dispatch(
+                    addToCart({ ...product, size: sizeId, color: colorId })
+                  )
+                }
+                fullWidth
+              >
                 Add To Cart
               </Button>
             ) : (
