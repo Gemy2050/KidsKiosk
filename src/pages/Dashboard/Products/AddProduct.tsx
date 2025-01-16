@@ -36,7 +36,6 @@ function AddProduct() {
     const result = await handleAddProduct(data);
     if (result) reset();
   };
-
   const onError = () => {
     // To Focus Tinymce Editor Manually
     if (errors.description) {
@@ -106,6 +105,7 @@ function AddProduct() {
                 colorId={el.id as string}
                 colors={productFormData.colors as any}
                 productFormMethods={productFormMethods}
+                uniqueKey={Date.now()}
               />
             ))}
           </div>

@@ -162,6 +162,7 @@ function EditProduct() {
                 colorId={el.id as string}
                 colors={productFormData.colors as any}
                 productFormMethods={productFormMethods}
+                uniqueKey={Date.now()}
               />
             ))}
           </div>

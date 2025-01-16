@@ -160,7 +160,15 @@ export const productForm = yup.object({
         .transform((_, originalValue) =>
           originalValue ? originalValue : Date.now()
         ),
-      color: yup.string().required("color is required"),
+      color: yup
+        .string()
+        .required("Color is required")
+        .test("unique", "Color must be unique", function (value) {
+          const colorsList = this.from?.[1].value.colors;
+          return (
+            colorsList.filter((item: any) => item.color === value).length <= 1
+          );
+        }),
       sizes: yup.array().of(
         yup.object().shape({
           id: yup
@@ -169,8 +177,8 @@ export const productForm = yup.object({
             .transform((_, originalValue) =>
               originalValue ? originalValue : Date.now()
             ),
-          size: yup.string().required("size is required"),
-          quantity: yup.string().required("quantity is required"),
+          size: yup.string().required("Size is required"),
+          quantity: yup.string().required("Quantity is required"),
         })
       ),
     })

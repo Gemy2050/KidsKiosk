@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Input from "./Input";
 import InputGroup from "./InputGroup";
 import { Button } from "./ui/button";
@@ -6,16 +5,23 @@ import { Trash2 } from "lucide-react";
 import { Colors } from "@/interfaces";
 import { ProductForm } from "@/validation";
 import { UseFormReturn } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
+import { memo } from "react";
 
 interface IProps {
   colorId: number | string;
   colors: Colors[];
   index: number;
   productFormMethods: UseFormReturn<ProductForm>;
+  uniqueKey?: number;
 }
 
 const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
-  const { register, setValue } = productFormMethods;
+  const {
+    register,
+    setValue,
+    formState: { isSubmitting, errors },
+  } = productFormMethods;
 
   // Add a new size to a specific color
   const addSize = () => {
@@ -54,6 +60,9 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
               type="text"
               id={`colorName-${colorId}`}
               {...register(`colors.${index}.color`)}
+            />
+            <ErrorMessage
+              message={errors.colors?.[index]?.color?.message || ""}
             />
           </InputGroup>
           <button
@@ -106,6 +115,7 @@ const ColorBox = ({ colors, colorId, index, productFormMethods }: IProps) => {
           fullWidth
           rounded="md"
           size="sm"
+          disabled={isSubmitting}
           onClick={addSize}
         >
           + Add Size
