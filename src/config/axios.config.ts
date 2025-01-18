@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       Cookies.remove("auth");
       Cookies.remove("auth_state");
-      window.location.reload();
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

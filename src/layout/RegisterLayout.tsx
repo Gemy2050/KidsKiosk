@@ -3,11 +3,12 @@ import RegisterHeader from "@/pages/Register/Header";
 import { User } from "@/types";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { Navigate, Outlet } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function RegisterLayout() {
   const authUser: User = useAuthUser();
 
-  if (authUser) {
+  if (authUser && Cookies.get("auth")) {
     return <Navigate to="/" replace />;
   }
 
