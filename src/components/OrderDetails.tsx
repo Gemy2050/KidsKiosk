@@ -43,7 +43,7 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
           </div>
 
           <div className="space-y-1 md:col-span-2">
-            <p className="text-sm text-muted-foreground">Shipping Address</p>
+            <p className="text-sm text-muted-foreground">Address</p>
             <p className="font-medium">{order.address}</p>
           </div>
         </div>
@@ -67,30 +67,32 @@ const OrderDetails = ({ order }: OrderDetailsProps) => {
                   className="w-16 h-16 object-cover rounded-md"
                 />
                 <div>
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm font-medium">{item.name}</p>
+                  <p className=" text-sm text-muted-foreground mt-1">
                     Quantity: {item.quantity}
                   </p>
-                  <div className="flex gap-2 items-center">
-                    <div className="flex items-center gap-1">
-                      <span
-                        className="w-[15px] h-[15px] mt-[-1px] rounded-full border"
-                        style={{ backgroundColor: item.color }}
-                      ></span>
+                  {item.color && (
+                    <div className="flex gap-2 items-center">
+                      <div className="flex items-center gap-1">
+                        <span
+                          className="w-[15px] h-[15px] mt-[-1px] rounded-full border"
+                          style={{ backgroundColor: item.color }}
+                        ></span>
+                        <span className="text-sm text-muted-foreground">
+                          {item.color}
+                        </span>
+                      </div>
+                      <span className="text-muted-foreground">|</span>
                       <span className="text-sm text-muted-foreground">
-                        {item.color}
+                        {item.size}
                       </span>
                     </div>
-                    <span className="text-muted-foreground">|</span>
-                    <span className="text-sm text-muted-foreground">
-                      Size: {item.size}
-                    </span>
-                  </div>
+                  )}
                 </div>
               </div>
               <div className="text-right">
                 <p className="font-medium">${item.price}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-[12px] sm:text-sm text-muted-foreground">
                   Total: ${(item.price * item.quantity!).toFixed(2)}
                 </p>
               </div>

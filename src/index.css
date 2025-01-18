@@ -130,8 +130,9 @@
 #customTable tbody tr td {
   @apply p-3 md:p-4 text-center;
 }
-#customTable::-webkit-scrollbar {
-  @apply w-0;
+
+#customTable::-webkit-scrollbar-track {
+  @apply !bg-transparent;
 }
 
 /* Tine Editor */
@@ -147,16 +148,16 @@ body {
   --sb-size: 8px;
 }
 
-body::-webkit-scrollbar {
+:is(body, #customTable)::-webkit-scrollbar {
   width: var(--sb-size);
 }
 
-body::-webkit-scrollbar-track {
+:is(body, #customTable)::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: 3px;
 }
 
-body::-webkit-scrollbar-thumb {
+:is(body, #customTable)::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 3px;
   box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.5);
@@ -164,6 +165,9 @@ body::-webkit-scrollbar-thumb {
 
 @supports not selector(::-webkit-scrollbar) {
   body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+  #customTable {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }

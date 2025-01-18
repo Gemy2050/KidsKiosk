@@ -3,21 +3,36 @@ import { ShoppingBag } from "lucide-react";
 import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { getTotalPrice } from "@/utils/functions";
 
 import { loadStripe } from "@stripe/stripe-js";
 import axiosInstance from "@/config/axios.config";
 import { useState } from "react";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { useToast } from "@/hooks/use-toast";
+import { User } from "@/types";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
 function Cart() {
   let { cart } = useSelector((state: RootState) => state.cart);
   const [disabled, setDisabled] = useState(false);
+  const user: User = useAuthUser();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleCheckout = async () => {
+    if (!user?.phone || !user?.address) {
+      toast({
+        title: "Please fill your profile details",
+        variant: "destructive",
+      });
+      navigate("/profile", { replace: true });
+      return;
+    }
+
     try {
       setDisabled(true);
       const stripe = await stripePromise;

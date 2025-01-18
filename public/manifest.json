@@ -1,0 +1,49 @@
+{
+  "name": "KidsKiosk - Shoes for Kids",
+  "short_name": "KidsKiosk",
+  "description": "Shop the latest and greatest in kids' shoes at KidsKiosk. Find the perfect fit for every adventure!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/imgs/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/imgs/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "kids", "fashion"],
+  "screenshots":  [
+    {
+      "src": "/imgs/home.png",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Homepage of KidsKiosk showing featured kids shoes"
+    },
+    {
+      "src": "/imgs/product.png",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Product detail page with shoe specifications"
+    },
+    {
+      "src": "/imgs/cart.png",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Shopping cart with selected items"
+    }
+  ],
+  "prefer_related_applications": false
+}

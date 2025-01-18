@@ -48,7 +48,7 @@ function TinyEditor({
           if (onEditorChange) onEditorChange(value);
         }}
         init={{
-          ...(theme === "dark" ? darkModeSettings : {}),
+          ...(theme !== "light" ? darkModeSettings : {}),
           height: 350,
           menubar: true,
 

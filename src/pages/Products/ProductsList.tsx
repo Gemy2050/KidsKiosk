@@ -38,7 +38,7 @@ function ProductsList() {
       <h2 className="mb-6 text-primary text-4xl font-bold" data-aos="fade-up">
         Our Products
       </h2>
-      <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center [&:hover>:not(&>:hover)_img]:opacity-70">
+      <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-center ">
         {!isLoading ? (
           products?.data?.map((product) => (
             <Product product={product} key={product.id} />

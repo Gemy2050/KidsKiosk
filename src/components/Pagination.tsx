@@ -22,7 +22,7 @@ function Pagination({ pageIndex, setPageIndex, data, scrollToTop }: IProps) {
 
   if (!data) return null;
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex justify-between items-center mt-3">
       <Button onClick={prevHandler} disabled={pageIndex == 1}>
         Prev
       </Button>

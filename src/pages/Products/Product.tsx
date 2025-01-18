@@ -27,7 +27,14 @@ export default function Product({ product }: IProps) {
   const handleCartEvent = () => {
     let message = "Product added to cart";
     if (!isInCart) {
-      dispatch(addToCart(product));
+      const variant = product.variants?.[0];
+      dispatch(
+        addToCart({
+          ...product,
+          color: variant?.color,
+          size: variant?.sizes?.[0].size,
+        })
+      );
     } else {
       message = "Product removed from cart";
       dispatch(removeFromCart(product));
@@ -63,7 +70,7 @@ export default function Product({ product }: IProps) {
   return (
     <div
       data-aos="fade-up"
-      className="flex flex-col items-center gap-2 bg-background p-5 border-2 border-border rounded-lg [&:hover]:border-primary shadow-xl [&:hover_img]:scale-110 duration-500"
+      className="relative overflow-hidden flex flex-col items-center gap-2 bg-background p-5 border-2 border-border rounded-lg [&:hover]:border-primary shadow-xl [&:hover_img]:scale-110 [&:hover_img]:rotate-[4deg] duration-500"
     >
       <div className="flex justify-between items-center w-full">
         {!isInCart ? (
@@ -88,9 +95,12 @@ export default function Product({ product }: IProps) {
         />
       </div>
 
-      <Link to={`/product/${product.id}`} className="w-full cursor-pointer">
+      <Link
+        to={`/product/${product.id}`}
+        className="w-full cursor-pointer relative overflow-hidden rounded-lg "
+      >
         <img
-          className="w-[250px] h-[200px] max-w-full rounded-lg mx-auto my-3 duration-500"
+          className="w-full h-[200px] max-w-full rounded-lg mx-auto duration-500"
           src={product.imageUrl}
           alt={product.name}
           loading="lazy"
@@ -120,6 +130,7 @@ export default function Product({ product }: IProps) {
           <h3 className="font-bold text-gray-400">${product.price}</h3>
         </div>
       </div>
+      <div className="absolute bottom-[-15px] right-[-15px] w-[100px] h-[100px] rounded-full bg-primary/90 dark:bg-primary/25 blur-3xl " />
     </div>
   );
 }

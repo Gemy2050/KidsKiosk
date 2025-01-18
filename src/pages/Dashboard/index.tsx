@@ -189,7 +189,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card
           data-aos="fade-right"
-          className="p-6 transition-all duration-300 hover:shadow-lg bg-background"
+          className="p-3 sm:p-6transition-all duration-300 hover:shadow-lg bg-background"
         >
           <h3 className="text-lg font-semibold mb-4">Sales Overview</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -200,11 +200,11 @@ const Dashboard = () => {
               <Tooltip
                 formatter={(value) => [`$${value}`, "sales"]}
                 contentStyle={{
-                  backgroundColor: theme == "dark" ? "#1a1a1a" : "#fff",
+                  backgroundColor: theme !== "light" ? "#1a1a1a" : "#fff",
                   border: `1px solid ${
-                    theme == "dark" ? "#404040" : "#e0e0e0"
+                    theme !== "light" ? "#404040" : "#e0e0e0"
                   }`,
-                  color: theme == "dark" ? "#fff" : "#333",
+                  color: theme !== "light" ? "#fff" : "#333",
                 }}
               />
               <Area
@@ -219,7 +219,7 @@ const Dashboard = () => {
 
         <Card
           data-aos="fade-left"
-          className="p-6 transition-all duration-300 hover:shadow-lg bg-background"
+          className="p-3 sm:p-6 transition-all duration-300 hover:shadow-lg bg-background"
         >
           <h3 className="text-lg font-semibold mb-4">Top Products</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -229,11 +229,11 @@ const Dashboard = () => {
               <YAxis />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: theme == "dark" ? "#1a1a1a" : "#fff",
+                  backgroundColor: theme !== "light" ? "#1a1a1a" : "#fff",
                   border: `1px solid ${
-                    theme == "dark" ? "#404040" : "#e0e0e0"
+                    theme !== "light" ? "#404040" : "#e0e0e0"
                   }`,
-                  color: theme == "dark" ? "#fff" : "#333",
+                  color: theme !== "light" ? "#fff" : "#333",
                 }}
               />
               <Bar dataKey="quantity" fill="#82ca9d" />
@@ -243,7 +243,7 @@ const Dashboard = () => {
 
         {/* Recent Orders Table */}
         <Card
-          className="bg-background col-span-full p-6 transition-all duration-300 hover:shadow-lg"
+          className="bg-background col-span-full p-3 sm:p-6 transition-all duration-300 hover:shadow-lg"
           data-aos="fade-up"
           data-aos-offset="50"
         >

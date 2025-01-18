@@ -55,7 +55,7 @@ function Orders() {
                 {order.items?.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-4 p-4 bg-muted rounded-lg"
+                    className="flex items-center gap-4 p-4 bg-card rounded-lg"
                   >
                     <img
                       src={item.imageUrl}
