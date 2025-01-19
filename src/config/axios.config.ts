@@ -28,13 +28,10 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     console.log(error);
-    if (error.status === 401) {
-      Object.keys(Cookies.get()).forEach((cookieName) => {
-        Cookies.remove(cookieName);
-      });
-      alert(error.status + " " + error);
-      localStorage.clear();
-      window.location.replace("/login");
+    if (error.status == 401) {
+      Cookies.remove("auth");
+      Cookies.remove("auth_state");
+      alert(error.status + " " + Cookies.get("auth"));
     }
     return Promise.reject(error);
   }

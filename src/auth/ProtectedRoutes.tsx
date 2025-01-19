@@ -5,12 +5,14 @@ import useCustomQuery from "@/hooks/use-cutstom-query";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { User } from "@/types";
 import Cookies from "js-cookie";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
 
 function ProtectedRoutes() {
   const isAuthenticated = useIsAuthenticated();
   const user: User = useAuthUser();
+  const signout = useSignOut();
 
-  const { isLoading } = useCustomQuery({
+  const { isLoading, isError } = useCustomQuery({
     key: ["verify-token"],
     url: `/account/verify-token?isGoogleProvider=${user?.isGoogleUser || ""}`,
     options: {
@@ -25,11 +27,14 @@ function ProtectedRoutes() {
     },
   });
 
+  console.log({ user, isAuthenticated, isLoading, isError });
+
   if (isLoading) {
     return <Loader />;
   }
 
-  if (!user) {
+  if (!user || isError) {
+    signout();
     return <Navigate to="/login" replace />;
   }
 
