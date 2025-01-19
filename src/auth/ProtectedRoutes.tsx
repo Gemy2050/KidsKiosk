@@ -27,8 +27,6 @@ function ProtectedRoutes() {
     },
   });
 
-  console.log({ user, isAuthenticated, isLoading, isError });
-
   if (isLoading) {
     return <Loader />;
   }

@@ -31,7 +31,6 @@ axiosInstance.interceptors.response.use(
     if (error.status == 401) {
       Cookies.remove("auth");
       Cookies.remove("auth_state");
-      alert(error.status + " " + Cookies.get("auth"));
     }
     return Promise.reject(error);
   }

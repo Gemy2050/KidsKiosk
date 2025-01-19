@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 
 function RegisterLayout() {
   const authUser: User = useAuthUser();
-  console.log(authUser, Cookies.get("auth"));
   if (authUser && Cookies.get("auth")) {
     return <Navigate to="/" replace />;
   }
