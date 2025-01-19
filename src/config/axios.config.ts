@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-const BASE_URL = "https://kidskiosk-api-mongodb.vercel.app/api";
+const BASE_URL = "https://kidskiosk-api.vercel.app/api";
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
